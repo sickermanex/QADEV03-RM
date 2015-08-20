@@ -30,3 +30,7 @@ _ReSharper*/
 node_modules/
 .idea/
 
+.gitignore.BACKUP.10540.gitignore
+.gitignore.BASE.10540.gitignore
+.gitignore.LOCAL.10540.gitignore
+.gitignore.REMOTE.10540.gitignore
