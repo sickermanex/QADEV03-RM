@@ -1,0 +1,52 @@
+{
+    "setImpersonationToFalse" : {
+      "credential": {
+      "_id": "55ce0bd1e213fa480a4805d9",
+      "username": "Administrator",
+      "expirationDate": "2015-09-18T18:43:16.5632172Z"
+      },
+      "type": "exchange",
+      "name": "Microsoft Exchange Server 2010 SP3",
+      "version": "14.3.123",
+      "serviceUrl": "https://qad03lpedfu002.rmdom2012.lab/EWS/Exchange.asmx",
+      "__v": 0,
+      "impersonate": false,
+      "alternativeServiceUrls": [],
+      "id": "55ce0bd1e213fa480a4805da"
+    },
+
+    "setImpersonationToTrue" : {
+      "credential": {
+        "_id": "55ce0bd1e213fa480a4805d9",
+        "username": "Administrator",
+        "expirationDate": "2015-09-18T18:43:16.5632172Z"
+      },
+      "type": "exchange",
+      "name": "Microsoft Exchange Server 2010 SP3",
+      "version": "14.3.123",
+      "serviceUrl": "https://qad03lpedfu002.rmdom2012.lab/EWS/Exchange.asmx",
+      "__v": 0,
+      "impersonate": true,
+      "alternativeServiceUrls": [],
+      "id": "55ce0bd1e213fa480a4805da"
+    },
+
+    "setAuthentication" : {
+      "authentication":"credentials"
+    },
+
+    "createMeetingEvent" : {
+      "organizer": "Administrator",
+      "title": "Test01",
+      "start": "2015-08-18T20:09:00.000Z",
+      "end": "2015-08-18T21:39:00.000Z",
+      "location": "room 571",
+      "roomEmail": "room571@rmdom2012.lab",
+      "resources": [
+        "room571@rmdom2012.lab"
+      ],
+      "attendees": [
+        "vanessa.vargas@rmdom2012.lab"
+      ]
+    }
+}

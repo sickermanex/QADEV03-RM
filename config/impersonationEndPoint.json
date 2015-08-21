@@ -1,0 +1,5 @@
+{
+  "putImpersonation" : "http://localhost:4040/services/55ce0bd1e213fa480a4805da",
+  "putSettings" : "http://localhost:4040/settings",
+  "putEventMeeting" : "http://localhost:4040/services/55ce0bd1e213fa480a4805da/rooms/55ce0bd1e213fa480a4805db/meetings?misrepresent=true"
+}
