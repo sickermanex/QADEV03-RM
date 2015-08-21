@@ -1,0 +1,4 @@
+{
+    "endpointById":"http:\/\/localhost:4040\/[ep]\/[id]",
+    "endpoint":"http:\/\/localhost:4040\/[ep]"
+}
