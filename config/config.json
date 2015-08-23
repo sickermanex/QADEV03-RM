@@ -1,4 +1,4 @@
 {
-  "name": "application-name",
-  "version": "0.0.1"
+  "proxyconf":"http://172.20.240.5:4040"
+
 }
