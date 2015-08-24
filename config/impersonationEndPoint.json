@@ -1,6 +1,0 @@
-{
-  "putImpersonation" : "http://172.20.208.102:4040/services/55d7580910832ed0071fe6ca",
-  "putSettings" : "http://172.20.208.102:4040/settings",
-  "eventMeetingWithImpersonation" : "http://172.20.208.102:4040/services/55d7580910832ed0071fe6ca/rooms/55d7580a10832ed0071fe6cc/meetings?misrepresent=false",
-  "eventMeetingWithoutImpersonation" : "http://172.20.208.102:4040/services/55d7580910832ed0071fe6ca/rooms/55d7580a10832ed0071fe6cc/meetings?misrepresent=true"
-}

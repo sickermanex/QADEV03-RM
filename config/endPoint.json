@@ -1,4 +1,4 @@
 {
-    "endpointById":"http:\/\/localhost:4040\/[ep]\/[id]",
-    "endpoint":"http:\/\/172.20.208.102:4040\/[ep]"
+    "endpointById":"http:\/\/<server>:<port>\/<ep>\/<id>",
+    "endpoint":"http:\/\/<server>:<port>\/<ep>"
 }

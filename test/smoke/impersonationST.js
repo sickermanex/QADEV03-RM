@@ -7,9 +7,9 @@ var request = require('superagent');
 (require('superagent-proxy'))(request);
 var expect = require('chai').expect;
 var impersonationLib = require('../../lib/impersonationLib');
-var impersonationConfig = require('../../config/impersonationConfig.json');
 var tokenLib = require('../../lib/tokenLib');
-var config = require('../../config/config.json');
+var settings = require('../../settings.json');
+var impersonationRequest = require('../../requestJSONs/impersonationRequest.json');
 
 describe('Room Manager Impersonation Smoke Tests:', function(){
     this.timeout(5000);
@@ -22,13 +22,16 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
     for the whole group of test cases in this test suit.
      */
     before(function(done){
-        var login = config.userAdministratorPC102;
+        var login = {
+            "username": settings.domain + "\\" + settings.roomManagerAccount,
+            "password": settings.roomManagerPassword,
+            "authentication": "ldap"
+        };
 
         tokenLib
             .getToken(login)
             .end(function(err, res){
                 token = 'jwt ' + res.body.token;
-                console.log('The token is:', token);
                 done();
             });
     });
@@ -39,13 +42,19 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         This afterEach restores the initial non-impersonation state on Room Manager.
          */
         afterEach(function(){
+            var impersonationState = impersonationRequest.impersonationUnChecked;
+            var contentTypeInfo = impersonationRequest.ContentType;
+
             impersonationLib
-                .setImpersonation(impersonationConfig.setImpersonationToFalse)
+                .setImpersonation(impersonationState)
+                .set('Content-Type', contentTypeInfo)
                 .set('Authorization', token)
                 .end(function(err, res){
 
+                    var authenticationState = impersonationRequest.authenticationSettings;
+
                     impersonationLib
-                        .setAuthentication(impersonationConfig.setAuthentication)
+                        .setAuthentication(authenticationState)
                         .set('Authorization', token)
                         .end(function(err, res){
                             done();
@@ -54,19 +63,27 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         });
 
         /*
-         This test case is to verify the status code is different than 5xx when the “Use Impersonation”
-         is checked.
+         This test case is to verify the update information setting for the impersonation option
+         available on Room Manager.
+
+         The impersonation check has been verified for this test case.
          */
         it('User Impersonation is checked', function(done){
+            var impersonationState = impersonationRequest.impersonationChecked;
+            var contentTypeInfo = impersonationRequest.ContentType;
+
             impersonationLib
-                .setImpersonation(impersonationConfig.setImpersonationToTrue)
+                .setImpersonation(impersonationState)
+                .set('Content-Type', contentTypeInfo)
                 .set('Authorization', token)
                 .end(function(err, res){
                     expect(err).to.be.not.OK;
                     expect(res.status).to.be.below(500);
 
+                    var authenticationState = impersonationRequest.authenticationSettings;
+
                     impersonationLib
-                        .setAuthentication(impersonationConfig.setAuthentication)
+                        .setAuthentication(authenticationState)
                         .set('Authorization', token)
                         .end(function(err, res){
                             expect(err).to.be.not.OK;
@@ -80,19 +97,27 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
     });
 
     /*
-     This test case is to verify the status code is different than 5xx when the “Use Impersonation”
-     is unchecked.
+     This test case is to verify the update information setting for the impersonation option
+     available on Room Manager.
+
+     The impersonation uncheck has been verified for this test case.
      */
     it('User Impersonation is unchecked', function(done){
+        var impersonationState = impersonationRequest.impersonationUnChecked;
+        var contentTypeInfo = impersonationRequest.ContentType;
+
         impersonationLib
-            .setImpersonation(impersonationConfig.setImpersonationToFalse)
+            .setImpersonation(impersonationState)
+            .set('Content-Type', contentTypeInfo)
             .set('Authorization', token)
             .end(function(err, res){
                 expect(err).to.be.not.OK;
                 expect(res.status).to.be.below(500);
 
+                var authenticationState = impersonationRequest.authenticationSettings;
+
                 impersonationLib
-                    .setAuthentication(impersonationConfig.setAuthentication)
+                    .setAuthentication(authenticationState)
                     .set('Authorization', token)
                     .end(function(err, res){
                         expect(err).to.be.not.OK;

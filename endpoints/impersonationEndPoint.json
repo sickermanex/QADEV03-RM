@@ -1,0 +1,5 @@
+{
+  "_comments":"Endpoints for impersonation",
+  "impersonationById":"http://<server>:<port>/services/<id>",
+  "impersonationSettings":"http://<server>:<port>/settings"
+}
