@@ -1,5 +1,11 @@
 {
-    "setImpersonationToFalse" : {
+  "userAdministratorPC102": {
+    "username": "rmdom2012\\Administrator",
+    "password": "Pilot571david",
+    "authentication": "ldap"
+  },
+
+  "setImpersonationToFalse" : {
       "credential": {
       "_id": "55ce0bd1e213fa480a4805d9",
       "username": "Administrator",
@@ -35,18 +41,31 @@
       "authentication":"credentials"
     },
 
-    "createMeetingEvent" : {
+  "createEventMeetingWithImpersonation" : {
+    "organizer": "Administrator",
+    "title": "Test10876",
+    "start": "2015-08-24T00:00:00.000Z",
+    "end": "2015-08-24T00:05:00.000Z",
+    "location": "room 571",
+    "roomEmail": "room571@rmdom2012.lab",
+    "resources": [
+      "room571@rmdom2012.lab"
+    ],
+    "attendees": []
+  },
+
+    "createEventMeetingWithoutImpersonation" : {
       "organizer": "Administrator",
-      "title": "Test01",
-      "start": "2015-08-18T20:09:00.000Z",
-      "end": "2015-08-18T21:39:00.000Z",
+      "title": "Test500",
+      "start": "2015-08-24T03:13:00.000Z",
+      "end": "2015-08-24T03:43:00.000Z",
       "location": "room 571",
       "roomEmail": "room571@rmdom2012.lab",
       "resources": [
         "room571@rmdom2012.lab"
       ],
       "attendees": [
-        "vanessa.vargas@rmdom2012.lab"
+        "pedro.fuentes@rmdom2012.lab"
       ]
     }
 }
