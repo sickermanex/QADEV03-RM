@@ -1,16 +1,37 @@
-//Resources Smoke Test
+/**
+ * Resources Smoke Test
+ *
+ */
 
 var expect = require('chai').expect;
 var resources = require('..\\..\\lib\\resourcesLib');
-var auth = require('..\\..\\config\\resourcesConfig.json');
+var auth = {
+	"username": "rmdom2008\\room.manager",
+	"password": "M@nager",
+	"authentication": "ldap"
+};
 
 describe('Smoke Test - Resources', function(){
 
 	var token;
-	
-	/*Test Case
-	Title: GET resources API is present in the application
-	*/
+
+	/**
+	 * Get a token
+	 *
+	 */
+	before(function(done){
+		resources
+			.getToken(auth)
+			.end(function(err, resp){
+				token = resp.body.token;
+				done();
+			});
+	});
+
+	/**
+	 * Test Case
+	 * Title: GET resources API is present in the application
+	 */
 	it('Get All Resources', function(done){
 		resources
 			.getResources()
@@ -22,9 +43,10 @@ describe('Smoke Test - Resources', function(){
 			});		
 	});
 	
-	/*Test Case
-	Title: GET resource API is present in the application
-	*/
+	/**
+	 *Test Case
+	 *Title: GET resource API is present in the application
+	 */
 	it('Get a Resource', function(done){
 
 		resources
@@ -37,9 +59,10 @@ describe('Smoke Test - Resources', function(){
 			});		
 	});
 	
-	/*Test Case
-	Title: PUT resource API is present in the application
-	*/
+	/**
+	 * Test Case
+	 * Title: PUT resource API is present in the application
+	 */
 	it('Update a Resource', function(done){
 		var resource ={"customName": "giftEdit",
 						"description": "",
@@ -58,10 +81,11 @@ describe('Smoke Test - Resources', function(){
 			});		
 	});
 	
-	/*Test Case
-	Title: POST resource API is present in the application
-	*/
-	it('Create a Resource', function(done){		
+	/**
+	 * Test Case
+	 * Title: POST resource API is present in the application
+	 */
+	it.only('Create a Resource', function(done){
 		var resource ={"customName": "GitHub",
 						"description": "",
 						"fontIcon": "fa fa-github-alt",
@@ -69,37 +93,31 @@ describe('Smoke Test - Resources', function(){
 						"name": "GitHub"
 					};
 		var resourceId;
-		
-		/*Pre Condition*/
+
+		//Test Case
 		resources
-			.getToken(auth)
-			.end(function(err, resp){	
-				token = resp.body.token;
-				
-				/*Test Case*/
+			.createResource(resource, token)
+			.end(function(err, res){
+				resourceId = res.body._id;
+				var status = res.status;
+
+				expect(status).to.equal(200);
+
+				//Post Condition
 				resources
-					.createResource(resource, token)
-					.end(function(err, res){
-						resourceId = res.body._id;
-						var status = res.status;
-					
-						expect(status).to.equal(200);
-						
-						/*Post Condition*/
-						resources
-							.deleteResource(resourceId, token)
-							.end(function(err1, res1){
-								var status1 = res1.status;
-								expect(status1).to.equal(200);
-								done();
-							});	
-					});	
+					.deleteResource(resourceId, token)
+					.end(function(err1, res1){
+						var status1 = res1.status;
+						expect(status1).to.equal(200);
+						done();
+					});
 			});
 	});
 	
-	/*Test CAse
-	Title: DELETE resource API is present in the application
-	*/
+	/**
+	 * Test Case
+	 * Title: DELETE resource API is present in the application
+	 */
 	it('Delete a Resource', function(done){
 		resources
 			.deleteResource('132465', token)

@@ -1,0 +1,6 @@
+{
+  "_comments":"Endpoints for resources",
+  "resources":"http://<server>:<port>/resources",
+  "resourcesById":"http://<server>:<port>/resources/<resourceId>",
+  "login":"http://<server>:<port>/login"
+}
