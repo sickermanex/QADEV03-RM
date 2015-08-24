@@ -1,0 +1,13 @@
+{
+  "server":"172.20.208.79",
+  "domain":"domain",
+  "port":4040,
+
+  "roomManagerAccount":"rmdom2008\\room.manager",
+  "roomManagerPassword":"M@nager",
+  "authentication": "ldap",
+
+  "exchangeAccount":"administrator",
+  "exchangeAccountPassword":"control"
+}
+
