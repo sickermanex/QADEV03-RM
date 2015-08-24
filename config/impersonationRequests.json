@@ -1,0 +1,32 @@
+{
+  "credential": {
+    "_id": "55d7580910832ed0071fe6c9",
+    "username": "Administrator",
+    "expirationDate": "2015-09-18T18:43:16.5632172Z"
+  },
+  "type": "exchange",
+  "name": "Microsoft Exchange Server 2010 SP3",
+  "version": "14.3.123",
+  "serviceUrl": "https://qad03lpedfu002.rmdom2012.lab/EWS/Exchange.asmx",
+  "__v": 0,
+  "impersonate": false,
+  "alternativeServiceUrls": [],
+  "id": "55d7580910832ed0071fe6ca"
+}
+
+{
+  "credential": {
+  "_id": "55d7580910832ed0071fe6c9",
+  "username": "Administrator",
+  "expirationDate": "2015-09-18T18:43:16.5632172Z"
+  },
+  "type": "exchange",
+  "name": "Microsoft Exchange Server 2010 SP3",
+  "version": "14.3.123",
+  "serviceUrl": "https://qad03lpedfu002.rmdom2012.lab/EWS/Exchange.asmx",
+  "__v": 0,
+  "impersonate": true,
+  "alternativeServiceUrls": [],
+  "id": "55d7580910832ed0071fe6ca"
+}
+
