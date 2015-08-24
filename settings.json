@@ -1,0 +1,11 @@
+{
+  "server":"172.20.xx.xx",
+  "domain":"domain",
+  "port":4040,
+
+  "roomManagerAccount":"admin",
+  "roomManagerPassword":"control",
+
+  "exchangeAccount":"administrator",
+  "exchangeAccountPassword":"control"
+}
