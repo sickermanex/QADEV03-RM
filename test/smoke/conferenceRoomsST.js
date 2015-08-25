@@ -68,7 +68,7 @@ describe('Smoke Test - Conference Rooms', function(){
 
 					};
 		rooms
-			.updateRoom('123456', rooms, token)
+			.updateRoom('123456', room, token)
 			.end(function(err, res){
 				var status = res.status;
 			
@@ -79,7 +79,7 @@ describe('Smoke Test - Conference Rooms', function(){
 	
 	/**
 	 * Test Case
-	 * Title: The PUT  rooms  shortcut API is present in the application when associates the room with an existent resource
+	 * Title: Associate Resource shortcut API to a Room is present in the application
 	 */
 	it('Associate a Resource', function(done){
 		var resource ={
