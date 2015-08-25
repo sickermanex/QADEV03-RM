@@ -1,5 +1,0 @@
-{
-  "endpoint":"http://172.20.208.142:4040/[point1]",
-  "endpointById":"http://172.20.208.142:4040/[point1]/[id]/[point2]",
-  "endpointByIds":"http://172.20.208.142:4040/[point1]/[id]/[point2]/[id2]"
-}
