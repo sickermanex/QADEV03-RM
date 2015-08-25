@@ -5,27 +5,24 @@
 
 var expect = require('chai').expect;
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
-var auth = {
-	"username": "roompro\\room",
-	"password": "Control123!",
-	"authentication": "ldap"
-};
+var tokenLib = require('../../lib/tokenLib');
+var settings = require('../../settings.json');
 
 describe('Smoke Test - Conference Rooms', function(){
-	this.timeout(5000);
+	this.timeout(settings.setDelayTime);
+	this.slow(settings.setErrorMaxTime);
 
-	var token;
 
 	/**
 	 * Get a token
 	 *
 	 */
-	before(function(done){
-		rooms
-			.getToken(auth)
-			.end(function(err, resp){
-				token = resp.body.token;
-				done();
+	var token;
+
+	before('Setting the token', function(done){
+		tokenLib
+			.getToken(done, function(){
+				token = arguments[0];
 			});
 	});
 
