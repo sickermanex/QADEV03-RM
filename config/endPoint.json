@@ -1,6 +1,0 @@
-{
-  "room":"http://172.20.208.[ipId]:4040/rooms",
-  "services":"http://172.20.208.[ipId]:4040/services",
-  "login":"http://172.20.208.[ipId]:4040/login",
-  "roommeetings":"http://172.20.208.[ipId]:4040/ervices/[servicesId]/rooms/[roomId]/meetings"
-}

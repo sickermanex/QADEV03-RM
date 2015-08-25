@@ -1,0 +1,13 @@
+{
+  "server":"172.20.208.142",
+  "domain":"roompro",
+  "port":4040,
+
+  "roomManagerAccount":"room",
+  "roomManagerPassword":"Control123!",
+
+  "exchangeAccount":"room",
+  "exchangeAccountPassword":"Control123!"
+
+}
+
