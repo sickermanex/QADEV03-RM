@@ -68,7 +68,7 @@ describe('Smoke Test - Conference Rooms', function(){
 
 					};
 		rooms
-			.updateRoom('123456', rooms, token)
+			.updateRoom('123456', room, token)
 			.end(function(err, res){
 				var status = res.status;
 			
