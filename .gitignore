@@ -28,3 +28,12 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 node_modules/
+.idea/.name
+.idea/dictionaries/Pedrofuentes.xml
+.idea/jsLibraryMappings.xml
+.idea/libraries/node_modules.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/QADEV03-RM.iml
+.idea/vcs.xml
+.idea/workspace.xml
