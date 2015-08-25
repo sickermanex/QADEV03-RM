@@ -5,25 +5,30 @@
 
 var expect = require('chai').expect;
 var resources = require('..\\..\\lib\\resourcesLib');
-var auth = {
-	"username": "rmdom2008\\room.manager",
-	"password": "M@nager",
+var requests = require('..\\..\\requestJSONs\\resourcesRequests');
+var tokenLib = require('..\\..\\lib\\tokenLib');
+var logger = require('..\\..\\utils\\logger');
+
+var login = {
+	"username": settings.domain + "\\" + settings.roomManagerAccount,
+	"password": settings.roomManagerPassword,
 	"authentication": "ldap"
 };
 
 describe('Smoke Test - Resources', function(){
+	this.timeout(5000);
 
 	var token;
 
 	/**
 	 * Get a token
-	 *
 	 */
 	before(function(done){
-		resources
-			.getToken(auth)
-			.end(function(err, resp){
-				token = resp.body.token;
+		tokenLib
+			.getToken(login)
+			.end(function (err, resp) {
+				//logger.info('Token obtained');
+				token = 'jwt ' + resp.body.token;
 				done();
 			});
 	});
@@ -37,7 +42,6 @@ describe('Smoke Test - Resources', function(){
 			.getResources()
 			.end(function(err, res){
 				var status = res.status;
-			
 				expect(status).to.equal(200);
 				done();
 			});		
@@ -50,11 +54,11 @@ describe('Smoke Test - Resources', function(){
 	it('Get a Resource', function(done){
 
 		resources
-			.getResource('123456')
+			.getResource(requests.resourceId._id)
 			.end(function(err, res){
 				var status = res.status;
 			
-				expect(status).to.equal(404);
+				expect([404, 200]).to.include(status);
 				done();
 			});		
 	});
@@ -64,15 +68,8 @@ describe('Smoke Test - Resources', function(){
 	 * Title: PUT resource API is present in the application
 	 */
 	it('Update a Resource', function(done){
-		var resource ={"customName": "giftEdit",
-						"description": "",
-						"fontIcon": "fa fa-gift",
-						"from": "",
-						"name": "giftEdit"
-					};
-		
 		resources
-			.updateResource('123456', resource, token)
+			.updateResource(requests.resourceId._id, requests.resourceUpdate, token)
 			.end(function(err, res){
 				var status = res.status;
 			
@@ -85,21 +82,18 @@ describe('Smoke Test - Resources', function(){
 	 * Test Case
 	 * Title: POST resource API is present in the application
 	 */
-	it.only('Create a Resource', function(done){
-		var resource ={"customName": "GitHub",
-						"description": "",
-						"fontIcon": "fa fa-github-alt",
-						"from": "",
-						"name": "GitHub"
-					};
+	it('Create a Resource', function(done){
 		var resourceId;
+		//console.log(requests.resourceCreate.body);
 
 		//Test Case
 		resources
-			.createResource(resource, token)
+			.createResource(requests.resourceCreate.body, token)
 			.end(function(err, res){
 				resourceId = res.body._id;
 				var status = res.status;
+				//console.log('s1 ' + status);
+				//console.log(err);
 
 				expect(status).to.equal(200);
 
@@ -108,6 +102,7 @@ describe('Smoke Test - Resources', function(){
 					.deleteResource(resourceId, token)
 					.end(function(err1, res1){
 						var status1 = res1.status;
+						//console.log('s2 ' + status1);
 						expect(status1).to.equal(200);
 						done();
 					});
@@ -120,7 +115,7 @@ describe('Smoke Test - Resources', function(){
 	 */
 	it('Delete a Resource', function(done){
 		resources
-			.deleteResource('132465', token)
+			.deleteResource(requests.resourceId._id, token)
 			.end(function(err1, res1){
 			
 			expect(res1.status).to.equal(404);
