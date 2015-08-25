@@ -1,11 +1,21 @@
 {
-  "server":"172.20.xx.xx",
-  "domain":"domain",
+  "server":"172.20.208.102",
+  "domain":"rmdom2012",
   "port":4040,
 
-  "roomManagerAccount":"admin",
-  "roomManagerPassword":"control",
+  "roomManagerAccount":"Administrator",
+  "roomManagerPassword":"Pilot571david",
+
+  "commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
+  "id":"55d7580910832ed0071fe6ca",
 
   "exchangeAccount":"administrator",
-  "exchangeAccountPassword":"control"
+  "exchangeAccountPassword":"control",
+
+  "login":"login",
+  "authenticationLDAP": "ldap",
+
+  "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
+  "setDelayTime":5000,
+  "setErrorMaxTime":4000
 }
