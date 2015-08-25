@@ -1,0 +1,28 @@
+{
+	"proxy":"http://172.20.240.5:8080",
+	"authLDAP":{
+		"username":"[user]",
+		"password":"[pass]",
+		"authentication":"ldap"
+	},
+	"authBasic":{
+		"user":"[user64]",
+		"pass":"[pass64]"
+	},
+	"newMeeting":{
+		"organizer": "[user]",
+		"title": "[title]",
+		"start": "[sdate]T[stime].000Z",
+		"end": "[edate]T[etime].000Z",
+		"location": "[roomName]",
+		"roomEmail": "[roomMail]",
+		"resources": [],
+		"attendees": ["user@atxrm.com"]
+	},
+	"updateMeeting":{
+		"title": "[title]",
+		"start": "[sdate]T[stime].000Z",
+		"end": "[edate]T[etime].000Z",
+		"attendees": ["user@atxrm.com","user2@atxrm.com","user3@atxrm.com"]
+	}
+}

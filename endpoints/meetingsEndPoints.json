@@ -1,0 +1,7 @@
+{
+	"roomMeetings":"http:\/\/[ipNport]\/services\/[serviceID]\/rooms\/[roomID]",	"specificMeeting":"http:\/\/[ipNport]\/services\/[serviceID]\/rooms\/[roomID]\/meetings\/[meetingID]",
+	"allMeetings":"http:\/\/[ipNport]\/services\/[serviceID]\/rooms\/[roomID]\/meetings",
+	"getRooms":"http:\/\/[ipNport]\/rooms",
+	"getServices":"http:\/\/[ipNport]\/services",
+	"getToken":"http:\/\/[ipNport]\/login"
+}
