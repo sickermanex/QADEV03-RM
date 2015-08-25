@@ -1,0 +1,10 @@
+{
+  "all":"ALL",
+  "trace":"TRACE",
+  "debug":"DEBUG",
+  "info":"INFO",
+  "warn":"WARN",
+  "error":"ERROR",
+  "fatal":"FATAL",
+  "off":"OFF"
+}
