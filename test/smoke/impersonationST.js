@@ -8,12 +8,15 @@ var request = require('superagent');
 var expect = require('chai').expect;
 var impersonationLib = require('../../lib/impersonationLib');
 var tokenLib = require('../../lib/tokenLib');
-var settings = require('../../settings.json');
 var impersonationRequest = require('../../requestJSONs/impersonationRequest.json');
+var settings = require('../../settings.json');
 
+/*
+This test suit is used for smoke tests on the Room Manager Impersonation feature.
+ */
 describe('Room Manager Impersonation Smoke Tests:', function(){
-    this.timeout(5000);
-    this.slow(4000);
+    this.timeout(settings.setDelayTime);
+    this.slow(settings.setErrorMaxTime);
 
     var token = '';
 
@@ -21,18 +24,10 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
     The before method creates a token that is stored in the "token" global variable, and it's used
     for the whole group of test cases in this test suit.
      */
-    before(function(done){
-        var login = {
-            "username": settings.domain + "\\" + settings.roomManagerAccount,
-            "password": settings.roomManagerPassword,
-            "authentication": "ldap"
-        };
-
+    before('Setting the token', function(done){
         tokenLib
-            .getToken(login)
-            .end(function(err, res){
-                token = 'jwt ' + res.body.token;
-                done();
+            .getToken(done, function(){
+                token = arguments[0];
             });
     });
 
@@ -63,10 +58,8 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         });
 
         /*
-         This test case is to verify the update information setting for the impersonation option
-         available on Room Manager.
-
-         The impersonation check has been verified for this test case.
+         This test case is to verify the status code is different than 5xx when the “Use Impersonation”
+         is checked (API presence).
          */
         it('User Impersonation is checked', function(done){
             var impersonationState = impersonationRequest.impersonationChecked;
@@ -97,10 +90,8 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
     });
 
     /*
-     This test case is to verify the update information setting for the impersonation option
-     available on Room Manager.
-
-     The impersonation uncheck has been verified for this test case.
+     This test case is to verify the status code is different than 5xx when the “Use Impersonation”
+     is unchecked (API presence).
      */
     it('User Impersonation is unchecked', function(done){
         var impersonationState = impersonationRequest.impersonationUnChecked;

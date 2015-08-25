@@ -6,6 +6,16 @@
   "roomManagerAccount":"Administrator",
   "roomManagerPassword":"Pilot571david",
 
+  "commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
+  "id":"55d7580910832ed0071fe6ca",
+
   "exchangeAccount":"administrator",
-  "exchangeAccountPassword":"control"
+  "exchangeAccountPassword":"control",
+
+  "login":"login",
+  "authenticationLDAP": "ldap",
+
+  "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
+  "setDelayTime":5000,
+  "setErrorMaxTime":4000
 }
