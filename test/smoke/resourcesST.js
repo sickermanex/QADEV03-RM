@@ -7,16 +7,11 @@ var expect = require('chai').expect;
 var resources = require('..\\..\\lib\\resourcesLib');
 var requests = require('..\\..\\requestJSONs\\resourcesRequests');
 var tokenLib = require('..\\..\\lib\\tokenLib');
+var settings = require('..\\..\\settings.json');
 var logger = require('..\\..\\utils\\logger');
 
-var login = {
-	"username": settings.domain + "\\" + settings.roomManagerAccount,
-	"password": settings.roomManagerPassword,
-	"authentication": "ldap"
-};
-
 describe('Smoke Test - Resources', function(){
-	this.timeout(5000);
+	this.timeout(settings.setDelayTime);
 
 	var token;
 
@@ -25,12 +20,9 @@ describe('Smoke Test - Resources', function(){
 	 */
 	before(function(done){
 		tokenLib
-			.getToken(login)
-			.end(function (err, resp) {
-				//logger.info('Token obtained');
-				token = 'jwt ' + resp.body.token;
-				done();
-			});
+			.getToken(done, function(){
+				token = arguments[0];
+		});
 	});
 
 	/**
