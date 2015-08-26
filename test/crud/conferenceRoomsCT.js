@@ -95,6 +95,30 @@ describe('CRUD Test - Conference Rooms', function(){
             });
     });
 
+    /**
+     * Test Case
+     * Title: POST rooms shortcut API returns the information from associate Resource to a Room
+     */
+    it('Associate a Resource', function(done){
+        var resource ={
+            "resourceId": "54f79121b5f7d44",
+            "quantity": 5
+
+        };
+        rooms
+            .associateRoom('12232',resource, token)
+            .end(function(err, res){
+
+                var status = res.status;
+
+                expect(status).to.equal(404);
+                done();
+
+            });
+    });
+
+
+
 
 
     /**
