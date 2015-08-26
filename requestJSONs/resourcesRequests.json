@@ -10,8 +10,8 @@
   "resourceUpdate":{
   "_comments": "body to update a resource",
   "body":{
-      "name": "GitHub",
-      "customName": "GitHub",
+      "name": "GitHubUpdate",
+      "customName": "GitHubUpdate",
       "fontIcon": "fa fa-github-alt",
       "from": "",
       "description": ""

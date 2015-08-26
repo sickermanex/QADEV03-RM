@@ -46,10 +46,10 @@ describe('Acceptance Test Cases', function(){
                 resources
                     .getResource(resourceId)
                     .end(function(err1, res1){
-                        var status = res.status;
-                        var actualResult = res1.body;
+                        var status1 = res1.status;
+                        actualResult = res1.body;
 
-                        expect(status).to.equal(200);
+                        expect(status1).to.equal(200);
                         expect(actualResult._id).to.equal(expectedResult._id);
                         expect(actualResult.name).to.equal(expectedResult.name);
                         expect(actualResult.customName).to.equal(expectedResult.customName);
@@ -61,13 +61,76 @@ describe('Acceptance Test Cases', function(){
                         resources
                             .deleteResource(resourceId, token)
                             .end(function(err2, res2){
-                                var status1 = res2.status;
-                                expect(status1).to.equal(200);
+                                var status2 = res2.status;
+                                expect(status2).to.equal(200);
                                 done();
                             });
                     });
             });
     });
 
+
+    /**
+     *Test Case
+     * Title: PUT resource api updates the information of an specific resource
+     */
+    it.only('Update Resource', function(done){
+        var actualResult;
+        var expectedResult;
+        var resourceList;
+        var resourceSelected;
+
+        function randomResource (list){
+            var size = list.length;
+            return Math.floor(Math.random() *(size));
+
+
+        };
+
+        //Get a random resource
+        resources
+            .getResources()
+            .end(function (err, res) {
+                resourceList = res.body;
+                var index = randomResource(resourceList);
+                resourceSelected = resourceList[index];
+
+                //Update the resource selected
+                resources
+                    .updateResource(resourceSelected._id, requests.resourceUpdate.body, token)
+                    .end(function(err1, res1){
+                        var status = res1.status;
+                        expectedResult = res1.body;
+
+                        expect(status).to.equal(200);
+
+                        //Get the resource selected
+                        resources
+                            .getResource(resourceSelected._id)
+                            .end(function(err2, res2){
+                                var status1 = res2.status;
+                                actualResult = res2.body;
+
+                                expect(status1).to.equal(200);
+                                expect(actualResult._id).to.equal(expectedResult._id);
+                                expect(actualResult.name).to.equal(expectedResult.name);
+                                expect(actualResult.customName).to.equal(expectedResult.customName);
+                                expect(actualResult.fontIcon).to.equal(expectedResult.fontIcon);
+                                expect(actualResult.from).to.equal(expectedResult.from);
+                                expect(actualResult.description).to.equal(expectedResult.description);
+
+                                //Post Condition
+                                resources
+                                    .updateResource(resourceSelected._id, resourceSelected, token)
+                                    .end(function(err3, res3){
+                                        var status2 = res3.status;
+
+                                        expect(status).to.equal(200);
+                                        done();
+                                    });
+                            });
+                    });
+            });
+    });
 
 });
