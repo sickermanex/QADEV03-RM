@@ -1,5 +1,5 @@
 {
-  "_comments":"Endpoints for conferenceRooms",
+  "_comments":"Endpoints for conferenceRooms - Rebeca Vargas Garcia",
   "rooms":"http://[server]:[port]/rooms",
   "roomsById":"http://[server]:[port]/rooms/[roomId]",
   "login":"http://[server]:[port]/login",

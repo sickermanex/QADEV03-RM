@@ -1,6 +1,6 @@
 /**
  * Conference Rooms Smoke Test
- *
+ * Owner: Rebeca Vargas Garcia
  */
 var expect = require('chai').expect;
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
