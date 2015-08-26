@@ -2,16 +2,14 @@
  * Conference Rooms Smoke Test
  *
  */
-
 var expect = require('chai').expect;
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
-var tokenLib = require('../../lib/tokenLib');
-var settings = require('../../settings.json');
+var tokenLib = require('..\\..\\lib\\tokenLib');
+var settings = require('..\\..\\settings.json');
 
 describe('Smoke Test - Conference Rooms', function(){
 	this.timeout(settings.setDelayTime);
 	this.slow(settings.setErrorMaxTime);
-
 
 	/**
 	 * Get a token
@@ -88,7 +86,7 @@ describe('Smoke Test - Conference Rooms', function(){
 
 					};
 		rooms
-			.associateRoom('12232',rooms, token)
+			.associateRoom('12232',resource, token)
 			.end(function(err, res){
 
 				var status = res.status;
@@ -129,6 +127,93 @@ describe('Smoke Test - Conference Rooms', function(){
 			});
 	});
 
+	/**
+	 * Test Case
+	 * Title: The PUT rooms shortcut  API is present in the application
+	 * when update a specific room of specific service
+	 */
+	it('Update a room of specific service', function(done){
+		var room ={
+			"enabled": false,
+			"customDisplayName": "A better name"
+		};
+		rooms
+			.updateRoomService('12344','56677',room, token)
+			.end(function(err, res){
+				var status = res.status;
+
+				expect(status).to.equal(404);
+				done();
+			});
+	});
 
 
+	/**
+	 * Test Case
+	 * Title: The GET rooms shortcut  API is present in the application
+	 * when gets all the specified room’s resources
+	 */
+	it('Get all resources of specific room', function(done){
+		rooms
+			.getResourcesRoom('12344')
+			.end(function(err, res){
+				var status = res.status;
+
+				expect(status).to.equal(404);
+				done();
+			});
+	});
+
+	/**
+	 * Test Case
+	 * Title: The GET rooms shortcut  API is present in the application
+	 * when gets a specific resource from a specific room
+	 */
+	it('Get specific resource from a specific room', function(done){
+		rooms
+			.getResourceRoom('12344', '26349')
+			.end(function(err, res){
+				var status = res.status;
+
+				expect(status).to.equal(404);
+				done();
+			});
+	});
+
+	/**
+	 * Test Case
+	 * Title: Update a specific resource from specific room shortcut API  is present in the application
+	 */
+	it('Update a specific resource from specific room', function(done){
+		var resource ={
+			"quantity": 5
+		};
+		rooms
+			.updateResourceRoom('12232','24345', resource, token)
+			.end(function(err, res){
+
+				var status = res.status;
+
+				expect(status).to.equal(404);
+				done();
+
+			});
+	});
+
+	/**
+	 * Test Case
+	 * Title: Delete a especific resource from specific room shortcut API  is present in the application
+	 */
+	it('Delete a specific resource from specific room', function(done){
+		rooms
+			.updateResourceRoom('12232','24345', token)
+			.end(function(err, res){
+
+				var status = res.status;
+
+				expect(status).to.equal(404);
+				done();
+
+			});
+	});
 });

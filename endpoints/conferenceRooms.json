@@ -5,6 +5,6 @@
   "login":"http://[server]:[port]/login",
   "resourcesbyRoom":"http://[server]:[port]/rooms/[roomId]/resources",
   "roomsByService":"http://[server]:[port]/services/[serviceId]/rooms",
-  "roomByService":"http://[server]:[port]/services/[serviceId]/rooms/[roomId]"
-
+  "roomByService":"http://[server]:[port]/services/[serviceId]/rooms/[roomId]",
+  "resourceByRoom":"http://[server]:[port]/rooms/[roomId]/resources/[roomResourceId]"
 }
