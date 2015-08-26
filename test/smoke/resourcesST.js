@@ -61,7 +61,7 @@ describe('Smoke Test - Resources', function(){
 	 */
 	it('Update a Resource', function(done){
 		resources
-			.updateResource(requests.resourceId._id, requests.resourceUpdate, token)
+			.updateResource(requests.resourceId._id, requests.resourceUpdate.body, token)
 			.end(function(err, res){
 				var status = res.status;
 			
