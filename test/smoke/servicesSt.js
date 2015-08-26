@@ -1,5 +1,6 @@
 /**
  * services smoke test
+ * author: Luis Cachi
  * */
 var expect = require('chai').expect;
 var servicesLib = require('..\\..\\lib\\servicesLib');
@@ -27,7 +28,7 @@ var serviceType = settings.typeservice;
 
 
 
-describe('Room Manager Smoke Test:', function() {
+describe('Room Manager Services Smoke Tests:', function() {
     this.timeout(settings.setDelayTime);
     this.slow(settings.setErrorMaxTime);
     /**
@@ -40,12 +41,14 @@ describe('Room Manager Smoke Test:', function() {
                 token = arguments[0];
             });
     });
-    describe( 'smoke test room manager ' , function () {
+    describe('Testing get , post and delete about services API ' , function () {
         /**
          * get the service Id
          * if there is not addes any services
          * this before add a services
          * */
+
+
          before(function (done) {
             servicesLib
                 .getServices(token)
@@ -70,7 +73,7 @@ describe('Room Manager Smoke Test:', function() {
          * end point : '/services'
          */
 
-        it('verify that the API services exist', function(done){
+        it('Verify that the API services exist', function(done){
             servicesLib
                 .getServices(token)
                 .end(function(err, res){
@@ -85,7 +88,7 @@ describe('Room Manager Smoke Test:', function() {
          * end point : '/services/{:serviceId}'
          * */
 
-        it('verify that the API services by Id exist', function(done){
+        it('Verify that the API services by Id exist', function(done){
             servicesLib
                 .getServicesById(token , serviceId)
                 .end(function(err , res){
@@ -100,7 +103,7 @@ describe('Room Manager Smoke Test:', function() {
          * end point : '/service-types'
          * */
 
-        it('verify that the API service-Type exist', function(done){
+        it('Verify that the API service-Type exist', function(done){
             servicesLib
                 .getserviceType()
                 .end(function(err, res){
@@ -115,7 +118,7 @@ describe('Room Manager Smoke Test:', function() {
          * end point : '/services?type={service type} '
          * */
 
-        it('verify that the API get servicesbytype exist', function(done){
+        it('Verify that the API get services by type exist', function(done){
             servicesLib
                 .getservicebyType(serviceType,token)
                 .end(function(err, res){
@@ -131,7 +134,7 @@ describe('Room Manager Smoke Test:', function() {
          * end point : '/services/{:serviceId}'
          */
 
-         it('verify that the API to be delete exist', function(done){
+         it('Verify that the API to be delete exist', function(done){
              servicesLib
                  .deleteservice(token,serviceId)
                  .end(function(err, res){
@@ -145,7 +148,7 @@ describe('Room Manager Smoke Test:', function() {
          *this test cases add a new services
          * end point : '/services?type={service type} '
          */
-         it('verify that the API to be post exist', function(done){
+         it('Verify that the API to be post exist', function(done){
              servicesLib
                  .postservices(token,serviceType,loginExchange)
                  .end(function(err, res){
