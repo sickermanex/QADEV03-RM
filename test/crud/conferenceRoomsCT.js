@@ -66,9 +66,9 @@ describe('CRUD Test - Conference Rooms', function(){
 
     /**
      * Test Case
-     * Title: PUT room shortcut API update the information from a specific room
+     * Title: PUT room shortcut API  returns the information from a specific room
      */
-    it.only('Update a Room', function(done){
+    it('Update a Room', function(done){
         var roomId;
         var room ={
             "enabled": false,
@@ -77,18 +77,72 @@ describe('CRUD Test - Conference Rooms', function(){
 
         rooms
             .getRooms()
-            .end(function(err2, res2){
-                roomId = res2.body[0]._id;
+            .end(function(err, res){
+                roomId = res.body[0]._id;
+
+
+                rooms
+                    .updateRoom(roomId, room, token)
+                    .end(function(err, res){
+                        var status = res.status;
+                        var displayname = res.body.customDisplayName;
+                        var nameChanged = room.customDisplayName;
+                        expect(status).to.equal(200);
+                        expect(nameChanged).to.equal(displayname);
+                        done();
+                    });
+
+            });
+    });
+
+
+
+    /**
+     * Test Case
+     * Title: GET rooms shortcut  API returns the information when get rooms of specific service
+     */
+    it('Get all rooms of specific service', function(done){
+        var serviceId;
         rooms
-            .updateRoom(roomId, room, token)
+            .getRooms()
+            .end(function(err, res) {
+                serviceId = res.body[0].serviceId;
+                rooms
+                    .getRoomsService(serviceId)
+                    .end(function (err, res) {
+                        var status = res.status;
+                        expect(status).to.equal(200);
+
+                        done();
+                    });
+            });
+    });
+
+    /**
+     * Test Case
+     * Title: GET rooms shortcut  API is present in the application when get a specific room of specific service
+     */
+    it('Get a room of specific service', function(done){
+        var roomId;
+        var serviceId;
+
+        rooms
+            .getRooms()
+            .end(function(err, res) {
+                serviceId = res.body[0].serviceId;
+                roomId = res.body[0]._id;
+                rooms
+            .getRoomService(serviceId,roomId)
             .end(function(err, res){
                 var status = res.status;
-                expect(status).to.equal(401);
+
+                expect(status).to.equal(200);
                 done();
             });
 
             });
     });
+
 
 
 });
