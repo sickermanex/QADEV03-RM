@@ -1,11 +1,22 @@
+
 {
-  "server":"172.20.xx.xx",
-  "domain":"domain",
-  "port":4040,
+"server":"172.20.208.142",
+"domain":"roompro",
+"port":4040,
 
-  "roomManagerAccount":"admin",
-  "roomManagerPassword":"control",
+"roomManagerAccount":"room",
+"roomManagerPassword":"Control123!",
 
-  "exchangeAccount":"administrator",
-  "exchangeAccountPassword":"control"
+"_commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
+
+
+"exchangeAccount":"room",
+"exchangeAccountPassword":"Control123!",
+
+"login":"login",
+"authenticationLDAP": "ldap",
+
+"commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
+"setDelayTime":5000,
+"setErrorMaxTime":4000
 }

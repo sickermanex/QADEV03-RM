@@ -1,0 +1,7 @@
+{
+  "postexchange":{
+    "username":"[exchangeAccount]",
+    "password": "[exchangePw]",
+    "hostname":"[domain].lab"
+  }
+}
