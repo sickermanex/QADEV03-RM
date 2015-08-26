@@ -34,6 +34,7 @@ describe('Acceptance Test Cases', function(){
         var actualResult;
         var expectedResult;
 
+        //Test Case: Create a resource
         resources
             .createResource(requests.resourceCreate.body, token)
             .end(function(err, res){
@@ -43,6 +44,7 @@ describe('Acceptance Test Cases', function(){
 
                 expect(status).to.equal(200);
 
+                //Get the resource created
                 resources
                     .getResource(resourceId)
                     .end(function(err1, res1){
@@ -74,7 +76,7 @@ describe('Acceptance Test Cases', function(){
      *Test Case
      * Title: PUT resource api updates the information of an specific resource
      */
-    it.only('Update Resource', function(done){
+    it('Update Resource', function(done){
         var actualResult;
         var expectedResult;
         var resourceList;
@@ -95,7 +97,7 @@ describe('Acceptance Test Cases', function(){
                 var index = randomResource(resourceList);
                 resourceSelected = resourceList[index];
 
-                //Update the resource selected
+                //Test Case: Update the resource selected
                 resources
                     .updateResource(resourceSelected._id, requests.resourceUpdate.body, token)
                     .end(function(err1, res1){
@@ -133,4 +135,47 @@ describe('Acceptance Test Cases', function(){
             });
     });
 
+    /**
+     *Test Case (using the DB)
+     * Title: GET resource api returns the information of an specific resource
+     */
+    it('Get a Resource using DB', function(done){
+        var actualResult;
+        var expectedResult;
+
+        resources
+            .getResource(requests.resourceId._id)
+            .end(function(err, resp){
+                actualResult = resp.body;
+
+                mongoClient.connect("mongodb://172.20.208.79:27017/roommanager", function(err, db) {
+                    if(!err) {
+                        console.log("We are connected");
+                        db.collection('resourcemodels', function(err, collection){
+                            collection.find({'_id': new ObjectId(requests.resourceId._id)}).toArray(function (err, result) {
+                                if (err) {
+                                    console.log(err);
+                                } else if (result.length) {
+                                    expectedResult = result[0];
+
+                                    expect(resp.status).to.equal(200);
+                                    expect(actualResult._id).to.equal(expectedResult._id.toString());
+                                    expect(actualResult.name).to.equal(expectedResult.name);
+                                    expect(actualResult.customName).to.equal(expectedResult.customName);
+                                    expect(actualResult.description).to.equal(expectedResult.description);
+                                    expect(actualResult.fontIcon).to.equal(expectedResult.fontIcon);
+                                    expect(actualResult.from).to.equal(expectedResult.from);
+
+                                    db.close();
+                                    done();
+                                } else {
+                                    console.log('No document(s) found with defined "find" criteria!');
+                                }
+                                db.close();
+                            });
+                        });
+                    }
+                });
+            });
+    });
 });
