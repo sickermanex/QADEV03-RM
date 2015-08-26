@@ -1,0 +1,7 @@
+{
+  "login":"http://[server]:[port]/login",
+  "room":"http://[server]:[port]/room",
+  "outoforders":"http://[server]:[port]/out-of-orders",
+  "outoforderById":"http://[server]:[port]/services/[serviceId]/rooms/[roomId]/out-of-orders",
+  "outoforderByIds":"http://[server]:[port]/services/[serviceId]/rooms/[roomId]/out-of-orders/[outoforderId]"
+}

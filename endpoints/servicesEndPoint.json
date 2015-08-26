@@ -1,0 +1,7 @@
+{
+  "_comments":"Endpoints for services",
+  "services":"http://[server]:[port]/services",
+  "servicesById":"http://[server]:[port]/services/[servicesId]",
+  "servicesType":"http://[server]:[port]/service-types",
+  "servicesbyType":"http://[server]:[port]/services?type=[serviceType]"
+}
