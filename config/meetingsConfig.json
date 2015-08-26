@@ -6,23 +6,23 @@
 		"authentication":"ldap"
 	},
 	"authBasic":{
-		"user":"[user64]",
-		"pass":"[pass64]"
+		"user":"elver",
+		"pass":"Control123"
 	},
 	"newMeeting":{
-		"organizer": "[user]",
-		"title": "[title]",
-		"start": "[sdate]T[stime].000Z",
-		"end": "[edate]T[etime].000Z",
-		"location": "[roomName]",
-		"roomEmail": "[roomMail]",
+		"organizer": "Administrator",
+		"title": "MyMeeting",
+		"start": "2015-08-26T22:00:00.000Z",
+		"end": "2015-08-26T22:30:00.000Z",
+		"location": "CF001",
+		"roomEmail": "ConferenceRoom001@atxrm.com",
 		"resources": [],
 		"attendees": ["user@atxrm.com"]
 	},
 	"updateMeeting":{
-		"title": "[title]",
-		"start": "[sdate]T[stime].000Z",
-		"end": "[edate]T[etime].000Z",
+		"title": "UpdatedMeeting",
+		"start": "2015-08-26T23:00:00.000Z",
+		"end": "2015-08-26T23:30:00.000Z",
 		"attendees": ["user@atxrm.com","user2@atxrm.com","user3@atxrm.com"]
 	}
 }
