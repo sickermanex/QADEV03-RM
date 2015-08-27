@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> a60b6d6671aab6674356e4277aefb3876c4f94fa
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
@@ -28,5 +31,18 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 node_modules/
+<<<<<<< HEAD
 .idea/
 *.dll
+=======
+.idea/.name
+.idea/dictionaries/Pedrofuentes.xml
+.idea/jsLibraryMappings.xml
+.idea/libraries/node_modules.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/QADEV03-RM.iml
+.idea/vcs.xml
+.idea/workspace.xml
+test/crud/testingServices.js
+>>>>>>> a60b6d6671aab6674356e4277aefb3876c4f94fa
