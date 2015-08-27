@@ -10,6 +10,7 @@ var impersonationLib = require('../../lib/impersonationLib');
 var tokenLib = require('../../lib/tokenLib');
 var impersonationRequest = require('../../requestJSONs/impersonationRequest.json');
 var settings = require('../../settings.json');
+var services = require('../../lib/servicesLib');
 
 /*
 This test suit is used for smoke tests on the Room Manager Impersonation feature.
@@ -19,6 +20,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
     this.slow(settings.setErrorMaxTime);
 
     var token = '';
+    var serviceId = '';
 
     /*
     The before method creates a token that is stored in the "token" global variable, and it's used
@@ -28,6 +30,16 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
+            });
+    });
+
+    before('Setting the Service ID', function(done){
+        services
+            .getServices(token)
+            .end(function(err, res){
+                serviceId = res.body[0]._id;
+                console.log('Maldito ServiceId', serviceId);
+                done();
             });
     });
 
@@ -41,7 +53,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
             var contentTypeInfo = impersonationRequest.ContentType;
 
             impersonationLib
-                .setImpersonation(impersonationState)
+                .setImpersonation(impersonationState, serviceId)
                 .set('Content-Type', contentTypeInfo)
                 .set('Authorization', token)
                 .end(function(err, res){
@@ -66,7 +78,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
             var contentTypeInfo = impersonationRequest.ContentType;
 
             impersonationLib
-                .setImpersonation(impersonationState)
+                .setImpersonation(impersonationState, serviceId)
                 .set('Content-Type', contentTypeInfo)
                 .set('Authorization', token)
                 .end(function(err, res){
@@ -98,7 +110,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         var contentTypeInfo = impersonationRequest.ContentType;
 
         impersonationLib
-            .setImpersonation(impersonationState)
+            .setImpersonation(impersonationState, serviceId)
             .set('Content-Type', contentTypeInfo)
             .set('Authorization', token)
             .end(function(err, res){

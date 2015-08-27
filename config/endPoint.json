@@ -1,4 +1,0 @@
-{
-    "endpointById":"http:\/\/[server]:[port]\/[ep]\/[id]",
-    "endpoint":"http:\/\/[server]:[port]\/[ep]"
-}

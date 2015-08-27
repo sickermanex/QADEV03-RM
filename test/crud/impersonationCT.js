@@ -20,6 +20,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
     this.slow(settings.setErrorMaxTime);
 
     var token = '';
+    var serviceId = '';
 
     /*
      The before method creates a token that is stored in the "token" global variable, and it's used
@@ -29,18 +30,24 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
-                console.log('Maldito token', token);
+            });
+    });
+
+    before('Setting the Service ID', function(done){
+        services
+            .getServices(token)
+            .end(function(err, res){
+                serviceId = res.body[0]._id;
+                done();
             });
     });
 
     describe('', function(){
-        console.log('Maldito token', token);
 
         /*
          This afterEach restores the initial non-impersonation state on Room Manager.
          */
-        afterEach(function(){
-            console.log('Maldito token', token);
+        afterEach(function(done){
             var impersonationState = impersonationRequest.impersonationUnChecked;
             var contentTypeInfo = impersonationRequest.ContentType;
 
@@ -69,17 +76,17 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
          this test case.
          */
         it('User Impersonation is checked', function(done){
-            console.log('Maldito token', token);
             var impersonationState = impersonationRequest.impersonationChecked;
             var contentTypeInfo = impersonationRequest.ContentType;
+            var impersonation;
+            var serviceInfo;
 
             impersonationLib
-                .setImpersonation(impersonationState)
+                .setImpersonation(impersonationState, serviceId)
                 .set('Content-Type', contentTypeInfo)
                 .set('Authorization', token)
                 .end(function(err, res){
-                    var impersonation = res.body;
-                    var serviceId = impersonation._id;
+                    impersonation = res.body;
 
                     services
                         .getServicesById(token, serviceId)
@@ -118,8 +125,6 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
                         });
                 });
         });
-
-
     });
 
     /*
@@ -130,17 +135,17 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
      this test case.
      */
     it('User Impersonation is unchecked', function(done){
-        console.log('Maldito token', token);
         var impersonationState = impersonationRequest.impersonationUnChecked;
         var contentTypeInfo = impersonationRequest.ContentType;
+        var impersonation;
+        var serviceInfo;
 
         impersonationLib
-            .setImpersonation(impersonationState)
+            .setImpersonation(impersonationState, serviceId)
             .set('Content-Type', contentTypeInfo)
             .set('Authorization', token)
             .end(function(err, res){
-                var impersonation = res.body;
-                var serviceId = impersonation._id;
+                impersonation = res.body;
 
                 services
                     .getServicesById(token, serviceId)

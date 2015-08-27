@@ -1,4 +1,4 @@
 {
   "_comments":"End point for login ",
-  "login":"http://[server]:[port]//login"
+  "login":"http:\/\/[server]:[port]\/login"
 }
