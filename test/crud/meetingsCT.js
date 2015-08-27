@@ -32,7 +32,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	Get the IDs from the exchange service and the rooms
 	*/
 	
-	before('Getting the Service and the Rooms IDs'function(done){
+	before('Getting the Service and the Rooms IDs',function(done){
 		services
 			.getServicesId(authToken)
 			.end(function(err,res){
