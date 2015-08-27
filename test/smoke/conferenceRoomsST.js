@@ -85,7 +85,6 @@ describe('Smoke Test - Conference Rooms', function(){
    					 	"quantity": 5
 
 					};
-
 		rooms
 			.associateRoom('12232',resource, token)
 			.end(function(err, res){
@@ -217,5 +216,4 @@ describe('Smoke Test - Conference Rooms', function(){
 
 			});
 	});
-
 });
