@@ -36,6 +36,7 @@ describe('Room Manager Services Smoke Tests:', function() {
      * for a specified user on the setting.json
      * */
     before('Setting the token', function(done){
+        console.log('service Id', serviceId);
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
@@ -53,17 +54,20 @@ describe('Room Manager Services Smoke Tests:', function() {
             servicesLib
                 .getServices(token)
                 .end(function(err, res){
-                    serviceId =  res.body[0]._id;
-                    if(!serviceId)
+                    var thereis =  res.body;
+                    if( thereis.length === 0 )
                     {
-                        servicesLib
-                            .postservices(token,serviceType,loginExchange)
-                            .end(function(err, res){
-                                serviceId = res.body._id;
-                                done();
-                            });
-                    }else
+                            servicesLib
+                                .postservices(token,serviceType,loginExchange)
+                                .end(function(erro, ress){
+                                    serviceId = ress.body._id;
+                                    done();
+                                });
+                    }else{
+                        serviceId =  res.body[0]._id;
                         done();
+                    }
+
                 });
             });
 
@@ -71,7 +75,7 @@ describe('Room Manager Services Smoke Tests:', function() {
         /**
          * verify that the services api is present
          * end point : '/services'
-         */
+         * */
 
         it('Verify that the API services exist', function(done){
             servicesLib
