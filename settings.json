@@ -1,10 +1,10 @@
 {
-  "server":"172.20.208.105",
-  "domain":"atxrm",
+  "server":"172.20.208.57",
+  "domain":"vlmonrmjv002.lab",
   "port":4040,
 
-  "roomManagerAccount":"elver",
-  "roomManagerPassword":"Control123",
+  "roomManagerAccount":"admin",
+  "roomManagerPassword":"control123!@#",
 
   "commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
   "id":"55d7580910832ed0071fe6ca",
@@ -13,7 +13,7 @@
   "exchangeAccountPassword":"control",
 
   "login":"login",
-  "authenticationLDAP": "ldap",
+  "authenticationLDAP": "local",
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
   "setDelayTime":10000,
