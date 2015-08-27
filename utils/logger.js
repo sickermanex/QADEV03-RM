@@ -9,7 +9,7 @@ log4js.configure({
     appenders:[
         {
             type:'file',
-            filename:'..\\..\\logs\\roommanager.log',
+            filename:'..\\..\\roommanager.log',
             category:'roommanager'
         }
         ,
