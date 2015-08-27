@@ -1,0 +1,4 @@
+{
+  "locations": "[server]:[port]/locations",
+  "locationsId": "[server]:[port]/locations/[id]"
+}
