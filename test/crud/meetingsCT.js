@@ -1,7 +1,7 @@
 //Test cases of meetings CRUDs
 var expect = require('chai').expect;
 var meetings = require('..\\..\\lib\\meetingsLib');
-var rooms = require('..\\..\\lib\\roomsLib');
+var rooms = require('..\\..\\lib\\conferenceRoomsLib');
 var services = require('..\\..\\lib\\servicesLib');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
@@ -40,7 +40,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 				response = res.body;
 				serviceId = response[0]._id;
 				rooms
-					.getAllRooms()
+					.getRooms()
 					.end(function(err,res){
 						response = res.body;
 						for(var i in response)
