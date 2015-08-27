@@ -19,12 +19,12 @@ var settings = require('..\\..\\settings.json');
 var loginExchange = {
     "username": settings.exchangeAccount,
     "password": settings.exchangeAccountPassword,
-    "hostname": settings.domain+'.lab'
+    "hostname": settings.domainExchange
 };
 
 var serviceId;
 var token;
-var serviceType = settings.typeservice;
+var serviceType = settings.serviceType;
 
 
 

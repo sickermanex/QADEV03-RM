@@ -36,4 +36,12 @@ node_modules/
 .idea/QADEV03-RM.iml
 .idea/vcs.xml
 .idea/workspace.xml
+<<<<<<< HEAD
 test/crud/testingServices.js
+settings.json
+=======
+>>>>>>> 7ce170695b7118171d705dcc90a0278c03315fe0
+.gitignore.BACKUP.11796.gitignore
+.merge_file_a08252
+.gitignore
+settings.json
