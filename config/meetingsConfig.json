@@ -1,0 +1,28 @@
+{
+	"proxy":"http://172.20.240.5:8080",
+	"authLDAP":{
+		"username":"[user]",
+		"password":"[pass]",
+		"authentication":"ldap"
+	},
+	"authBasic":{
+		"user":"elver",
+		"pass":"Control123"
+	},
+	"newMeeting":{
+		"organizer": "Administrator",
+		"title": "MyMeeting",
+		"start": "2015-08-26T22:00:00.000Z",
+		"end": "2015-08-26T22:30:00.000Z",
+		"location": "CF001",
+		"roomEmail": "ConferenceRoom001@atxrm.com",
+		"resources": [],
+		"attendees": ["user@atxrm.com"]
+	},
+	"updateMeeting":{
+		"title": "UpdatedMeeting",
+		"start": "2015-08-26T23:00:00.000Z",
+		"end": "2015-08-26T23:30:00.000Z",
+		"attendees": ["user@atxrm.com","user2@atxrm.com","user3@atxrm.com"]
+	}
+}
