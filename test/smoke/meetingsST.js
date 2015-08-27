@@ -2,7 +2,7 @@
 var expect = require('chai').expect;
 var meetings = require('..\\..\\lib\\meetingsLib');
 var rooms = require('..\\..\\lib\\roomsLib');
-var services = require('..\\..\\lib\\serviceLib');
+var services = require('..\\..\\lib\\servicesLib');
 
 var roomId = [];
 var serviceId;
