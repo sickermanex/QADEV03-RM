@@ -1,0 +1,21 @@
+{
+  "server":"172.20.208.105",
+  "domain":"atxrm",
+  "port":4040,
+
+  "roomManagerAccount":"elver",
+  "roomManagerPassword":"Control123",
+
+  "commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
+  "id":"55d7580910832ed0071fe6ca",
+
+  "exchangeAccount":"administrator",
+  "exchangeAccountPassword":"control",
+
+  "login":"login",
+  "authenticationLDAP": "ldap",
+
+  "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
+  "setDelayTime":10000,
+  "setErrorMaxTime":4000
+}
