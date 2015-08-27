@@ -3,7 +3,7 @@
  */
 /* Out of order Smoke Test*/
 var expect = require('chai').expect;
-var config = require('..\\settings.json');
+var config = require('..\\..\\settings.json');
 var outOfOrders = require('..\\..\\lib\\outOfOrderlib');
 var content = require('..\\..\\lib\\outOfOrderRequestLib');
 var tokenLib =require('..\\..\\lib\\tokenLib');

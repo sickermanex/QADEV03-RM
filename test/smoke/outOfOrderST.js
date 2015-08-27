@@ -6,7 +6,7 @@ var expect = require('chai').expect;
 var outOfOrders = require('..\\..\\lib\\outOfOrderlib');
 var content = require('..\\..\\lib\\outOfOrderRequestLib');
 var tokenLib =require('..\\..\\lib\\tokenLib');
-var config = require('..\\settings.json');
+var config = require('..\\..\\settings.json');
 
 var token;
 /*
