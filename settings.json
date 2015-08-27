@@ -1,21 +1,23 @@
+
 {
-  "server":"172.20.208.105",
-  "domain":"atxrm",
+  "server":"172.20.208.142",
+  "domain":"roompro",
   "port":4040,
 
-  "roomManagerAccount":"elver",
-  "roomManagerPassword":"Control123",
+  "roomManagerAccount":"room",
+  "roomManagerPassword":"Control123!",
 
-  "commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
-  "id":"55d7580910832ed0071fe6ca",
+  "_commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
 
-  "exchangeAccount":"administrator",
-  "exchangeAccountPassword":"control",
+
+  "exchangeAccount":"room",
+  "exchangeAccountPassword":"Control123!",
+  "typeservice":"exchange",
 
   "login":"login",
   "authenticationLDAP": "ldap",
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
-  "setDelayTime":10000,
+  "setDelayTime":5000,
   "setErrorMaxTime":4000
 }
