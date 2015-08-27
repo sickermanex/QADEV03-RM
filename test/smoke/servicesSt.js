@@ -19,12 +19,12 @@ var settings = require('..\\..\\settings.json');
 var loginExchange = {
     "username": settings.exchangeAccount,
     "password": settings.exchangeAccountPassword,
-    "hostname": settings.domain+'.lab'
+    "hostname": settings.domainExchange
 };
 
 var serviceId;
 var token;
-var serviceType = settings.typeservice;
+var serviceType = settings.serviceType;
 
 
 
@@ -36,7 +36,6 @@ describe('Room Manager Services Smoke Tests:', function() {
      * for a specified user on the setting.json
      * */
     before('Setting the token', function(done){
-        console.log('service Id', serviceId);
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
@@ -76,7 +75,6 @@ describe('Room Manager Services Smoke Tests:', function() {
          * verify that the services api is present
          * end point : '/services'
          * */
-
         it('Verify that the API services exist', function(done){
             servicesLib
                 .getServices(token)
