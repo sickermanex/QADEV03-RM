@@ -17,10 +17,10 @@ var settings = require('..\\..\\settings.json');
  */
 
 var loginExchange = {
-        "username": settings.exchangeAccount,
-        "password": settings.exchangeAccountPassword,
-        "hostname": settings.domain+'.lab'
-    };
+    "username": settings.exchangeAccount,
+    "password": settings.exchangeAccountPassword,
+    "hostname": settings.domain+'.lab'
+};
 
 var serviceId;
 var token;
@@ -50,26 +50,26 @@ describe('Room Manager Services Smoke Tests:', function() {
          * */
 
 
-         before(function (done) {
+        before(function (done) {
             servicesLib
                 .getServices(token)
                 .end(function(err, res){
                     var thereis =  res.body;
                     if( thereis.length === 0 )
                     {
-                            servicesLib
-                                .postservices(token,serviceType,loginExchange)
-                                .end(function(erro, ress){
-                                    serviceId = ress.body._id;
-                                    done();
-                                });
+                        servicesLib
+                            .postservices(token,serviceType,loginExchange)
+                            .end(function(erro, ress){
+                                serviceId = ress.body._id;
+                                done();
+                            });
                     }else{
                         serviceId =  res.body[0]._id;
                         done();
                     }
 
                 });
-            });
+        });
 
 
         /**
@@ -138,30 +138,30 @@ describe('Room Manager Services Smoke Tests:', function() {
          * end point : '/services/{:serviceId}'
          */
 
-         it('Verify that the API to be delete exist', function(done){
-             servicesLib
-                 .deleteservice(token,serviceId)
-                 .end(function(err, res){
-                     var status = res.status;
-                     expect(status).to.equal(200);
-                     done();
-                 });
-         });
+        it('Verify that the API to be delete exist', function(done){
+            servicesLib
+                .deleteservice(token,serviceId)
+                .end(function(err, res){
+                    var status = res.status;
+                    expect(status).to.equal(200);
+                    done();
+                });
+        });
 
         /**
          *this test cases add a new services
          * end point : '/services?type={service type} '
          */
-         it('Verify that the API to be post exist', function(done){
-             servicesLib
-                 .postservices(token,serviceType,loginExchange)
-                 .end(function(err, res){
-                     serviceId = res.body._id;
-                     var status = res.status;
-                     expect(status).to.equal(200);
-                     done();
-                 });
-         });
+        it('Verify that the API to be post exist', function(done){
+            servicesLib
+                .postservices(token,serviceType,loginExchange)
+                .end(function(err, res){
+                    serviceId = res.body._id;
+                    var status = res.status;
+                    expect(status).to.equal(200);
+                    done();
+                });
+        });
 
     });
 });
