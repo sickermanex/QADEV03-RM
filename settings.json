@@ -1,15 +1,15 @@
 {
-  "server":"172.20.208.142",
-  "domain":"roompro",
+  "server":"172.20.208.105",
+  "domain":"atxrm",
   "port":4040,
 
-  "roomManagerAccount":"room",
-  "roomManagerPassword":"Control123!",
+  "roomManagerAccount":"elver",
+  "roomManagerPassword":"Control123",
 
   "_comments":"add all data referent about where is installed the exchange server",
-  "exchangeAccount":"room",
-  "exchangeAccountPassword":"Control123!",
-  "domainExchange": "roompro.lab",
+  "exchangeAccount":"elver",
+  "exchangeAccountPassword":"Control123",
+  "domainExchange": "atxrm.com",
   "serviceType":"exchange",
 
   "login":"login",

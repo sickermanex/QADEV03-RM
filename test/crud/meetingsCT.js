@@ -33,6 +33,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	*/
 	
 	before('Getting the Service and the Rooms IDs',function(done){
+	
 		services
 			.getServicesId(authToken)
 			.end(function(err,res){			
