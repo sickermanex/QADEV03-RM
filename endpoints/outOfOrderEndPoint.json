@@ -1,0 +1,6 @@
+{
+  "endPoint":"http://[server]:[port]/[ep]",
+  "endPointById":"http://[server]:[port]/[ep]/[roomId]",
+  "outoforderById":"http://[server]:[port]/services/[serviceId]/rooms/[roomId]/out-of-orders",
+  "outoforderByIds":"http://[server]:[port]/services/[serviceId]/rooms/[roomId]/out-of-orders/[outoforderId]"
+}

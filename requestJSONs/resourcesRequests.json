@@ -1,0 +1,34 @@
+{
+  "auth": {
+    "_comments": "body to request a token",
+    "body":{
+      "username": "rmdom2008\\room.manager",
+      "password": "M@nager",
+      "authentication": "ldap"
+    }
+  },
+  "resourceUpdate":{
+  "_comments": "body to update a resource",
+  "body":{
+      "name": "GitHubUpdate",
+      "customName": "GitHubUpdate",
+      "fontIcon": "fa fa-github-alt",
+      "from": "",
+      "description": ""
+    }
+  },
+  "resourceCreate":{
+  "_comments": "body to create a resource",
+  "body":{
+    "name": "GitHub",
+    "customName": "GitHub",
+    "fontIcon": "fa fa-github-alt",
+    "from": "",
+    "description": ""
+  }
+  },
+  "resourceId":{
+  "_comments": "id to get a resource",
+  "_id": "55d2033aa61c4d3c0513b26a"
+  }
+}
