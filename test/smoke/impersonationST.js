@@ -36,7 +36,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         /*
         This afterEach restores the initial non-impersonation state on Room Manager.
          */
-        afterEach(function(){
+        afterEach(function(done){
             var impersonationState = impersonationRequest.impersonationUnChecked;
             var contentTypeInfo = impersonationRequest.ContentType;
 
