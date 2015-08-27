@@ -30,7 +30,7 @@ describe('Room Manager Tablet appearance Smoke Tests:', function(){
      This test case is to verify that the appearance panel API is present in the Room Manager API.
      For this the status response has to be lower than 500.
      */
-    it.only('Get appearance panel', function(done){
+    it('Get appearance panel', function(done){
         appearanceLib
             .getAppearancePanel()
             .end(function(err, res){

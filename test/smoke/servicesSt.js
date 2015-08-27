@@ -1,5 +1,6 @@
 /**
  * services smoke test
+ * author: Luis Cachi
  * */
 var expect = require('chai').expect;
 var servicesLib = require('..\\..\\lib\\servicesLib');
@@ -9,131 +10,77 @@ var settings = require('..\\..\\settings.json');
 /**
  * var needed
  * */
-var login = {
-    "username": settings.domain + "\\" + settings.roomManagerAccount,
-    "password": settings.roomManagerPassword,
-    "authentication": "ldap"
-};
+/**
+ *this var is to add the exchange services
+ * used in the post test and the smoke test before
+ * in case that is not there added any services
+ */
+
 var loginExchange = {
-        "username": settings.exchangeAccount,
-        "password": settings.exchangeAccountPassword,
-        "hostname": settings.domain+'.lab'
-    };
+    "username": settings.exchangeAccount,
+    "password": settings.exchangeAccountPassword,
+    "hostname": settings.domain+'.lab'
+};
 
 var serviceId;
 var token;
-var serviceType;
+var serviceType = settings.typeservice;
 
 
 
-describe('Room Manager Smoke Test:', function() {
-    this.timeout(50000);
-    this.slow(40000);
-
+describe('Room Manager Services Smoke Tests:', function() {
+    this.timeout(settings.setDelayTime);
+    this.slow(settings.setErrorMaxTime);
     /**
-    get token and services ID
-    */
-    before(function (done) {
+     * this before get the token
+     * for a specified user on the setting.json
+     * */
+    before('Setting the token', function(done){
+        console.log('service Id', serviceId);
         tokenLib
-            .getToken(login)
-            .end(function (err, res) {
-                token = 'jwt ' + res.body.token;
-                servicesLib
-                    .getServices(token)
-                    .end(function(err, res){
+            .getToken(done, function(){
+                token = arguments[0];
+            });
+    });
+    describe('Testing get , post and delete about services API ' , function () {
+        /**
+         * get the service Id
+         * if there is not addes any services
+         * this before add a services
+         * */
+
+
+        before(function (done) {
+            servicesLib
+                .getServices(token)
+                .end(function(err, res){
+                    var thereis =  res.body;
+                    if( thereis.length === 0 )
+                    {
+                        servicesLib
+                            .postservices(token,serviceType,loginExchange)
+                            .end(function(erro, ress){
+                                serviceId = ress.body._id;
+                                done();
+                            });
+                    }else{
                         serviceId =  res.body[0]._id;
-                        serviceType = res.body[0].type;
                         done();
-                    });
-            });
-    });
+                    }
 
-    /**
-    verify that the services api is present
-    */
-
-    it('verify that the API services exist', function(done){
-        servicesLib
-            .getServices(token)
-            .end(function(err, res){
-                var status = res.status;
-                expect(status).to.equal(200);
-                done();
-            });
-    });
-
-    /**
-     * verify that the API services by Id exist
-     * */
-
-    it('verify that the API services by Id exist', function(done){
-       servicesLib
-           .getServicesById(token , serviceId)
-           .end(function(err , res){
-               var status = res.status;
-               expect(status).to.equal(200);
-               done();
-           })
-    });
-
-    /**
-     * verify that the API get services-type exist
-     * */
-
-    it('verify that the API service-Type exist', function(done){
-       servicesLib
-           .getserviceType()
-           .end(function(err, res){
-               var status = res.status;
-               expect(status).to.equal(200);
-               done();
-           })
-    });
-
-    /**
-     * verify that the API get services by type exist
-     * */
-
-    it('verify that the API get servicesbytype exist', function(done){
-        servicesLib
-            .getservicebyType(serviceType,token)
-            .end(function(err, res){
-                var status = res.status;
-                expect(status).to.equal(200);
-                done();
-            })
-    });
-    /**
-     *this describe test the existence of the API when did post and delete
-     */
-    describe('create and delete services' ,  function(){
-        var serviceIDdel;
-        var newservice;
-        before(function(done){
-            servicesLib
-                .postservices(token,serviceType,loginExchange)
-                .end(function(err, ress){
-                    serviceIDdel = ress.body._id;
-                    done();
                 });
         });
-        after(function(done){
-            servicesLib
-                .deleteservice(token,newservice)
-                .end(function(err, res){
-                    done();
-                });
-        });
+
 
         /**
-         *this describe test the existence of the API when did post
-         */
+         * verify that the services api is present
+         * end point : '/services'
+         * */
 
-        it('verify that the API to be post exist', function(done){
+        it('Verify that the API services exist', function(done){
             servicesLib
-                .postservices(token,serviceType,loginExchange)
+                .getServices(token)
                 .end(function(err, res){
-                    newservice = res.body._id;
                     var status = res.status;
                     expect(status).to.equal(200);
                     done();
@@ -141,11 +88,59 @@ describe('Room Manager Smoke Test:', function() {
         });
 
         /**
-         *this describe test the existence of the API when did delete
-         */
-        it('verify that the API to be delete exist', function(done){
+         * verify that the API services by Id exist
+         * end point : '/services/{:serviceId}'
+         * */
+
+        it('Verify that the API services by Id exist', function(done){
             servicesLib
-                .deleteservice(token,serviceIDdel)
+                .getServicesById(token , serviceId)
+                .end(function(err , res){
+                    var status = res.status;
+                    expect(status).to.equal(200);
+                    done();
+                })
+        });
+
+        /**
+         * verify that the API get services-type exist
+         * end point : '/service-types'
+         * */
+
+        it('Verify that the API service-Type exist', function(done){
+            servicesLib
+                .getserviceType()
+                .end(function(err, res){
+                    var status = res.status;
+                    expect(status).to.equal(200);
+                    done();
+                })
+        });
+
+        /**
+         * verify that the API get services filtering by Type
+         * end point : '/services?type={service type} '
+         * */
+
+        it('Verify that the API get services by type exist', function(done){
+            servicesLib
+                .getservicebyType(serviceType,token)
+                .end(function(err, res){
+                    var status = res.status;
+                    expect(status).to.equal(200);
+                    done();
+                })
+        });
+
+
+        /**
+         *this test cases delete the services added
+         * end point : '/services/{:serviceId}'
+         */
+
+        it('Verify that the API to be delete exist', function(done){
+            servicesLib
+                .deleteservice(token,serviceId)
                 .end(function(err, res){
                     var status = res.status;
                     expect(status).to.equal(200);
@@ -153,6 +148,20 @@ describe('Room Manager Smoke Test:', function() {
                 });
         });
 
-    });
+        /**
+         *this test cases add a new services
+         * end point : '/services?type={service type} '
+         */
+        it('Verify that the API to be post exist', function(done){
+            servicesLib
+                .postservices(token,serviceType,loginExchange)
+                .end(function(err, res){
+                    serviceId = res.body._id;
+                    var status = res.status;
+                    expect(status).to.equal(200);
+                    done();
+                });
+        });
 
+    });
 });
