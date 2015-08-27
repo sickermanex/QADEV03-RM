@@ -1,11 +1,12 @@
-
 {
-  "server":"172.20.208.142",
-  "domain":"roompro",
+  "server":"172.20.208.113",
+  "domain":"qadev03",
   "port":4040,
 
-  "roomManagerAccount":"room",
+  "roomManagerAccount":"userRM01",
   "roomManagerPassword":"Control123!",
+
+
 
   "_comments":"add all data referent about where is installed the exchange server",
   "exchangeAccount":"room",
@@ -17,6 +18,6 @@
   "authenticationLDAP": "ldap",
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
-  "setDelayTime":5000,
+  "setDelayTime":15000,
   "setErrorMaxTime":4000
 }
