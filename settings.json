@@ -1,6 +1,5 @@
 
 {
-<<<<<<< HEAD
   "server":"172.20.208.105",
   "domain":"atxrm",
   "port":4040,
@@ -13,7 +12,7 @@
 
   "exchangeAccount":"elver",
   "exchangeAccountPassword":"Control123",
-=======
+
   "server":"172.20.208.57",
   "domain":"vlmonrmjv002.lab",
   "port":4040,
@@ -23,7 +22,7 @@
 
   "exchangeAccount":"administrator",
   "exchangeAccountPassword":"control",
->>>>>>> 470f3798a47830ddcfb912993f2fe325925e16f7
+
   "typeservice":"exchange",
 
   "login":"login",
