@@ -36,4 +36,3 @@ node_modules/
 .idea/QADEV03-RM.iml
 .idea/vcs.xml
 .idea/workspace.xml
-test/crud/testingServices.js
