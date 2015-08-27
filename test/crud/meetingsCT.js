@@ -1,7 +1,7 @@
 //Test cases of meetings CRUDs
 var expect = require('chai').expect;
 var meetings = require('..\\..\\lib\\meetingsLib');
-var rooms = require('..\\..\\lib\\roomsLib');
+var rooms = require('..\\..\\lib\\conferenceRoomsLib');
 var services = require('..\\..\\lib\\servicesLib');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
@@ -24,7 +24,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	before('Obtain the authorization token access to another endpoints',function(done){
 		tokenLib
 			.getToken(done,function(){
-				authToken = arguments[0];				
+				authToken = arguments[0];
 			});			
 	});
 	
@@ -33,13 +33,14 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	*/
 	
 	before('Getting the Service and the Rooms IDs',function(done){
+	
 		services
 			.getServicesId(authToken)
-			.end(function(err,res){
+			.end(function(err,res){			
 				response = res.body;
 				serviceId = response[0]._id;
 				rooms
-					.getAllRooms()
+					.getRooms()
 					.end(function(err,res){
 						response = res.body;
 						for(var i in response)
@@ -101,7 +102,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	/**
 	Test case 4: Update a specific meeting in a specific room
 	*/
-	it('UPDATE a specific meeting in a specific room',function(done){		
+	it('UPDATE a specific meeting in a specific room',function(done){			
 		meetings
 			.updateMeeting(serviceId,roomId[0],meetingId)
 			.end(function(err,res){
