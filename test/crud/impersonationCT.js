@@ -29,15 +29,18 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
+                console.log('Maldito token', token);
             });
     });
 
     describe('', function(){
+        console.log('Maldito token', token);
 
         /*
          This afterEach restores the initial non-impersonation state on Room Manager.
          */
         afterEach(function(){
+            console.log('Maldito token', token);
             var impersonationState = impersonationRequest.impersonationUnChecked;
             var contentTypeInfo = impersonationRequest.ContentType;
 
@@ -66,6 +69,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
          this test case.
          */
         it('User Impersonation is checked', function(done){
+            console.log('Maldito token', token);
             var impersonationState = impersonationRequest.impersonationChecked;
             var contentTypeInfo = impersonationRequest.ContentType;
 
@@ -126,6 +130,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
      this test case.
      */
     it('User Impersonation is unchecked', function(done){
+        console.log('Maldito token', token);
         var impersonationState = impersonationRequest.impersonationUnChecked;
         var contentTypeInfo = impersonationRequest.ContentType;
 
