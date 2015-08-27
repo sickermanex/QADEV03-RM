@@ -24,7 +24,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	before('Obtain the authorization token access to another endpoints',function(done){
 		tokenLib
 			.getToken(done,function(){
-				authToken = arguments[0];				
+				authToken = arguments[0];
 			});			
 	});
 	
@@ -35,7 +35,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	before('Getting the Service and the Rooms IDs',function(done){
 		services
 			.getServicesId(authToken)
-			.end(function(err,res){
+			.end(function(err,res){			
 				response = res.body;
 				serviceId = response[0]._id;
 				rooms
@@ -101,7 +101,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	/**
 	Test case 4: Update a specific meeting in a specific room
 	*/
-	it('UPDATE a specific meeting in a specific room',function(done){		
+	it('UPDATE a specific meeting in a specific room',function(done){			
 		meetings
 			.updateMeeting(serviceId,roomId[0],meetingId)
 			.end(function(err,res){
@@ -117,7 +117,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	/**
 	Test case 5: Delete a specific meeting in a specific room
 	*/
-	it.skip('DELETE a specific meeting in a specific room',function(done){
+	it('DELETE a specific meeting in a specific room',function(done){
 		
 		meetings
 			.deleteMeeting(serviceId,roomId[0],meetingId)

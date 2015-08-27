@@ -1,17 +1,17 @@
 
 {
-  "server":"172.20.208.142",
-  "domain":"roompro",
+  "server":"172.20.208.105",
+  "domain":"atxrm",
   "port":4040,
 
-  "roomManagerAccount":"room",
-  "roomManagerPassword":"Control123!",
+  "roomManagerAccount":"elver",
+  "roomManagerPassword":"Control123",
 
   "_commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
 
 
-  "exchangeAccount":"room",
-  "exchangeAccountPassword":"Control123!",
+  "exchangeAccount":"elver",
+  "exchangeAccountPassword":"Control123",
   "typeservice":"exchange",
 
   "login":"login",
