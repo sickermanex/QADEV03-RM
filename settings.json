@@ -1,21 +1,18 @@
 
 {
-  "server":"172.20.208.142",
-  "domain":"roompro",
+  "server":"172.20.208.57",
+  "domain":"vlmonrmjv002.lab",
   "port":4040,
 
-  "roomManagerAccount":"room",
-  "roomManagerPassword":"Control123!",
+  "roomManagerAccount":"admin",
+  "roomManagerPassword":"control123!@#",
 
-  "_commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
-
-
-  "exchangeAccount":"room",
-  "exchangeAccountPassword":"Control123!",
+  "exchangeAccount":"administrator",
+  "exchangeAccountPassword":"control",
   "typeservice":"exchange",
 
   "login":"login",
-  "authenticationLDAP": "ldap",
+  "authenticationLDAP": "local",
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
   "setDelayTime":5000,
