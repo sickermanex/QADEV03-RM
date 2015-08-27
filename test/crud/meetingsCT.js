@@ -32,7 +32,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	Get the IDs from the exchange service and the rooms
 	*/
 	
-	before('Getting the Service and the Rooms IDs'function(done){
+	before('Getting the Service and the Rooms IDs',function(done){
 		services
 			.getServicesId(authToken)
 			.end(function(err,res){
@@ -117,7 +117,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	/**
 	Test case 5: Delete a specific meeting in a specific room
 	*/
-	it('DELETE a specific meeting in a specific room',function(done){
+	it.skip('DELETE a specific meeting in a specific room',function(done){
 		
 		meetings
 			.deleteMeeting(serviceId,roomId[0],meetingId)
