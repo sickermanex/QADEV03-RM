@@ -38,7 +38,6 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
             .getServices(token)
             .end(function(err, res){
                 serviceId = res.body[0]._id;
-                console.log('Maldito ServiceId', serviceId);
                 done();
             });
     });
