@@ -1,15 +1,13 @@
 {
-  "server":"172.20.208.105",
-  "domain":"atxrm",
+  "server":"172.20.208.57",
+  "domain":"vlmonrmjv002.lab",
   "port":4040,
 
-  "roomManagerAccount":"elver",
-  "roomManagerPassword":"Control123",
+  "roomManagerAccount":"admin",
+  "roomManagerPassword":"control123!@#",
 
-  "_commentService":"THIS IS THE INFORMATION OF THE ONLY SERVICE AVAILABLE",
-
-  "exchangeAccount":"elver",
-  "exchangeAccountPassword":"Control123",
+  "exchangeAccount":"administrator",
+  "exchangeAccountPassword":"control",
   "typeservice":"exchange",
 
   "login":"login",
