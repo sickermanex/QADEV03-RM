@@ -6,6 +6,8 @@ var expect = require('chai').expect;
 var servicesLib = require('..\\..\\lib\\servicesLib');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
+var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+
 
 /**
  * var needed
@@ -25,7 +27,7 @@ var loginExchange = {
 var serviceId;
 var token;
 var serviceType = settings.serviceType;
-
+var resmon;
 
 
 describe('Room Manager Services CRUD Testing:', function() {
@@ -34,19 +36,33 @@ describe('Room Manager Services CRUD Testing:', function() {
     /**
      * this before get the token
      * for a specified user on the setting.json
+     * and get all data about a specific collection
+     * on the Mongo DB
+     * pass the param (mane collection) in this case 'services'
      * */
     before('Setting the token', function(done){
+        // mongoDB
+        mongoserv
+            .getcollection('services' ,function(){
+                resmon = arguments[0];
+
+            });
+        // token
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
             });
+
     });
+
+
     describe( 'CRUD Testing: get , post and delete about services API' , function () {
         /**
          * get the service Id
-         * if there is not addes any services
+         * if there is not added any services
          * this before add a services
          * */
+
         before(function (done) {
             servicesLib
                 .getServices(token)
@@ -68,24 +84,26 @@ describe('Room Manager Services CRUD Testing:', function() {
                 });
         });
 
+
+
         /**
          * verify that the /services end poit
          * return a correct information about  the service added
          * end point : '/services'
          */
 
-        it('verify the information about the services is correct', function(done){
+        it('1. The information about the services is correct on mongoDB', function(done){
             servicesLib
                 .getServices(token)
                 .end(function(err, res){
                     var service = res.body;
-                    expect(service.length).to.equal(1);//verify that the array equals to one
-                    service.forEach(function(ser){
-                        expect(ser._id).to.equal(serviceId);
-                        expect(ser.type).to.equal(serviceType);
-                        expect(ser.serviceUrl).to.contain(loginExchange.hostname);
-                        expect(ser.credential.username).to.equal(loginExchange.username);
-                    });
+                    var i;
+                    for (i = 0; i < service.length; i++) {
+                        expect(service[i].type).to.equal(resmon[i].type);
+                        expect(service[i].serviceUrl).to.equal(resmon[i].serviceUrl);
+                        expect(service[i].version).to.equal(resmon[i].version);
+                        expect(service[i].name).to.equal(resmon[i].name);
+                    }
                     done();
                 });
         });
@@ -96,15 +114,16 @@ describe('Room Manager Services CRUD Testing:', function() {
          * end point : '/services/{:serviceId}'
          * */
 
-        it('verify that the API services by Id is correct', function(done){
+        it('2. The API services by Id return the correct data on mongoDB', function(done){
             servicesLib
                 .getServicesById(token , serviceId)
                 .end(function(err , res){
                     var status = res.body;
-                    expect(status._id).to.equal(serviceId);
-                    expect(status.type).to.equal(serviceType);
-                    expect(status.serviceUrl).to.contain(loginExchange.hostname);
-                    expect(status.credential.username).to.equal(loginExchange.username);
+                    expect(status._id).to.equal(resmon[0]._id.toString());
+                    expect(status.type).to.equal(resmon[0].type);
+                    expect(status.serviceUrl).to.equal(resmon[0].serviceUrl);
+                    expect(status.version).to.equal(resmon[0].version);
+                    expect(status.name).to.equal(resmon[0].name);
                     done();
                 })
         });
@@ -115,7 +134,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          * end point : '/service-types'
          * */
 
-        it('verify that the API service-Type return the services type supported ', function(done){
+        it('3. The API service-Type return the SERVICE-TYPE supported ', function(done){
             servicesLib
                 .getserviceType()
                 .end(function(err, res){
@@ -135,18 +154,19 @@ describe('Room Manager Services CRUD Testing:', function() {
          * end point : '/services?type={service type} '
          * */
 
-        it('verify that the API GetServicesByType return the services with correct information', function(done){
+        it('4. The API GetServicesByType return the services with correct information', function(done){
             servicesLib
                 .getservicebyType(serviceType,token)
                 .end(function(err, res){
                     var service = res.body;
-                    expect(service.length).to.equal(1); //verify that the array equals to one
-                    service.forEach(function(ser){
-                        expect(ser.type).to.equal(serviceType);
-                        expect(ser._id).to.equal(serviceId);
-                        expect(ser.serviceUrl).to.contain(loginExchange.hostname);
-                        expect(ser.credential.username).to.equal(loginExchange.username);
-                    });
+                    var i;
+                    for (i = 0; i < service.length; i++) {
+                        expect(service[i]._id).to.equal(resmon[i]._id.toString());
+                        expect(service[i].type).to.equal(resmon[i].type);
+                        expect(service[i].serviceUrl).to.equal(resmon[i].serviceUrl);
+                        expect(service[i].version).to.equal(resmon[i].version);
+                        expect(service[i].name).to.equal(resmon[i].name);
+                    }
                     done();
                 });
         });
@@ -155,7 +175,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          * return the correct information about the service deleted
          * end point : '/services/{:serviceId}'
          */
-        it('verify that the for do delete return the correct information about the services deleted', function(done){
+        it('5. the API to be delete return the correct information about the services deleted', function(done){
             servicesLib
                 .deleteservice(token,serviceId)
                 .end(function(err, res){
@@ -172,7 +192,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          *  display a correct information about the new service added
          * end point : '/services?type={service type} '
          */
-        it('verify that the API to be post exist', function(done){
+        it('6. the API to be add/post a service add with the correct data', function(done){
             servicesLib
                 .postservices(token,serviceType,loginExchange)
                 .end(function(err, res){

@@ -12,17 +12,17 @@
 	"newMeeting":{
 		"organizer": "Administrator",
 		"title": "MyMeeting",
-		"start": "2015-08-27T16:00:00.000Z",
-		"end": "2015-08-27T16:30:00.000Z",
-		"location": "CF001",
-		"roomEmail": "ConferenceRoom001@atxrm.com",
+		"start": "[date]T16:00:00.000Z",
+		"end": "[date]T16:30:00.000Z",
+		"location": "nohay",
+		"roomEmail": "nohay",
 		"resources": [],
 		"attendees": ["user@atxrm.com"]
 	},
 	"updateMeeting":{
 		"title": "UpdatedMeeting",
-		"start": "2015-08-27T19:00:00.000Z",
-		"end": "2015-08-27T19:30:00.000Z",
+		"start": "[date]T19:00:00.000Z",
+		"end": "[date]T19:30:00.000Z",
 		"attendees": ["user@atxrm.com","user2@atxrm.com","user3@atxrm.com"]
 	}
 }

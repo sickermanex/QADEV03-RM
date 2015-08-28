@@ -84,8 +84,8 @@ describe('Smoke Test - Resources', function(){
 			.end(function(err, res){
 				resourceId = res.body._id;
 				var status = res.status;
-				//console.log('s1 ' + status);
-				//console.log(err);
+				/*console.log('s1 ' + status);
+				console.log(err);*/
 
 				expect(status).to.equal(200);
 
