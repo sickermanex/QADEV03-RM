@@ -21,6 +21,10 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
 
     var token = '';
     var serviceId = '';
+    var impReq = '';
+
+    var contentTypeInfo = impersonationRequest.ContentType;
+    var authenticationState = impersonationRequest.authenticationSettings;
 
     /*
     The before method creates a token that is stored in the "token" global variable, and it's used
@@ -48,21 +52,16 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         This afterEach restores the initial non-impersonation state on Room Manager.
          */
         afterEach(function(done){
-            var impersonationState = impersonationRequest.impersonationUnChecked;
-            var contentTypeInfo = impersonationRequest.ContentType;
+            impReq = impersonationRequest.impersonationUnChecked;
 
             impersonationLib
-                .setImpersonation(impersonationState, serviceId)
-                .set('Content-Type', contentTypeInfo)
-                .set('Authorization', token)
+                .setImpersonation(serviceId, contentTypeInfo, token, impReq)
                 .end(function(err, res){
 
-                    var authenticationState = impersonationRequest.authenticationSettings;
-
                     impersonationLib
-                        .setAuthentication(authenticationState)
-                        .set('Authorization', token)
+                        .setAuthentication(authenticationState, token)
                         .end(function(err, res){
+
                             done();
                         });
                 });
@@ -73,25 +72,20 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
          is checked (API presence).
          */
         it('User Impersonation is checked', function(done){
-            var impersonationState = impersonationRequest.impersonationChecked;
-            var contentTypeInfo = impersonationRequest.ContentType;
+            impReq = impersonationRequest.impersonationChecked;
 
             impersonationLib
-                .setImpersonation(impersonationState, serviceId)
-                .set('Content-Type', contentTypeInfo)
-                .set('Authorization', token)
+                .setImpersonation(serviceId, contentTypeInfo, token, impReq)
                 .end(function(err, res){
                     expect(err).to.be.not.OK;
                     expect(res.status).to.be.below(500);
 
-                    var authenticationState = impersonationRequest.authenticationSettings;
-
                     impersonationLib
-                        .setAuthentication(authenticationState)
-                        .set('Authorization', token)
+                        .setAuthentication(authenticationState, token)
                         .end(function(err, res){
                             expect(err).to.be.not.OK;
                             expect(res.status).to.be.below(500);
+
                             done();
                         });
                 });
@@ -105,25 +99,20 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
      is unchecked (API presence).
      */
     it('User Impersonation is unchecked', function(done){
-        var impersonationState = impersonationRequest.impersonationUnChecked;
-        var contentTypeInfo = impersonationRequest.ContentType;
+        impReq = impersonationRequest.impersonationUnChecked;
 
         impersonationLib
-            .setImpersonation(impersonationState, serviceId)
-            .set('Content-Type', contentTypeInfo)
-            .set('Authorization', token)
+            .setImpersonation(serviceId, contentTypeInfo, token, impReq)
             .end(function(err, res){
                 expect(err).to.be.not.OK;
                 expect(res.status).to.be.below(500);
 
-                var authenticationState = impersonationRequest.authenticationSettings;
-
                 impersonationLib
-                    .setAuthentication(authenticationState)
-                    .set('Authorization', token)
+                    .setAuthentication(authenticationState, token)
                     .end(function(err, res){
                         expect(err).to.be.not.OK;
                         expect(res.status).to.be.below(500);
+
                         done();
                     });
             });
