@@ -7,6 +7,8 @@ var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
 
 var roomId = [];
+var roomName = [];
+var roomMail = [];
 var meetingId;
 var serviceId;
 var authToken;
@@ -45,7 +47,9 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 						response = res.body;
 						for(var i in response)
 						{
-							roomId.push(response[i]._id);							
+							roomId.push(response[i]._id);
+							roomName.push(response[i].displayName);
+							roomMail.push(response[i].emailAddress);							
 						}
 						done();
 					});
@@ -88,7 +92,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	*/
 	it('CREATE a new meeting in a specific room',function(done){
 		meetings
-			.createNewMeeting(serviceId,roomId[0])
+			.createNewMeeting(serviceId,roomId[0],roomName[0],roomMail[0])
 			.end(function(err,res){
 				response = res.body;
 				meetingId = response._id;
@@ -104,7 +108,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	*/
 	it('UPDATE a specific meeting in a specific room',function(done){			
 		meetings
-			.updateMeeting(serviceId,roomId[0],meetingId)
+			.updateMeeting(serviceId,roomId[0],meetingId,roomName[0],roomMail[0])
 			.end(function(err,res){
 				response = res.body;				
 				expect(response.serviceId).to.equal(serviceId);
