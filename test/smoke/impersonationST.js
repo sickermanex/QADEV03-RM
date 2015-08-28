@@ -30,7 +30,6 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
-                console.log('Token ID is:', token);
             });
     });
 
@@ -39,7 +38,6 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
             .getServices(token)
             .end(function(err, res){
                 serviceId = res.body[0]._id;
-                console.log('Service ID is:', serviceId);
                 done();
             });
     });
