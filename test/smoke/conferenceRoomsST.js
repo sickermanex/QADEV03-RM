@@ -202,7 +202,7 @@ describe('Smoke Test - Conference Rooms', function(){
 
 	/**
 	 * Test Case
-	 * Title: Delete a especific resource from specific room shortcut API  is present in the application
+	 * Title: Delete a specific resource from specific room shortcut API  is present in the application
 	 */
 	it('Delete a specific resource from specific room', function(done){
 		rooms
