@@ -99,7 +99,6 @@ describe('Room Manager Services CRUD Testing:', function() {
                     var service = res.body;
                     var i;
                     for (i = 0; i < service.length; i++) {
-                        expect(service[i]._id).to.equal(resmon[i]._id.toString());
                         expect(service[i].type).to.equal(resmon[i].type);
                         expect(service[i].serviceUrl).to.equal(resmon[i].serviceUrl);
                         expect(service[i].version).to.equal(resmon[i].version);
