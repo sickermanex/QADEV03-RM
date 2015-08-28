@@ -95,7 +95,6 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 			.createNewMeeting(serviceId,roomId[0],roomName[0],roomMail[0])
 			.end(function(err,res){
 				response = res.body;
-				console.log(response);
 				meetingId = response._id;
 				expect(response.serviceId).to.equal(serviceId);
 				expect(response.roomId).to.equal(roomId[0]);
