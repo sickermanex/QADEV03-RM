@@ -8,7 +8,7 @@ var resources = require('..\\..\\lib\\resourcesLib');
 var requests = require('..\\..\\requestJSONs\\resourcesRequests');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
-//var logger = require('..\\..\\utils\\logger');
+var logger = require('..\\..\\utils\\logger');
 
 describe('Smoke Test - Resources', function(){
 	this.timeout(settings.setDelayTime);
