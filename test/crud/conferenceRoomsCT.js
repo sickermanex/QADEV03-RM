@@ -118,7 +118,7 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Test Case
      * Title: PUT room shortcut API  returns the information from a specific room
      */
-    it('Update a Room', function(done){
+    it.skip('Update a Room', function(done){
         var actualRoom;
         var expectedRoom;
         var roomId;
@@ -158,7 +158,6 @@ describe('Acceptance Test - Conference Rooms', function(){
             .end(function(err,res){
              resource = res.body;
                 resourceId = res.body._id;
-                console.log(expectedRoom);
                 rooms
                     .getRooms()
                     .end(function (err, res) {
@@ -176,7 +175,6 @@ describe('Acceptance Test - Conference Rooms', function(){
                                 expect(expectedRoom._id).to.equal(actualRoom._id);
                                 expect(expectedRoom).to.have.property('resources');
                                 expect(actualRoom).to.have.property('resources');
-                                //expect(expectedRoom.resources).to.not.equal(actualRoom.resources);
                                 resources
                                     .deleteResource(resourceId,token)
                                     .end(function(err,res){
@@ -207,8 +205,6 @@ describe('Acceptance Test - Conference Rooms', function(){
             .end(function(err, res) {
                 serviceId = res.body[0].serviceId;
                 expectedRoom = res.body;
-                console.log(expectedRoom);
-
                 rooms
                     .getRoomsService(serviceId)
                     .end(function (err, res) {
@@ -266,7 +262,7 @@ describe('Acceptance Test - Conference Rooms', function(){
          * Title: PUT rooms shortcut  API returns the information
          * when update a specific room of specific service
          */
-        it('Update a room of specific service', function(done) {
+        it.skip('Update a room of specific service', function(done) {
             var serviceId;
             var roomId;
 
