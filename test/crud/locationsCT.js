@@ -1,14 +1,13 @@
 var expect =  require('chai').expect;
 var locationsLib = require('..\\..\\lib\\locationsLib.js');
 var tokenLib = require('..\\..\\lib\\tokenLib.js');
-var settings = require('..\\..\\settings.json')
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+
 describe('Locations CRUD Tests',function(){
-    this.timeout(settings.setDelayTime);
-    this.slow(settings.setErrorMaxTime);
+    this.timeout(5000);
+    this.slow(4000);
     var locationId;
     var location;
-    var listLocation;
+    var newLocation;
     var token;
     before(function(done){
         tokenLib
@@ -17,7 +16,29 @@ describe('Locations CRUD Tests',function(){
             });
 
     });
+    after(function (done) {
+        locationsLib
+            .getAllLocations()
+            .end(function (error, response) {
+                var totalLocations;
+                totalLocations = response.body;
+                function deleteAllLocations(done, locId) {
+                    locationsLib
+                        .deleteLocations(locId, token)
+                        .end(function (error, response) {
+                            done();
+                        });
+                }
 
+                if (totalLocations.length > 0) {
+                    for (var i = 0; i < totalLocations.length; i++) {
+                        deleteAllLocations(done, totalLocations[i]._id);
+                    }
+                }
+                else
+                    done();
+            });
+    });
     describe('Test Cases set of POST, GET, PUT, DELETE that works with an specific location',function() {
         it ('POST locations api created a new location',function(done){
             location = {
@@ -106,14 +127,56 @@ describe('Locations CRUD Tests',function(){
         });
     });
     describe('Test Cases set to test the GET method with all existing locations',function() {
-
         before(function (done) {
-            mongoserv
-                .getcollection('locations',function(){
-                    listLocation = arguments[0];
-                    done();
-                });
+            locationsLib
+                .getAllLocations()
+                .end(function (error, response) {
+                    var totalLocations;
+                    totalLocations = response.body;
+                    function deleteAllLocations(done, locId) {
+                        locationsLib
+                            .deleteLocations(locId, token)
+                            .end(function (error, response) {
+                                done();
+                            });
+                    }
 
+                    if (totalLocations.length > 0) {
+                        for (var i = 0; i < totalLocations.length; i++) {
+                            deleteAllLocations(done, totalLocations[i]._id);
+                        }
+                    }
+                    else
+                        done();
+                });
+        });
+
+        beforeEach(function (done) {
+            newLocation = {
+                "name": "New location1",
+                "customName": "NewLoc1"
+            }
+            locationsLib
+                .createLocations(newLocation, token)
+                .end(function(error, response){
+                    newLocation = {
+                        "name": "New location2",
+                        "customName": "NewLoc2"
+                    }
+                    locationsLib
+                        .createLocations(newLocation, token)
+                        .end(function(error, response){
+                            newLocation = {
+                                "name": "New location3",
+                                "customName": "NewLoc3"
+                            }
+                            locationsLib
+                                .createLocations(newLocation, token)
+                                .end(function(error, response){
+                                    done();
+                                });
+                        });
+                });
         });
 
         it('GET locations api returns the information of all existing  locations', function (done) {
@@ -121,23 +184,10 @@ describe('Locations CRUD Tests',function(){
                 .getAllLocations()
                 .end(function (error, response) {
                     var response = response;
-                    var idBody;
-                    var idList;
-                    for(var i = 0; i < response.body.length; i++)
-                    {
-                        idBody = response.body[i]._id;
-                        idList = listLocation[i]._id;
-                        idList = idList.toString();
-                        expect(idBody).to.be.equal(idList);
-                        expect(response.body[i].__v).to.be.equal(listLocation[i].__v);
-                        expect(response.body[i].customName).to.be.equal(listLocation[i].customName);
-                        expect(response.body[i].name).to.be.equal(listLocation[i].name);
-                        expect(response.body[i].description).to.be.equal(listLocation[i].description);
-                        expect(response.body[i].path).to.be.equal(listLocation[i].path);
-                    }
                     expect(response.status).to.be.equal(200);
-                    expect(response.body.length).to.be.equal(listLocation.length);
+                    expect(response.body.length).to.be.equal(3);
                     console.log('Body: ', response.body);
+                    console.log('Status: ', response.status);
                     done();
                 });
         });
