@@ -7,6 +7,7 @@ var outOfOrders = require('..\\..\\lib\\outOfOrderlib');
 var content = require('..\\..\\lib\\outOfOrderRequestLib');
 var tokenLib =require('..\\..\\lib\\tokenLib');
 var config = require('..\\..\\settings.json');
+var rooms = require('..\\..\\lib\\conferenceRoomsLib');
 
 var token;
 /*
@@ -31,24 +32,12 @@ describe('Smoke Test Cases- Out of order', function() {
     var oooId;
     this.timeout(config.setDelayTime);
     this.slow(config.setErrorMaxTime);
+
     /**Test Case
-     *Title: GET-All "out of order"
+     *Title: POST-Create a out of order from a specific room from a specific service
      */
-    it('Get all out of order', function (done) {
-        outOfOrders
-            .getOutOfOrders()
-            .end(function (error, resp) {
-                expect(resp.status).to.equal(200);
-                done();
-            });
-    });
-    /**Test Case
-     *Title: POST-Create a out of order from a room from a service
-     */
-    it('POST-Create a out of order from a room from a service', function(done){
-        /*Test Case*/
-        /*Create a out of order from a service [serviceId] from a room [roomId]*/
-        outOfOrders
+    it('POST-Create a out of order from a specific room from a specific service', function(done){
+        rooms
             .getRooms()
             .end(function(error,resp){
                 roomId = resp.body[0]._id;
@@ -71,12 +60,13 @@ describe('Smoke Test Cases- Out of order', function() {
                     });
             });
     });
-    /**Test Case
-     *Title: DELETE a "out of order" from a service [serviceId] from a room [roomId]*
+    /**
+     * Test Case
+     *Title: DELETE a "out of order" from a specific room from a specific service*
      */
     it('DELETE a "out of order" by id from a service from a room', function(done){
         /*Test Case*/
-        outOfOrders
+        rooms
             .getRooms()
             .end(function(error,resp){
                 roomId = resp.body[0]._id;
@@ -99,11 +89,12 @@ describe('Smoke Test Cases- Out of order', function() {
             });
     });
     /*
-    * Smoke test cases for: UPDATE and GETs with pre condition -CREATE and DELETE "out-of-order*/
+    * Smoke test cases for: UPDATE and GETs with pre condition -CREATE and DELETE "out-of-order
+    * */
     describe('Smoke test cases for: UPDATE and GETs with pre condition -CREATE and DELETE "out-of-order"' , function () {
         /*Pre condition-Create a out of order on a room*/
         before('Create a "out-of-order"',function(done) {
-            outOfOrders
+            rooms
                 .getRooms()
                 .end(function (error, resp) {
                     roomId = resp.body[0]._id;
@@ -128,11 +119,22 @@ describe('Smoke Test Cases- Out of order', function() {
                     done();
                 });
         });
+        /**Test Case
+         *Title: GET-All "out of order"
+         */
+        it('Get all out of order', function (done) {
+            outOfOrders
+                .getOutOfOrders()
+                .end(function (error, resp) {
+                    expect(resp.status).to.equal(200);
+                    done();
+                });
+        });
 
         /**Smoke Test Case
-         *Title: GET a out of order from a room from a service
+         *Title: GET a out of order from a specific room from a specific service
          */
-        it('GET a out of order from a room from a service', function (done) {
+        it('GET a out of order from a specific room from a specific service', function (done) {
             outOfOrders
                 .getOutOfOrderbyRoom(servId, roomId)
                 .end(function (error, resp) {
@@ -141,11 +143,9 @@ describe('Smoke Test Cases- Out of order', function() {
                 });
         });
         /**Test Case
-         *Title: GET a out of order by ID from a room from a service
+         *Title: GET a out of order by ID from a specific room from a specific service
          */
-        it('GET a out of order by ID from a room from a service', function (done) {
-            /*Test Case*/
-            /* Get roomId and Service Id*/
+        it('GET a out of order by ID from a specific room from a specific service', function (done) {
             outOfOrders
                 .getOutOfOrderById(servId, roomId, oooId)
                 .end(function (error, resp) {
@@ -155,10 +155,9 @@ describe('Smoke Test Cases- Out of order', function() {
 
         });
         /**Test Case
-         *Title: UPDATE a "out of order" by id from a service from a room
+         *Title: UPDATE a "out of order" by id from a specific room from a specific service
          */
-        it('UPDATE a "out of order" by id from a service from a room', function (done) {
-            /*Test Case*/
+        it('UPDATE a "out of order" by id from a specific room from a specific service', function (done) {
             var res = content.getCont();
             outOfOrders
                 .updateOutOfOrder(servId, roomId, res, token, oooId)
