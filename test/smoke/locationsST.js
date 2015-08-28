@@ -1,7 +1,11 @@
 var expect =  require('chai').expect;
 var locationsLib = require('..\\..\\lib\\locationsLib.js');
 var tokenLib = require('..\\..\\lib\\tokenLib.js');
+var settings = require('..\\..\\settings.json');
 describe('Locations Smoke Tests',function(){
+
+	this.timeout(settings.setDelayTime);
+	
     var locationId;
     var token;
 

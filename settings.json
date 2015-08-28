@@ -6,18 +6,16 @@
   "roomManagerAccount":"userRM01",
   "roomManagerPassword":"Control123!",
 
-
-
   "_comments":"add all data referent about where is installed the exchange server",
-  "exchangeAccount":"room",
+  "exchangeAccount":"Administrator",
   "exchangeAccountPassword":"Control123!",
-  "domainExchange": "roompro.lab",
+  "domainExchange": "qadev03.rm",
   "serviceType":"exchange",
 
   "login":"login",
   "authenticationLDAP": "ldap",
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
-  "setDelayTime":15000,
+  "setDelayTime":5000,
   "setErrorMaxTime":4000
 }
