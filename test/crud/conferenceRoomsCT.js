@@ -1,17 +1,20 @@
 /**
  * Conference Rooms CRUD Test
+ * Owner: Rebeca Vargas Garcia
  */
 
 var expect = require('chai').expect;
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
-var tokenLib = require('../../lib/tokenLib');
-var settings = require('../../settings.json');
-var services = require('../../lib/servicesLib');
+var tokenLib = require('..\\..\\lib\\tokenLib');
+var settings = require('..\\..\\settings.json');
+var services = require('..\\..\\lib\\servicesLib');
+var resources = require('..\\..\\lib\\resourcesLib');
+var requests = require('..\\..\\requestJSONs\\resourcesRequests');
 
 
 
 
-describe('CRUD Test - Conference Rooms', function(){
+describe('Acceptance Test - Conference Rooms', function(){
     this.timeout(settings.setDelayTime);
     this.slow(settings.setErrorMaxTime);
 
@@ -64,6 +67,8 @@ describe('CRUD Test - Conference Rooms', function(){
                                 expect(roomsIdInServices).to.eql(roomsIdInRooms);
                                 var status = res.status;
                                 expect(status).to.equal(200);
+                                expect(roomsIdInRooms).to.have.members(roomsIdInServices);
+                                expect(roomsIdInServices).to.include.members(roomsIdInRooms);
                                 done();
 
                             });
@@ -117,8 +122,11 @@ describe('CRUD Test - Conference Rooms', function(){
                         var status = res.status;
                         var displayname = res.body.customDisplayName;
                         var nameChanged = room.customDisplayName;
+                        var state = res.body.enabled;
+                        var statechanged = room.enabled;
                         expect(status).to.equal(200);
                         expect(nameChanged).to.equal(displayname);
+                        expect(state).to.equal(statechanged);
                         done();
                     });
 
@@ -129,29 +137,39 @@ describe('CRUD Test - Conference Rooms', function(){
      * Test Case
      * Title: POST rooms shortcut API returns the information from associate Resource to a Room
      */
-    it('Associate a Resource', function(done) {
+    it.only('Associate a Resource', function(done) {
+
+        var resource;
         var roomId;
-        var resource = {
-            "resourceId": "1135401d44",
-            "quantity": 5
-
-        };
-        rooms
-            .getRooms()
-            .end(function (err, res) {
-                roomId = res.body[0]._id;
-
+        resources
+            .createResource(requests.resourceCreate.body, token)
+            .end(function(err,res){
+             resource = res.body;
+                resourceId = res.body._id;
                 rooms
-                    .associateRoom(roomId, resource, token)
+                    .getRooms()
                     .end(function (err, res) {
+                        roomId = res.body[0]._id;
 
-                        var status = res.status;
+                        rooms
+                            .associateRoom(roomId, resource, token)
+                            .end(function (err, res) {
 
-                        expect(status).to.equal(200);
-                        done();
+                                var status = res.status;
+                                expect(status).to.equal(200);
 
+                                resources
+                                    .deleteResource(resourceId,token)
+                                    .end(function(err,res){
+                                    });
+                                done();
+
+                            });
                     });
+
             });
+
+
     });
 
 
@@ -253,7 +271,7 @@ describe('CRUD Test - Conference Rooms', function(){
 
     /**
      * Test Case
-     * Title: The GET rooms shortcut  API returns the information
+     * Title: GET rooms shortcut  API returns the information
      * when gets a specific resource from a specific room
      */
     it('Get specific resource from a specific room', function(done) {
@@ -272,6 +290,45 @@ describe('CRUD Test - Conference Rooms', function(){
                         expect(status).to.equal(200);
                         done();
                     });
+            });
+    });
+
+    /**
+     * Test Case
+     * Title: PUT shortcut API  returns the information
+     * when update a specific resource from specific room
+     */
+    it('Update a specific resource from specific room', function(done){
+        var resource ={
+            "quantity": 5
+        };
+        rooms
+            .updateResourceRoom('12232','24345', resource, token)
+            .end(function(err, res){
+
+                var status = res.status;
+
+                expect(status).to.equal(404);
+                done();
+
+            });
+    });
+
+    /**
+     * Test Case
+     * Title: Delete shortcut API  returns the information
+     * when delete specific resource from specific room
+     */
+    it('Delete a specific resource from specific room', function(done){
+        rooms
+            .updateResourceRoom('12232','24345', token)
+            .end(function(err, res){
+
+                var status = res.status;
+
+                expect(status).to.equal(404);
+                done();
+
             });
     });
 
