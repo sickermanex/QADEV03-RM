@@ -9,9 +9,9 @@
 
 
   "_comments":"add all data referent about where is installed the exchange server",
-  "exchangeAccount":"room",
+  "exchangeAccount":"administrator",
   "exchangeAccountPassword":"Control123!",
-  "domainExchange": "roompro.lab",
+  "domainExchange": "qad03lalega003.qadev03.rm",
   "serviceType":"exchange",
 
   "login":"login",
