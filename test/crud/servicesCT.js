@@ -92,7 +92,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          * end point : '/services'
          */
 
-        it('1. verify the information about the services is correct with the mongoDB', function(done){
+        it('1. The information about the services is correct on mongoDB', function(done){
             servicesLib
                 .getServices(token)
                 .end(function(err, res){
@@ -114,7 +114,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          * end point : '/services/{:serviceId}'
          * */
 
-        it('2. verify that the API services by Id is correct with the mongoDB', function(done){
+        it('2. The API services by Id return the correct data on mongoDB', function(done){
             servicesLib
                 .getServicesById(token , serviceId)
                 .end(function(err , res){
@@ -134,7 +134,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          * end point : '/service-types'
          * */
 
-        it('3. verify that the API service-Type return the services type supported ', function(done){
+        it('3. The API service-Type return the SERVICE-TYPE supported ', function(done){
             servicesLib
                 .getserviceType()
                 .end(function(err, res){
@@ -154,7 +154,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          * end point : '/services?type={service type} '
          * */
 
-        it('4. verify that the API GetServicesByType return the services with correct information', function(done){
+        it('4. The API GetServicesByType return the services with correct information', function(done){
             servicesLib
                 .getservicebyType(serviceType,token)
                 .end(function(err, res){
@@ -175,7 +175,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          * return the correct information about the service deleted
          * end point : '/services/{:serviceId}'
          */
-        it('5. verify that the for do delete return the correct information about the services deleted', function(done){
+        it('5. the API to be delete return the correct information about the services deleted', function(done){
             servicesLib
                 .deleteservice(token,serviceId)
                 .end(function(err, res){
@@ -192,7 +192,7 @@ describe('Room Manager Services CRUD Testing:', function() {
          *  display a correct information about the new service added
          * end point : '/services?type={service type} '
          */
-        it('6. verify that the API to be post exist', function(done){
+        it('6. the API to be add/post a service add with the correct data', function(done){
             servicesLib
                 .postservices(token,serviceType,loginExchange)
                 .end(function(err, res){

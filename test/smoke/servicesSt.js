@@ -75,7 +75,7 @@ describe('Room Manager Services Smoke Tests:', function() {
          * verify that the services api is present
          * end point : '/services'
          * */
-        it('Verify that the API services exist', function(done){
+        it('1. the API ger-services exist', function(done){
             servicesLib
                 .getServices(token)
                 .end(function(err, res){
@@ -90,7 +90,7 @@ describe('Room Manager Services Smoke Tests:', function() {
          * end point : '/services/{:serviceId}'
          * */
 
-        it('Verify that the API services by Id exist', function(done){
+        it('2. The API get services by Id exist', function(done){
             servicesLib
                 .getServicesById(token , serviceId)
                 .end(function(err , res){
@@ -105,7 +105,7 @@ describe('Room Manager Services Smoke Tests:', function() {
          * end point : '/service-types'
          * */
 
-        it('Verify that the API service-Type exist', function(done){
+        it('3. the API service-Type exist and return the Type service', function(done){
             servicesLib
                 .getserviceType()
                 .end(function(err, res){
@@ -120,7 +120,7 @@ describe('Room Manager Services Smoke Tests:', function() {
          * end point : '/services?type={service type} '
          * */
 
-        it('Verify that the API get services by type exist', function(done){
+        it('4. the API get services by type exist', function(done){
             servicesLib
                 .getservicebyType(serviceType,token)
                 .end(function(err, res){
@@ -136,7 +136,7 @@ describe('Room Manager Services Smoke Tests:', function() {
          * end point : '/services/{:serviceId}'
          */
 
-        it('Verify that the API to be delete exist', function(done){
+        it('5. the API to be delete a services exist', function(done){
             servicesLib
                 .deleteservice(token,serviceId)
                 .end(function(err, res){
@@ -150,7 +150,7 @@ describe('Room Manager Services Smoke Tests:', function() {
          *this test cases add a new services
          * end point : '/services?type={service type} '
          */
-        it('Verify that the API to be post exist', function(done){
+        it('the API to be add/post a service exist', function(done){
             servicesLib
                 .postservices(token,serviceType,loginExchange)
                 .end(function(err, res){
