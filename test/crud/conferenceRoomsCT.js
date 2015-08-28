@@ -83,17 +83,26 @@ describe('Acceptance Test - Conference Rooms', function(){
      *Title: GET room shortcut API returns the information from a specific room
      */
     it('Get a Room', function(done){
+        var actualRoom;
+        var expectedRoom;
         var roomId;
 
         rooms
             .getRooms()
-            .end(function(err1, res1){
-                roomId = res1.body[0]._id;
+            .end(function(err, res){
+                roomId = res.body[0]._id;
+                expectedRoom = res.body[0];
+
                 rooms
                 .getRoom(roomId)
-                    .end(function(err, res) {
+                    .end(function(err, res){
+                        actualRoom = res.body;
                         var status = res.status;
+
                         expect(status).to.equal(200);
+                        expect(actualRoom.__v).to.equal(expectedRoom.__v);
+                        expect(actualRoom._id).to.equal(expectedRoom._id);
+
                         done();
                     });
             });
@@ -104,6 +113,8 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Title: PUT room shortcut API  returns the information from a specific room
      */
     it('Update a Room', function(done){
+        var actualRoom;
+        var expectedRoom;
         var roomId;
         var room ={
             "enabled": false,
@@ -113,20 +124,21 @@ describe('Acceptance Test - Conference Rooms', function(){
         rooms
             .getRooms()
             .end(function(err, res){
-                roomId = res.body[0]._id;
-
+                roomId = res.body[1]._id;
+                expectedRoom = res.body[1];
+                console.log(expectedRoom);
 
                 rooms
                     .updateRoom(roomId, room, token)
                     .end(function(err, res){
                         var status = res.status;
-                        var displayname = res.body.customDisplayName;
-                        var nameChanged = room.customDisplayName;
-                        var state = res.body.enabled;
-                        var statechanged = room.enabled;
+                        actualRoom = res.body;
+                        console.log(actualRoom);
+
                         expect(status).to.equal(200);
-                        expect(nameChanged).to.equal(displayname);
-                        expect(state).to.equal(statechanged);
+                        expect(actualRoom.enabled).to.equal(expectedRoom.enabled);
+                        expect(actualRoom.customDisplayName).to.equal(expectedRoom.customDisplayName);
+
                         done();
                     });
 
@@ -161,8 +173,10 @@ describe('Acceptance Test - Conference Rooms', function(){
                                 resources
                                     .deleteResource(resourceId,token)
                                     .end(function(err,res){
+
+                                        done();
                                     });
-                                done();
+
 
                             });
                     });
