@@ -21,10 +21,6 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
 
     var token = '';
     var serviceId = '';
-    var impReq = '';
-
-    var contentTypeInfo = impersonationRequest.ContentType;
-    var authenticationState = impersonationRequest.authenticationSettings;
 
     /*
     The before method creates a token that is stored in the "token" global variable, and it's used
@@ -34,6 +30,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
+                console.log('Token ID is:', token);
             });
     });
 
@@ -42,6 +39,7 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
             .getServices(token)
             .end(function(err, res){
                 serviceId = res.body[0]._id;
+                console.log('Service ID is:', serviceId);
                 done();
             });
     });
@@ -52,16 +50,21 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
         This afterEach restores the initial non-impersonation state on Room Manager.
          */
         afterEach(function(done){
-            impReq = impersonationRequest.impersonationUnChecked;
+            var impersonationState = impersonationRequest.impersonationUnChecked;
+            var contentTypeInfo = impersonationRequest.ContentType;
 
             impersonationLib
-                .setImpersonation(serviceId, contentTypeInfo, token, impReq)
+                .setImpersonation(impersonationState, serviceId)
+                .set('Content-Type', contentTypeInfo)
+                .set('Authorization', token)
                 .end(function(err, res){
 
-                    impersonationLib
-                        .setAuthentication(authenticationState, token)
-                        .end(function(err, res){
+                    var authenticationState = impersonationRequest.authenticationSettings;
 
+                    impersonationLib
+                        .setAuthentication(authenticationState)
+                        .set('Authorization', token)
+                        .end(function(err, res){
                             done();
                         });
                 });
@@ -72,20 +75,25 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
          is checked (API presence).
          */
         it('User Impersonation is checked', function(done){
-            impReq = impersonationRequest.impersonationChecked;
+            var impersonationState = impersonationRequest.impersonationChecked;
+            var contentTypeInfo = impersonationRequest.ContentType;
 
             impersonationLib
-                .setImpersonation(serviceId, contentTypeInfo, token, impReq)
+                .setImpersonation(impersonationState, serviceId)
+                .set('Content-Type', contentTypeInfo)
+                .set('Authorization', token)
                 .end(function(err, res){
                     expect(err).to.be.not.OK;
                     expect(res.status).to.be.below(500);
 
+                    var authenticationState = impersonationRequest.authenticationSettings;
+
                     impersonationLib
-                        .setAuthentication(authenticationState, token)
+                        .setAuthentication(authenticationState)
+                        .set('Authorization', token)
                         .end(function(err, res){
                             expect(err).to.be.not.OK;
                             expect(res.status).to.be.below(500);
-
                             done();
                         });
                 });
@@ -99,20 +107,25 @@ describe('Room Manager Impersonation Smoke Tests:', function(){
      is unchecked (API presence).
      */
     it('User Impersonation is unchecked', function(done){
-        impReq = impersonationRequest.impersonationUnChecked;
+        var impersonationState = impersonationRequest.impersonationUnChecked;
+        var contentTypeInfo = impersonationRequest.ContentType;
 
         impersonationLib
-            .setImpersonation(serviceId, contentTypeInfo, token, impReq)
+            .setImpersonation(impersonationState, serviceId)
+            .set('Content-Type', contentTypeInfo)
+            .set('Authorization', token)
             .end(function(err, res){
                 expect(err).to.be.not.OK;
                 expect(res.status).to.be.below(500);
 
+                var authenticationState = impersonationRequest.authenticationSettings;
+
                 impersonationLib
-                    .setAuthentication(authenticationState, token)
+                    .setAuthentication(authenticationState)
+                    .set('Authorization', token)
                     .end(function(err, res){
                         expect(err).to.be.not.OK;
                         expect(res.status).to.be.below(500);
-
                         done();
                     });
             });

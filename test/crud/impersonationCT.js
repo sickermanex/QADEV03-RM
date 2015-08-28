@@ -15,16 +15,12 @@ var settings = require('../../settings.json');
 /*
  This test suit is used for acceptance tests on the Room Manager Impersonation feature.
  */
-describe('Room Manager Impersonation Acceptance Tests:', function(){
+describe('Room Manager Impersonation Smoke Tests:', function(){
     this.timeout(settings.setDelayTime);
     this.slow(settings.setErrorMaxTime);
 
     var token = '';
     var serviceId = '';
-    var impReq = '';
-
-    var contentTypeInfo = impersonationRequest.ContentType;
-    var authenticationState = impersonationRequest.authenticationSettings;
 
     /*
      The before method creates a token that is stored in the "token" global variable, and it's used
@@ -52,17 +48,21 @@ describe('Room Manager Impersonation Acceptance Tests:', function(){
          This afterEach restores the initial non-impersonation state on Room Manager.
          */
         afterEach(function(done){
-            impReq = impersonationRequest.impersonationUnChecked;
-
+            var impersonationState = impersonationRequest.impersonationUnChecked;
+            var contentTypeInfo = impersonationRequest.ContentType;
 
             impersonationLib
-                .setImpersonation(serviceId, contentTypeInfo, token, impReq)
+                .setImpersonation(impersonationState)
+                .set('Content-Type', contentTypeInfo)
+                .set('Authorization', token)
                 .end(function(err, res){
 
-                    impersonationLib
-                        .setAuthentication(authenticationState, token)
-                        .end(function(err, res){
+                    var authenticationState = impersonationRequest.authenticationSettings;
 
+                    impersonationLib
+                        .setAuthentication(authenticationState)
+                        .set('Authorization', token)
+                        .end(function(err, res){
                             done();
                         });
                 });
@@ -76,12 +76,15 @@ describe('Room Manager Impersonation Acceptance Tests:', function(){
          this test case.
          */
         it('User Impersonation is checked', function(done){
-            impReq = impersonationRequest.impersonationChecked;
+            var impersonationState = impersonationRequest.impersonationChecked;
+            var contentTypeInfo = impersonationRequest.ContentType;
             var impersonation;
             var serviceInfo;
 
             impersonationLib
-                .setImpersonation(serviceId, contentTypeInfo, token, impReq)
+                .setImpersonation(impersonationState, serviceId)
+                .set('Content-Type', contentTypeInfo)
+                .set('Authorization', token)
                 .end(function(err, res){
                     impersonation = res.body;
 
@@ -103,18 +106,20 @@ describe('Room Manager Impersonation Acceptance Tests:', function(){
                             expect(impersonation.impersonate).to.equal(serviceInfo.impersonate);
                             expect(impersonation.alternativeServiceUrls).to.be.empty;
 
+                            var authenticationState = impersonationRequest.authenticationSettings;
+
                             /*
                              The request and the response is setAuthentication()
                              */
                             impersonationLib
-                                .setAuthentication(authenticationState, token)
+                                .setAuthentication(authenticationState)
+                                .set('Authorization', token)
                                 .end(function(err, res){
                                     var authState = res.body;
 
                                     expect(err).to.be.not.OK;
                                     expect(res.status).to.equal(200);
                                     expect(authState.authentication).to.equal(authenticationState.authentication);
-
                                     done();
                                 });
                         });
@@ -130,12 +135,15 @@ describe('Room Manager Impersonation Acceptance Tests:', function(){
      this test case.
      */
     it('User Impersonation is unchecked', function(done){
-        impReq = impersonationRequest.impersonationUnChecked;
+        var impersonationState = impersonationRequest.impersonationUnChecked;
+        var contentTypeInfo = impersonationRequest.ContentType;
         var impersonation;
         var serviceInfo;
 
         impersonationLib
-            .setImpersonation(serviceId, contentTypeInfo, token, impReq)
+            .setImpersonation(impersonationState, serviceId)
+            .set('Content-Type', contentTypeInfo)
+            .set('Authorization', token)
             .end(function(err, res){
                 impersonation = res.body;
 
@@ -157,11 +165,14 @@ describe('Room Manager Impersonation Acceptance Tests:', function(){
                         expect(impersonation.impersonate).to.equal(serviceInfo.impersonate);
                         expect(impersonation.alternativeServiceUrls).to.be.empty;
 
-                       /*
+                        var authenticationState = impersonationRequest.authenticationSettings;
+
+                        /*
                          The request and the response is setAuthentication()
                          */
                         impersonationLib
-                            .setAuthentication(authenticationState, token)
+                            .setAuthentication(authenticationState)
+                            .set('Authorization', token)
                             .end(function(err, res){
                                 var authState = res.body;
 

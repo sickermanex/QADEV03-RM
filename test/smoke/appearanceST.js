@@ -32,11 +32,10 @@ describe('Room Manager Tablet appearance Smoke Tests:', function(){
      */
     it('Get appearance panel', function(done){
         appearanceLib
-            .getAppearancePanel(token)
+            .getAppearancePanel()
             .end(function(err, res){
                 expect(err).to.be.not.OK;
                 expect(res.status).to.be.below(500);
-
                 done();
             });
     });
@@ -49,11 +48,11 @@ describe('Room Manager Tablet appearance Smoke Tests:', function(){
         var appearanceColor = appearanceRequest.appearanceBlue;
 
         appearanceLib
-            .setColorAppearance(token, appearanceColor)
+            .setColorAppearance(appearanceColor)
+            .send(token)
             .end(function(err, res){
                 expect(err).to.be.not.OK;
                 expect(res.status).to.be.below(500);
-
                 done();
             });
     });
