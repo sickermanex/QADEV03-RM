@@ -74,7 +74,7 @@ describe('Smoke Test - Resources', function(){
 	 * Test Case
 	 * Title: POST resource API is present in the application
 	 */
-	it.skip('Create a Resource', function(done){
+	it('Create a Resource', function(done){
 		var resourceId;
 		//console.log(requests.resourceCreate.body);
 
