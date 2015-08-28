@@ -15,7 +15,7 @@
   "login":"login",
   "authenticationLDAP": "ldap",
 
-  "_comment": "this data belong to mongo data db",
+  "_comment": "this data belong to mongo db",
   "mongoserver" : "172.20.208.142",
   "mongoport" : 27017,
   "nameDataBase" : "roommanager",
