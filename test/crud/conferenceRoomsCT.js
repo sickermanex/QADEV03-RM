@@ -149,8 +149,12 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Title: POST rooms shortcut API returns the information from associate Resource to a Room
      */
     it('Associate a Resource', function(done) {
+<<<<<<< HEAD
+
+=======
         var actualRoom;
         var expectedRoom;
+>>>>>>> 716b723a6fbbf827f06ec1e5dba77a01cc88fad4
         var resource;
         var roomId;
         resources
@@ -358,19 +362,53 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Title: Delete shortcut API  returns the information
      * when delete specific resource from specific room
      */
+<<<<<<< HEAD
+    it.only('Delete a specific resource from specific room', function(done){
+        var testedRoom;
+        var roomId;
+        var testedResource;
+        var testedResourceId;
+
+=======
     it.skip('Delete a specific resource from specific room', function(done){
+>>>>>>> 716b723a6fbbf827f06ec1e5dba77a01cc88fad4
         rooms
-            .updateResourceRoom('12232','24345', token)
+            .getRooms()
             .end(function(err, res){
+                roomId = res.body[0]._id;
+                console.log('DUNO', res.body[0]);
 
-                var status = res.status;
+                rooms
+                    .getRoom(roomId)
+                    .end(function(err, res){
+                        testedRoom = res.body;
+                        console.log('ME NEITHER', testedRoom);
 
-                expect(status).to.equal(404);
-                done();
+                        resources
+                            .createResource(requests.resourceCreate.body, token)
+                            .end(function(err, res){
+                                testedResource = res.body;
+                                testedResourceId = res.body._id;
+                                console.log('THE RESOURCE', testedResource);
 
+                                rooms
+                                    .associateRoom(roomId, testedResource, token)
+                                    .end(function(err, res){
+                                        var roomResourceId = res.body.resources[0]._id;
+                                        console.log(roomResourceId);
+
+                                        rooms
+                                            .deleteResourceRoom(roomId, roomResourceId, token)
+                                            .end(function(err, res){
+
+                                                console.log('LETS CHECK IT', res.body);
+                                                //expect(testedResource).to.not.exist;
+
+                                                done();
+                                            });
+                                    });
+                            });
+                    });
             });
     });
-
-
-
-    });
+});
