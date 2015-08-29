@@ -118,7 +118,7 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Test Case
      * Title: PUT room shortcut API  returns the information from a specific room
      */
-    it.skip('Update a Room', function(done){
+    it('Update a Room', function(done){
         var actualRoom;
         var expectedRoom;
         var roomId;
@@ -153,6 +153,7 @@ describe('Acceptance Test - Conference Rooms', function(){
         var expectedRoom;
         var resource;
         var roomId;
+
         resources
             .createResource(requests.resourceCreate.body, token)
             .end(function(err,res){
@@ -262,7 +263,7 @@ describe('Acceptance Test - Conference Rooms', function(){
          * Title: PUT rooms shortcut  API returns the information
          * when update a specific room of specific service
          */
-        it.skip('Update a room of specific service', function(done) {
+        it('Update a room of specific service', function(done) {
             var serviceId;
             var roomId;
 
@@ -313,7 +314,7 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Title: GET rooms shortcut  API returns the information
      * when gets a specific resource from a specific room
      */
-    it.skip('Get specific resource from a specific room', function(done) {
+    it('Get specific resource from a specific room', function(done) {
         var roomId;
         var serviceId;
         rooms
@@ -337,19 +338,45 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Title: PUT shortcut API  returns the information
      * when update a specific resource from specific room
      */
-    it.skip('Update a specific resource from specific room', function(done){
-        var resource ={
-            "quantity": 5
-        };
+    it('Update a specific resource from specific room', function(done){
         rooms
-            .updateResourceRoom('12232','24345', resource, token)
+            .getRooms()
             .end(function(err, res){
+                var roomId = res.body[0]._id;
 
-                var status = res.status;
+                rooms
+                    .getRoom(roomId)
+                    .end(function(err, res){
+                        var testedRoom = res.body;
 
-                expect(status).to.equal(404);
-                done();
+                        var resourceHelper = {
+                            "name": "TELESCREEN",
+                            "customName": "Telescreen",
+                            "fontIcon": "fa fa-ts",
+                            "from": "",
+                            "description": "This is a television"
+                        };
 
+                        resources
+                            .createResource(resourceHelper, token)
+                            .end(function(err, res){
+                                testedResource = res.body;
+                                testedResourceId = res.body._id;
+
+                                var resourceAssociated = {
+                                    "resourceId":testedResourceId,
+                                    "quantity":1
+                                };
+
+                                rooms
+                                    .associateRoom(roomId, resourceAssociated, token)
+                                    .end(function(err, res){
+                                        expect(res.status).to.equal(200);
+
+                                        done();
+                                    });
+                            });
+                    });
             });
     });
 
@@ -358,19 +385,52 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Title: Delete shortcut API  returns the information
      * when delete specific resource from specific room
      */
-    it.skip('Delete a specific resource from specific room', function(done){
+    it('Delete a specific resource from specific room', function(done){
         rooms
-            .updateResourceRoom('12232','24345', token)
+            .getRooms()
             .end(function(err, res){
+                var roomId = res.body[0]._id;
 
-                var status = res.status;
+                rooms
+                    .getRoom(roomId)
+                    .end(function(err, res){
+                        var testedRoom = res.body;
 
-                expect(status).to.equal(404);
-                done();
+                        var resourceHelper = {
+                            "name": "TELESCREEN",
+                            "customName": "Telescreen",
+                            "fontIcon": "fa fa-ts",
+                            "from": "",
+                            "description": "This is a television"
+                        };
 
+                        resources
+                            .createResource(resourceHelper, token)
+                            .end(function(err, res){
+                                testedResource = res.body;
+                                testedResourceId = res.body._id;
+
+                                var resourceAssociated = {
+                                    "resourceId":testedResourceId,
+                                    "quantity":1
+                                };
+
+                                rooms
+                                    .associateRoom(roomId, resourceAssociated, token)
+                                    .end(function(err, res){
+                                        expect(res.status).to.equal(200);
+
+                                        var roomResourceId = res.body.resources[0]._id;
+
+                                        rooms
+                                            .deleteResourceRoom(roomId, testedResourceId, token)
+                                            .end(function(err, res){
+
+                                                done();
+                                            });
+                                    });
+                            });
+                    });
             });
     });
-
-
-
-    });
+});
