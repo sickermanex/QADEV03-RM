@@ -16,13 +16,13 @@
   "login":"login",
   "authenticationLDAP": "ldap",
 
-
   "_comment": "this data belong to mongo data db",
   "mongoserver" : "172.20.208.142",
   "mongoport" : 27017,
   "nameDataBase" : "roommanager",
   "mongouser" : "room",
   "mongoPassword" : "Control123!",
+  
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
   "setDelayTime":15000,
