@@ -15,7 +15,7 @@ var settings = require('../../settings.json');
 /*
  This test suit is used for acceptance tests on the Room Manager Impersonation feature.
  */
-describe('Room Manager Impersonation Smoke Tests:', function(){
+describe('Room Manager Impersonation Acceptance Tests:', function(){
     this.timeout(settings.setDelayTime);
     this.slow(settings.setErrorMaxTime);
 
