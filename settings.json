@@ -1,16 +1,16 @@
 
 {
-  "server":"172.20.208.113",
-  "domain":"qadev03",
+  "server":"172.20.208.142",
+  "domain":"roompro",
   "port":4040,
 
-  "roomManagerAccount":"userRM01",
+  "roomManagerAccount":"room",
   "roomManagerPassword":"Control123!",
 
   "_comments":"add all data referent about where is installed the exchange server",
-  "exchangeAccount":"administrator",
+  "exchangeAccount":"room",
   "exchangeAccountPassword":"Control123!",
-  "domainExchange": "qadev03.rm",
+  "domainExchange": "roompro.lab",
   "serviceType":"exchange",
 
   "login":"login",
@@ -18,7 +18,7 @@
 
 
   "_comment": "this data belong to mongo data db",
-  "mongoserver" : "172.20.208.113",
+  "mongoserver" : "172.20.208.142",
   "mongoport" : 27017,
   "nameDataBase" : "roommanager",
   "mongouser" : "room",
