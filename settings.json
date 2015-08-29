@@ -22,8 +22,9 @@
   "nameDataBase" : "roommanager",
   "mongouser" : "room",
   "mongoPassword" : "Control123!",
+  
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
   "setDelayTime":15000,
-  "setErrorMaxTime":4000
+  "setErrorMaxTime":4000 
 }
