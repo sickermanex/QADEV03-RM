@@ -6,13 +6,27 @@ var services = require('..\\..\\lib\\servicesLib');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
 
-var roomId = [];
-var roomName = [];
-var roomMail = [];
+var roomsInfo = [];
+var roomId;
+var roomName;
+var roomMail;
 var meetingId;
 var serviceId;
 var authToken;
 var response;
+
+var enabledRooms = function(roomsInfo){
+	for(var i in roomsInfo)
+	{
+		if(roomsInfo[i].enabled)
+		{
+			roomId = roomsInfo[i]._id;
+			roomName = roomsInfo[i].displayName;
+			roomMail = roomsInfo[i].emailAddress;
+			break;
+		}
+	}
+};
 
 describe('..:: Meetings CRUD Test cases ::..',function(){	
 	
@@ -34,8 +48,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	Get the IDs from the exchange service and the rooms
 	*/
 	
-	before('Getting the Service and the Rooms IDs',function(done){
-	
+	before('Getting the Service and the Rooms IDs',function(done){	
 		services
 			.getServicesId(authToken)
 			.end(function(err,res){			
@@ -47,10 +60,9 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 						response = res.body;
 						for(var i in response)
 						{
-							roomId.push(response[i]._id);
-							roomName.push(response[i].displayName);
-							roomMail.push(response[i].emailAddress);							
-						}
+							roomsInfo.push(response[i]);								
+						}						
+						enabledRooms(roomsInfo);
 						done();
 					});
 			});					
@@ -61,7 +73,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	*/	
 	it('READ all the meetings from a room',function(done){
 		meetings			
-			.getAllRoomMeetings(serviceId,roomId[0])
+			.getAllRoomMeetings(serviceId,roomId)
 			.end(function(err,res){
 				response = res.body;					
 				meetingId = response._id;
@@ -77,7 +89,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	*/
 	it('READ a specific meeting',function(done){
 		meetings
-			.getSpecificRoomMeeting(serviceId,roomId[0],meetingId)
+			.getSpecificRoomMeeting(serviceId,roomId,meetingId)
 			.end(function(err,res){
 				response = res.body;
 				expect(response.serviceId).to.equal(serviceId);
@@ -92,12 +104,12 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	*/
 	it('CREATE a new meeting in a specific room',function(done){
 		meetings
-			.createNewMeeting(serviceId,roomId[0],roomName[0],roomMail[0])
+			.createNewMeeting(serviceId,roomId,roomName,roomMail)
 			.end(function(err,res){
-				response = res.body;
+				response = res.body;				
 				meetingId = response._id;
 				expect(response.serviceId).to.equal(serviceId);
-				expect(response.roomId).to.equal(roomId[0]);
+				expect(response.roomId).to.equal(roomId);
 				expect(res.status).to.equal(200);
 				done();
 			});
@@ -108,11 +120,11 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	*/
 	it('UPDATE a specific meeting in a specific room',function(done){			
 		meetings
-			.updateMeeting(serviceId,roomId[0],meetingId,roomName[0],roomMail[0])
+			.updateMeeting(serviceId,roomId,meetingId)
 			.end(function(err,res){
 				response = res.body;				
 				expect(response.serviceId).to.equal(serviceId);
-				expect(response.roomId).to.equal(roomId[0]);
+				expect(response.roomId).to.equal(roomId);
 				expect(response._id).to.equal(meetingId);
 				expect(res.status).to.equal(200);				
 				done();
@@ -125,11 +137,11 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	it('DELETE a specific meeting in a specific room',function(done){
 		
 		meetings
-			.deleteMeeting(serviceId,roomId[0],meetingId)
+			.deleteMeeting(serviceId,roomId,meetingId)
 			.end(function(err,res){
 				response = res.body;				
 				expect(response.serviceId).to.equal(serviceId);
-				expect(response.roomId).to.equal(roomId[0]);
+				expect(response.roomId).to.equal(roomId);
 				expect(response._id).to.equal(meetingId);
 				expect(res.status).to.equal(200);
 				done();

@@ -1,4 +1,3 @@
-
 {
   "server":"172.20.208.142",
   "domain":"roompro",
@@ -16,7 +15,6 @@
   "login":"login",
   "authenticationLDAP": "ldap",
 
-
   "_comment": "this data belong to mongo data db",
   "mongoserver" : "172.20.208.142",
   "mongoport" : 27017,
@@ -24,7 +22,8 @@
   "mongouser" : "room",
   "mongoPassword" : "Control123!",
 
+
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
-  "setDelayTime":5000,
+  "setDelayTime":15000,
   "setErrorMaxTime":4000
 }

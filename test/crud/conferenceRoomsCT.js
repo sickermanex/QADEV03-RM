@@ -11,9 +11,7 @@ var services = require('..\\..\\lib\\servicesLib');
 var resources = require('..\\..\\lib\\resourcesLib');
 var requests = require('..\\..\\requestJSONs\\resourcesRequests');
 var requestroom = require('..\\..\\requestJSONs\\conferenceRoomsRequest');
-
-
-
+var mongoserv = require('..\\..\\lib\\mongoConnection.js');
 
 describe('Acceptance Test - Conference Rooms', function(){
     this.timeout(settings.setDelayTime);
@@ -25,12 +23,22 @@ describe('Acceptance Test - Conference Rooms', function(){
      *
      */
     var token;
+    var roomsDB;
 
     before('Setting the token', function(done){
         tokenLib
             .getToken(done, function(){
                 token = arguments[0];
             });
+    });
+
+    before('Retrieving the rooms from the data base', function(done){
+         mongoserv
+             .getcollection('rooms' ,function(){
+                 roomsDB = arguments[0];
+
+                 done();
+             });
     });
 
     /**
@@ -118,7 +126,7 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Test Case
      * Title: PUT room shortcut API  returns the information from a specific room
      */
-    it.skip('Update a Room', function(done){
+    it('Update a Room', function(done){
         var actualRoom;
         var expectedRoom;
         var roomId;
@@ -129,14 +137,19 @@ describe('Acceptance Test - Conference Rooms', function(){
                 roomId = res.body[0]._id;
                 expectedRoom = res.body[0];
 
+                var updateRoom = {
+                    "enabled": true,
+                    "customDisplayName": "A better name"
+                };
+
                 rooms
-                    .updateRoom(roomId, requestroom.updateRoomById, token)
+                    .updateRoom(roomId, updateRoom, token)
                     .end(function(err, res){
                         var status = res.status;
                         actualRoom = res.body;
 
                         expect(status).to.equal(200);
-                        expect(actualRoom.customDisplayName).to.equal(expectedRoom.customDisplayName);
+                        expect(actualRoom.customDisplayName).to.equal(updateRoom.customDisplayName);
 
                         done();
                     });
@@ -153,6 +166,7 @@ describe('Acceptance Test - Conference Rooms', function(){
         var expectedRoom;
         var resource;
         var roomId;
+
         resources
             .createResource(requests.resourceCreate.body, token)
             .end(function(err,res){
@@ -169,7 +183,7 @@ describe('Acceptance Test - Conference Rooms', function(){
                             .end(function (err, res) {
 
                                 var status = res.status;
-                                actualRoom = res.body
+                                actualRoom = res.body;
 
                                 expect(status).to.equal(200);
                                 expect(expectedRoom._id).to.equal(actualRoom._id);
@@ -190,7 +204,6 @@ describe('Acceptance Test - Conference Rooms', function(){
 
 
     });
-
 
     /**
      * Test Case
@@ -262,7 +275,7 @@ describe('Acceptance Test - Conference Rooms', function(){
          * Title: PUT rooms shortcut  API returns the information
          * when update a specific room of specific service
          */
-        it.skip('Update a room of specific service', function(done) {
+        it('Update a room of specific service', function(done) {
             var serviceId;
             var roomId;
 
@@ -308,69 +321,119 @@ describe('Acceptance Test - Conference Rooms', function(){
             });
     });
 
-    /**
-     * Test Case
-     * Title: GET rooms shortcut  API returns the information
-     * when gets a specific resource from a specific room
-     */
-    it.skip('Get specific resource from a specific room', function(done) {
-        var roomId;
-        var serviceId;
-        rooms
-            .getRooms()
-            .end(function (err, res) {
-                serviceId = res.body[0].serviceId;
-                roomId = res.body[0]._id;
-                rooms
-                    .getResourceRoom(serviceId, roomId)
-                    .end(function (err, res) {
-                        var status = res.status;
+    describe('Rooms and resource interaction', function(){
+        var testedResource;
 
-                        expect(status).to.equal(200);
-                        done();
-                    });
-            });
+        beforeEach('Creating a tested resource', function(done){
+            var resourceRequest = {
+                "name": "Monitor 17",
+                "customName": "monitor 17",
+                "fontIcon": "fa fa-ts",
+                "from": "",
+                "description": "Monitor 17"
+            };
+
+            resources
+                .createResource(resourceRequest, token)
+                .end(function(err, res){
+                    testedResource = res.body;
+                    done();
+                });
+        });
+
+        afterEach('Deleting a tested resource', function(done){
+            resources
+                .deleteResource(testedResource._id, token)
+                .end(function(err, res){
+                    done();
+                });
+        });
+
+        /**
+         * Test Case
+         * Title: GET rooms shortcut  API returns the information
+         * when gets a specific resource from a specific room
+         */
+        it('Get specific resource from a specific room', function(done) {
+            var testedRoom = roomsDB[0];
+
+            rooms
+                .associateRoom(testedRoom._id, testedResource, token)
+                .end(function(err, res){
+                    expect(res.status).to.equal(200);
+
+                    rooms
+                        .getResourceRoom(testedRoom._id, testedResource._id)
+                        .end(function(err, res){
+                            expect(res.status).to.equal(200);
+
+                            done();
+                        });
+
+                });
+        });
+
+        /**
+         * Test Case
+         * Title: PUT shortcut API  returns the information
+         * when update a specific resource from specific room
+         */
+        it('Update a specific resource from specific room', function(done){
+            var testedRoom = roomsDB[0];
+
+            rooms
+                .associateRoom(testedRoom._id, testedResource, token)
+                .end(function(err, res){
+                    expect(res.status).to.equal(200);
+
+                    var associatedResourceId = res.body.resources[0]._id;
+                    var testedRoomId = testedRoom._id;
+                    var testedResourceId = testedResource._id;
+                    var resourceChange = {
+                        "quantity": 10
+                    };
+                    //console.log('ROOM ID', testedRoomId);
+                    //console.log('RESOURCE ID', testedResourceId);
+                    //console.log('ASSOCIATED ID', associatedResourceId);
+
+                    rooms
+                        .updateResourceRoom(testedRoomId, associatedResourceId, resourceChange, token)
+                        .end(function(err, res){
+
+                            done();
+                        });
+
+                });
+        });
+
+        /**
+         * Test Case
+         * Title: Delete shortcut API  returns the information
+         * when delete specific resource from specific room
+         */
+        it('Delete a specific resource from specific room', function(done){
+            var testedRoom = roomsDB[0];
+
+            var resourceAssociatedRequest = {
+                "resourceId":testedResource._id,
+                "quantity":3
+            };
+
+            rooms
+                .associateRoom(testedRoom._id, resourceAssociatedRequest, token)
+                .end(function(err, res){
+                    expect(res.status).to.equal(200);
+
+                    var associatedResourceId = res.body.resources[0]._id;
+                    var testedRoomId = testedRoom._id;
+
+                    rooms
+                        .deleteResourceRoom(testedRoomId, associatedResourceId, token)
+                        .end(function(err, res){
+
+                            done();
+                        });
+                });
+        });
     });
-
-    /**
-     * Test Case
-     * Title: PUT shortcut API  returns the information
-     * when update a specific resource from specific room
-     */
-    it.skip('Update a specific resource from specific room', function(done){
-        var resource ={
-            "quantity": 5
-        };
-        rooms
-            .updateResourceRoom('12232','24345', resource, token)
-            .end(function(err, res){
-
-                var status = res.status;
-
-                expect(status).to.equal(404);
-                done();
-
-            });
-    });
-
-    /**
-     * Test Case
-     * Title: Delete shortcut API  returns the information
-     * when delete specific resource from specific room
-     */
-    it.skip('Delete a specific resource from specific room', function(done){
-        rooms
-            .updateResourceRoom('12232','24345', token)
-            .end(function(err, res){
-
-                var status = res.status;
-
-                expect(status).to.equal(404);
-                done();
-
-            });
-    });
-
-
-
-    });
+});

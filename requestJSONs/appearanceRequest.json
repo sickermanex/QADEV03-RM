@@ -1,5 +1,17 @@
 {
   "appearanceBlue" : {
     "tabletColorPalette":"blue"
+  },
+  "appearanceRed" : {
+    "tabletColorPalette":"red"
+  },
+  "appearanceGreen" : {
+    "tabletColorPalette":"green"
+  },
+  "appearanceOrange" : {
+  "tabletColorPalette":"orange"
+  },
+  "appearancePurple" : {
+    "tabletColorPalette":"purple"
   }
 }

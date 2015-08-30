@@ -1,6 +1,6 @@
 {
   "updateRoomById": {
-    "enabled": false,
+    "enabled": true,
     "customDisplayName": "A better name"
   }
 }
