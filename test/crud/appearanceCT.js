@@ -1,5 +1,5 @@
 /**
- * Created by Pedrofuentes on 8/25/2015.
+ * Created by Pedrofuentes on 8/28/2015.
  */
 var request = require('superagent');
 (require('superagent-proxy'))(request);
@@ -9,7 +9,7 @@ var appearanceRequest = require('../../requestJSONs/appearanceRequest.json');
 var settings = require('../../settings.json');
 var tokenLib = require('../../lib/tokenLib');
 
-describe('Room Manager Tablet appearance Smoke Tests:', function(){
+describe('Room Manager Tablet appearance Acceptance Tests:', function(){
     this.timeout(settings.setDelayTime);
     this.slow(settings.setErrorMaxTime);
 
@@ -27,32 +27,47 @@ describe('Room Manager Tablet appearance Smoke Tests:', function(){
     });
 
     /*
-     This test case is to verify that the appearance panel API is present in the Room Manager API.
-     For this the status response has to be lower than 500.
+     This test case is to verify that the API can get the appearance tablet configuration panel.
      */
     it('Get appearance panel', function(done){
+        var expectedResponse = {
+            "authentication":"credentials",
+            "daysWarningExpirationDateAccount":5
+        };
+        var actualResponse = '';
+
         appearanceLib
             .getAppearancePanel(token)
             .end(function(err, res){
+                actualResponse = res.body;
+
                 expect(err).to.be.not.OK;
-                expect(res.status).to.be.below(500);
+                expect(res.status).to.equal(200);
+                expect(expectedResponse.authentication).to.equal(actualResponse.authentication);
+                expect(expectedResponse.daysWarningExpirationDateAccount).to.equal(actualResponse.daysWarningExpirationDateAccount);
 
                 done();
             });
     });
 
     /*
-     This test case is to verify that the appearance color set API is present in the Room Manager API.
-     For this the status response has to be lower than 500.
+     This test case is to verify that the API can set the tablet's appearance color.
      */
     it('Set appearance color', function(done){
-        var appearanceColor = appearanceRequest.appearanceBlue;
+        var appearanceColor = {
+            "tabletColorPalette":"green"
+        };
+        var expectedColor = "green";
+        var actualColor = '';
 
         appearanceLib
             .setColorAppearance(token, appearanceColor)
             .end(function(err, res){
+                actualColor = res.body.tabletColorPalette;
+
                 expect(err).to.be.not.OK;
-                expect(res.status).to.be.below(500);
+                expect(res.status).to.equal(200);
+                expect(actualColor).to.equal(expectedColor);
 
                 done();
             });
