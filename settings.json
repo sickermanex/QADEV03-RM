@@ -1,4 +1,3 @@
-
 {
   "server":"172.20.208.142",
   "domain":"roompro",
@@ -22,7 +21,7 @@
   "nameDataBase" : "roommanager",
   "mongouser" : "room",
   "mongoPassword" : "Control123!",
-  
+
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
   "setDelayTime":15000,
