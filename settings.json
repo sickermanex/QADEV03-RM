@@ -15,12 +15,17 @@
   "login":"login",
   "authenticationLDAP": "ldap",
 
+<<<<<<< HEAD
   "_comment": "this data belong to mongo db",
+=======
+  "_comment": "this data belong to mongo data db",
+>>>>>>> cd18d50d3cfbff18d05ab163ea431a7827b4e0b8
   "mongoserver" : "172.20.208.142",
   "mongoport" : 27017,
   "nameDataBase" : "roommanager",
   "mongouser" : "room",
   "mongoPassword" : "Control123!",
+  
 
   "commentTimmings":"THIS IS THE INFORMATION FOR TIMMERS USED IN THE TEST",
   "setDelayTime":5000,
