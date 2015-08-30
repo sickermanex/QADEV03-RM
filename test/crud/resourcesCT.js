@@ -1,14 +1,12 @@
 //acceptance test
 
 var expect = require('chai').expect;
-var mongodb = require('mongodb');
-var mongoClient = mongodb.MongoClient;
-var ObjectId = mongodb.ObjectID;
 
 var resources = require('..\\..\\lib\\resourcesLib');
 var requests = require('..\\..\\requestJSONs\\resourcesRequests');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
+var mongoserv = require('..\\..\\lib\\mongoConnection.js');
 
 describe('Acceptance Test Cases - Resources', function() {
     this.timeout(settings.setDelayTime);
@@ -16,6 +14,7 @@ describe('Acceptance Test Cases - Resources', function() {
     var token;
     var expectedResult;
     var resourceId;
+    var expectedResources;
 
     /**
      * Get a token
@@ -78,6 +77,7 @@ describe('Acceptance Test Cases - Resources', function() {
     });
 
     describe('Read and Update operations', function () {
+
         /**
          * Create a resource for each test
          */
@@ -130,17 +130,35 @@ describe('Acceptance Test Cases - Resources', function() {
         /**
          *Test Case
          * Title: GET resources api returns the information of all the resources
+         * The DB is used in this test case
          */
         it('Get all Resources', function(done){
             resources
                 .getResources()
                 .end(function (err, res) {
                     var status = res.status;
-
+                    var actualResources = res.body;
 
                     expect(status).to.equal(200);
 
-                    done();
+                    mongoserv
+                        .getcollection('resourcemodels',function(){
+                            expectedResources = arguments[0];
+
+                            expect(actualResources.length).to.equal(expectedResources.length);
+
+                            for(var i = 0; i < actualResources.length; i++){
+                                expect(actualResources[i]._id).to.equal(expectedResources[i]._id.toString());
+                                expect(actualResources[i].name).to.equal(expectedResources[i].name);
+                                expect(actualResources[i].customName).to.equal(expectedResources[i].customName);
+                                expect(actualResources[i].fontIcon).to.equal(expectedResources[i].fontIcon);
+                                expect(actualResources[i].from).to.equal(expectedResources[i].from);
+                                expect(actualResources[i].description).to.equal(expectedResources[i].description);
+
+                            };
+
+                            done();
+                        });
                 });
         });
 
@@ -227,12 +245,3 @@ describe('Acceptance Test Cases - Resources', function() {
         });
     });
 });
-
-
-
-
-
-
-
-
-
