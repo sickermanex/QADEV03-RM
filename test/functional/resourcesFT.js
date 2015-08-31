@@ -283,7 +283,6 @@ describe('Assigning Resources', function () {
                 resources
                     .createResource(requests.resourceScenario2.body,token)
                     .end(function (err, res) {
-                        //status = res.status;
                         resourceCreated = res.body;
                         expect(res.status).to.equal(200);
                         
@@ -372,7 +371,6 @@ describe('Assigning Resources', function () {
                     .getRooms()
                     .end(function (err, res) {
                         allRooms = res.body;
-                        //console.log('s '+ res.status);
 
                         for(var i = 0; i < allRooms.length; i++){
                             if(allRooms[i].customDisplayName == requests
@@ -381,9 +379,8 @@ describe('Assigning Resources', function () {
                         };
 
                         resources
-                            .createResource(requests.resourceCreate.body, token)
+                            .createResource(requests.resourceScenario.body, token)
                             .end(function (err1, res1) {
-                                //console.log('s1 '+ res1.status);
                                 resourceCreatedAlready = res1.body;
 
                                 var assign = {"associations":[{"resourceId":resourceCreatedAlready._id,
@@ -433,7 +430,6 @@ describe('Assigning Resources', function () {
                         "fontIcon":resourceCreated.fontIcon,
                         "quantity":"0"}]};
 
-
                     rooms
                         .getRoom(selectedRoom._id)
                         .end(function (err, res) {
@@ -461,7 +457,7 @@ describe('Assigning Resources', function () {
                                 "name":resourceCreatedAlready.name,
                                 "customName":resourceCreatedAlready.customName,
                                 "fontIcon":resourceCreatedAlready.fontIcon,
-                                "quantity":"2"}
+                                "quantity":"3"}
                             ]};
 
                         rooms
@@ -506,39 +502,117 @@ describe('Assigning Resources', function () {
     });
 
 
-    describe('Scenario 3: Assign a resource that has a long name to a conference room with no resources', function () {
-        context('Given there is a conference room "Conference Room 1"? with no resources assigned', function () {
+    describe('Scenario 3: Assign a resource that has a long name to a conference ' +
+        'room with no resources', function () {
+        var allRooms;
+        var selectedRoom;
+        var resourceCreated;
 
-            it('And a resource "thisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroom" exits', function () {
+        context('Getting the room "Conference Room 1"', function () {
 
+            before('Getting the room "Conference Room 1 and ' +
+                'assigning a resource"', function (done) {
+                rooms
+                    .getRooms()
+                    .end(function (err, res) {
+                        allRooms = res.body;
+
+                        for(var i = 0; i < allRooms.length; i++){
+                            if(allRooms[i].customDisplayName == requests
+                                    .roomCustomName.customDisplayName)
+                                selectedRoom = allRooms[i];
+                        };
+
+                        done();
+                    });
             });
+
+            after('Deleting resource created', function (done) {
+                resources
+                    .deleteResource(resourceCreated._id, token)
+                    .end(function (err, res) {
+                        done();
+                    });
+            });
+
+            it('And a resource "thisisanewreourceswithareallylongnamethatwill' +
+                'beassignedtoaconferenceroom" exits', function (done) {
+                resources
+                    .createResource(requests.resourceScenario3.body,token)
+                    .end(function (err, res) {
+                        resourceCreated = res.body;
+                        expect(res.status).to.equal(200);
+
+                        done();
+                    });
+            });
+
             context('When the resource is assigned to the room', function () {
+                before('Assigning resource to "Conference Room 1"', function (done) {
+                    var assign = {"associations":[{"resourceId":resourceCreated._id,
+                        "name":resourceCreated.name,
+                        "customName":resourceCreated.customName,
+                        "fontIcon":resourceCreated.fontIcon,
+                        "quantity":"0"}]};
 
-                it('And the quantity assigned of the resource is 2', function () {
-
-
+                    rooms
+                        .associateRoomAnother(selectedRoom._id, assign, token)
+                        .end(function (err, res) {
+                            expect(res.status).to.equal(200);
+                            done();
+                        });
                 });
 
-                it('Then ensure that a response with status code 200 is returned', function () {
+                context('And the quantity assigned of the resource is 2', function () {
+                    var status;
 
+                    before('Assigning the quantity of 2 to "computer"', function (done) {
+                        var assign = {"associations":[{"resourceId":resourceCreated._id,
+                            "name":resourceCreated.name,
+                            "customName":resourceCreated.customName,
+                            "fontIcon":resourceCreated.fontIcon,
+                            "quantity":"2"}]};
+
+                        rooms
+                            .associateRoomAnother(selectedRoom._id, assign, token)
+                            .end(function (err, res) {
+                                status = res.status;
+                                done();
+                            });
+                    });
+
+                    it('Then ensure that a response with status code ' +
+                        '200 is returned', function (done) {
+                        expect(status).to.equal(200);
+                        done();
+
+                    });
+
+                    it('And ensure the "thisisanewreourceswithareallylongnamethatwil' +
+                        'lbeassignedtoaconferenceroom" ' +
+                        'is associated with the room "Conference Room 1"', function (done) {
+                        rooms
+                            .getRoom(selectedRoom._id)
+                            .end(function (err, res) {
+                                selectedRoom = res.body;
+
+                                expect(selectedRoom.resources[0].resourceId).to.equal(resourceCreated._id);
+                                expect(resourceCreated.name).to.equal("thisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroom");
+
+                                done();
+                            });
+
+                    });
+
+                    it('And ensure the quantity of computer is 2', function (done) {
+                        expect(selectedRoom.resources[0].quantity).to.equal(2);
+                        done();
+                    });
 
                 });
-
-                it('And ensure the "thisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroom" ' +
-                    'is associated with the room "Conference Room 1"?', function () {
-
-                });
-
-                it('And ensure the quantity of computer is 2', function () {
-
-                });
-
             });
         });
     });
-
-
-
 });
 
 
