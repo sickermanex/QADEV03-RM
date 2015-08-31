@@ -276,6 +276,14 @@ describe('Assigning Resources', function () {
                     });
             });
 
+            after('Deleting resource created', function (done) {
+                resources
+                    .deleteResource(resourceCreated._id, token)
+                    .end(function (err, res) {
+                        done();
+                    });
+            });
+
             it('And a resource "computer" exits', function (done) {
                 resources
                     .createResource(requests.resourceScenario2.body,token)
@@ -290,20 +298,79 @@ describe('Assigning Resources', function () {
             context('When the "computer" is assigned to the room', function () {
                 
                 before('Assigning "computer" to "Conference Room 1"', function (done) {
-                    var assign = {"resourceId": resourceCreated._id,
-                        "quantity": "2"};
-                    //assign.resourceId.replace("[resourceId]", resourceCreated._id);
-                    console.log(assign);
+                    var assign = {"associations":[{"resourceId":resourceCreated._id,
+                        "name":"tv",
+                        "customName":"tv",
+                        "fontIcon":"fa fa-desktop",
+                        "quantity":"0"}]};
 
                     rooms
-                        .associateRoom(selectedRoom._id, assign, token)
+                        .associateRoomAnother(selectedRoom._id, assign, token)
                         .end(function (err, res) {
                             expect(res.status).to.equal(200);
                             done();
                         });
                 });
 
-                it('And the quantity assigned of "computer" is 2', function () {
+                context('And the quantity assigned of "computer" is 2', function () {
+                    var status;
+
+                    before('Assigning the quantity of 2 to "computer"', function (done) {
+                        var assign = {"associations":[{"resourceId":resourceCreated._id,
+                            "name":"tv",
+                            "customName":"tv",
+                            "fontIcon":"fa fa-desktop",
+                            "quantity":"2"}]};
+
+                        rooms
+                            .associateRoomAnother(selectedRoom._id, assign, token)
+                            .end(function (err, res) {
+                                status = res.status;
+
+                                done();
+                            });
+                    });
+
+                    it('Then ensure that a response with status code 200 is returned', function (done) {
+                        expect(status).to.equal(200);
+                        done();
+
+                    });
+
+                    it('And ensure the "computer"? is associated with the room "Conference Room 1"?', function (done) {
+                        rooms
+                            .getRoom(selectedRoom._id)
+                            .end(function (err, res) {
+                                selectedRoom = res.body;
+
+                                expect(selectedRoom.resources[0].resourceId).to.equal(resourceCreated._id);
+                                expect(resourceCreated.name).to.equal("computer");
+
+                                done();
+                            });
+
+
+                    });
+
+                    it('And ensure the quantity of "computer" is 2', function (done) {
+                        expect(selectedRoom.resources[0].quantity).to.equal(2);
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
+
+    describe('Scenario 2: Assigning resource to a conference room with resources', function () {
+        context('Given there is a conference room "Conference Room 1"? with resources assigned', function () {
+
+            it('And a resource "computer"? exits', function () {
+
+            });
+            context('When the "computer"? is assigned to the room', function () {
+
+                it('And the quantity assigned of "computer"? is 2', function () {
 
 
                 });
@@ -317,37 +384,6 @@ describe('Assigning Resources', function () {
 
                 });
 
-                it('And ensure the quantity of "computer" is 2', function () {
-
-                });
-
-            });
-        });
-    });
-
-
-    describe('Scenario 2: Assigning resource to a conference room with resources', function () {
-        context('Given there is a conference room â€œConference Room 1â€? with resources assigned', function () {
-
-            it('And a resource â€œcomputerâ€? exits', function () {
-
-            });
-            context('When the â€œcomputerâ€? is assigned to the room', function () {
-
-                it('And the quantity assigned of â€œcomputerâ€? is 2', function () {
-
-
-                });
-
-                it('Then ensure that a response with status code 200 is returned', function () {
-
-
-                });
-
-                it('And ensure the â€œcomputerâ€? is associated with the room â€œConference Room 1â€?', function () {
-
-                });
-
                 it('And ensure the quantity of computer is 2', function () {
 
                 });
@@ -358,9 +394,9 @@ describe('Assigning Resources', function () {
 
 
     describe('Scenario 3: Assign a resource that has a long name to a conference room with no resources', function () {
-        context('Given there is a conference room â€œConference Room 1â€? with no resources assigned', function () {
+        context('Given there is a conference room "Conference Room 1"? with no resources assigned', function () {
 
-            it('And a resource â€œthisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroomâ€? exits', function () {
+            it('And a resource "thisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroom" exits', function () {
 
             });
             context('When the resource is assigned to the room', function () {
@@ -375,7 +411,8 @@ describe('Assigning Resources', function () {
 
                 });
 
-                it('And ensure the â€œthisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroomâ€? is associated with the room â€œConference Room 1â€?', function () {
+                it('And ensure the "thisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroom" ' +
+                    'is associated with the room "Conference Room 1"?', function () {
 
                 });
 
