@@ -32,7 +32,7 @@
   "_id": "123456"
   },
   "resourceScenario": {
-    "_comments": "body to create a resource for scenarios",
+    "_comments": "body to create the resource Android for scenarios",
     "body": {
       "name": "Android",
       "customName": "Android",
@@ -67,7 +67,7 @@
 
   },
   "resourceScenario2": {
-    "_comments": "body to create a resource for scenarios",
+    "_comments": "body to create the resource computer for scenarios",
     "body": {
       "name": "computer",
       "customName": "computer",
@@ -76,11 +76,14 @@
       "description": ""
     }
   },
-  "resourceAssignment": {
-    "_comments": "body to assign a resource to a room",
+  "resourceScenario3": {
+    "_comments": "body to create a resource with long for scenarios",
     "body": {
-      "resourceId": "[resourceId]",
-      "quantity": "2"
+      "name": "thisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroom",
+      "customName": "thisisanewreourceswithareallylongnamethatwillbeassignedtoaconferenceroom",
+      "fontIcon": "fa fa-puzzle-piece",
+      "from": "",
+      "description": ""
     }
   }
 }
