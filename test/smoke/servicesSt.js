@@ -150,7 +150,7 @@ describe('Room Manager Services Smoke Tests:', function() {
          *this test cases add a new services
          * end point : '/services?type={service type} '
          */
-        it('the API to be add/post a service exist', function(done){
+        it('6. the API to be add/post a service exist', function(done){
             servicesLib
                 .postservices(token,serviceType,loginExchange)
                 .end(function(err, res){
