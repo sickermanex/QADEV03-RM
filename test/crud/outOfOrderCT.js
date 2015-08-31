@@ -8,7 +8,7 @@ var outOfOrders = require('..\\..\\lib\\outOfOrderlib');
 var content = require('..\\..\\lib\\outOfOrderlib');
 var tokenLib =require('..\\..\\lib\\tokenLib');
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+var mongoserv = require('..\\..\\utils\\mongoConnection.js');
 var token;
 /*
  The before method creates a token that is stored in the "token" global variable, and it's used

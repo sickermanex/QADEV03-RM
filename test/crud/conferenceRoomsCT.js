@@ -11,7 +11,7 @@ var services = require('..\\..\\lib\\servicesLib');
 var resources = require('..\\..\\lib\\resourcesLib');
 var requests = require('..\\..\\requestJSONs\\resourcesRequests');
 var requestroom = require('..\\..\\requestJSONs\\conferenceRoomsRequest');
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+var mongoserv = require('..\\..\\utils\\mongoConnection.js');
 
 describe('Acceptance Test - Conference Rooms', function(){
     this.timeout(settings.setDelayTime);

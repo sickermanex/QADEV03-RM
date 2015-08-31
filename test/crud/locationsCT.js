@@ -2,7 +2,7 @@ var expect =  require('chai').expect;
 var locationsLib = require('..\\..\\lib\\locationsLib.js');
 var tokenLib = require('..\\..\\lib\\tokenLib.js');
 var settings = require('..\\..\\settings.json')
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+var mongoserv = require('..\\..\\utils\\mongoConnection.js');
 describe('Locations CRUD Tests',function(){
     this.timeout(settings.setDelayTime);
     this.slow(settings.setErrorMaxTime);
@@ -31,7 +31,6 @@ describe('Locations CRUD Tests',function(){
                     var response = response;
                     locationId = response.body._id;
                     expect(response.status).to.be.equal(200);
-                    console.log('Status: ', response.status);
                     locationsLib
                         .getLocations(locationId)
                         .end(function(error, response) {
@@ -39,7 +38,6 @@ describe('Locations CRUD Tests',function(){
                             expect(response.body.name).to.be.equal(location.name);
                             expect(response.body.customName).to.be.equal(location.customName);
                             expect(response.body.description).to.be.equal(location.description);
-                            console.log('Body: ', response.body);
                             done();
                         });
                 });
@@ -54,8 +52,6 @@ describe('Locations CRUD Tests',function(){
                     expect(response.body.name).to.be.equal(location.name);
                     expect(response.body.customName).to.be.equal(location.customName);
                     expect(response.body.description).to.be.equal(location.description);
-                    console.log('Body: ', response.body);
-                    console.log('Status: ', response.status);
                     done();
                 });
         });
@@ -70,7 +66,6 @@ describe('Locations CRUD Tests',function(){
                 .end(function(error, response){
                     var response = response;
                     expect(response.status).to.be.equal(200);
-                    console.log('Status: ', response.status);
                     locationsLib
                         .getLocations(locationId)
                         .end(function(error, response) {
@@ -78,7 +73,6 @@ describe('Locations CRUD Tests',function(){
                             expect(response.body.name).to.be.equal(location.name);
                             expect(response.body.customName).to.be.equal(location.customName);
                             expect(response.body.description).to.be.equal(location.description);
-                            console.log('Body: ', response.body);
                             done();
                         });
                 });
@@ -93,13 +87,10 @@ describe('Locations CRUD Tests',function(){
                     expect(response.body.name).to.be.equal(location.name);
                     expect(response.body.customName).to.be.equal(location.customName);
                     expect(response.body.description).to.be.equal(location.description);
-                    console.log('Body: ', response.body);
-                    console.log('Status: ', response.status);
                     locationsLib
                         .getLocations(locationId)
                         .end(function(error, response) {
                             expect(response.status).to.be.equal(404);
-                            console.log('Server response after search the location that was removed: ', response.status);
                             done();
                         });
                 });
@@ -137,7 +128,6 @@ describe('Locations CRUD Tests',function(){
                     }
                     expect(response.status).to.be.equal(200);
                     expect(response.body.length).to.be.equal(listLocation.length);
-                    console.log('Body: ', response.body);
                     done();
                 });
         });
