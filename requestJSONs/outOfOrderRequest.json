@@ -1,0 +1,15 @@
+{
+  "newOutOfOrder":{
+  "from": "[date]",
+  "to": "[date]",
+  "title": "Temporarily Out of Order",
+  "sendEmail": false,
+  "roomId" : "[roomId]"
+},
+  "updateOutOfOrder":{
+    "from": "",
+    "to": "",
+    "title": "Closed for reparations",
+    "sendEmail": false
+  }
+}
