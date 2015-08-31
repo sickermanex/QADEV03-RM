@@ -7,7 +7,6 @@ var outOfOrders = require('..\\..\\lib\\outOfOrderlib');
 var content = require('..\\..\\lib\\outOfOrderlib');
 var tokenLib =require('..\\..\\lib\\tokenLib');
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
 var token;
 /*
  The before method creates a token that is stored in the "token" global variable, and it's used
@@ -28,10 +27,6 @@ before('Setting the token', function(done){
  Then ensure that a response with status code 4xx is returned
  And ensure that an out-of-order is not associated at room
 * */
-/**
- * Created by Aleida on 21/08/2015.
- */
-/* Out of order Smoke Test*/
 
 describe('There is a conference room “Conference Room xxx” ', function() {
     /*Variables
