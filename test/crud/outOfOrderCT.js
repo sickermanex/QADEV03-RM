@@ -5,10 +5,10 @@
 var expect = require('chai').expect;
 var config = require('..\\..\\settings.json');
 var outOfOrders = require('..\\..\\lib\\outOfOrderlib');
-var content = require('..\\..\\lib\\outOfOrderRequestLib');
+var content = require('..\\..\\lib\\outOfOrderlib');
 var tokenLib =require('..\\..\\lib\\tokenLib');
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
-
+var mongoserv = require('..\\..\\lib\\mongoConnection.js');
 var token;
 /*
  The before method creates a token that is stored in the "token" global variable, and it's used
@@ -20,6 +20,7 @@ before('Setting the token', function(done){
             token = arguments[0];
         });
 
+
 });
 
 describe('CRUD Test Cases- Out of order', function() {
@@ -29,49 +30,44 @@ describe('CRUD Test Cases- Out of order', function() {
     * arrayOutIDs- the list of ids of out-of-order
     * OutByRoomIDs- the list of ids "out-of-orders" by room
     * */
-    var roomId;
-    var servId;
-    var oooId;
+    var roomID;
+    var servID;
+    var oooID;
     var arrayOutIDs = [];
     var OutByRoomIDs = [];
     this.timeout(config.setDelayTime);
     this.slow(config.setErrorMaxTime);
 
+    /*variable to test case delete*/
+    var actualResDel;
+
     /**Test Case
      *Title: POST-Create a out of order from a room from a service
      */
     it('POST-Create a out of order from a specific room from a specific service', function(done){
-        /**/
         rooms
         .getRooms()
             .end(function(error,resp){
-                roomId = resp.body[0]._id;
-                servId =resp.body[0].serviceId;
-                var res = content.getContentCreate(roomId);
-                var res1 = content.getCont();
+                roomID = resp.body[0]._id;
+                servID =resp.body[0].serviceId;
+                var res = content.getContentCreate(roomID);
                     outOfOrders
-                      .createOutOfOrder(servId,roomId,res,token)
+                      .createOutOfOrder(servID,roomID,res,token)
                       .end(function(err, res){
-                      var expectedResult = res.body;
-                      oooId = res.body._id;
+                      var expectResult = res.body;
+                      oooID = res.body._id;
                       expect(res.status).to.equal(200);
                       outOfOrders
-                      .getOutOfOrderById(servId, roomId, oooId)
+                      .getOutOfOrderById(servID, roomID, oooID)
                       .end(function (error, resp) {
                            var actualResult = resp.body;
+                                actualResDel = resp.body;
                                     expect(resp.status).to.equal(200);
                                     expect(error).to.be.OK;
-                                    expect(actualResult._id).to.equal(expectedResult._id);
-                                    expect(actualResult.roomId).to.equal(expectedResult.roomId);
-                                    expect(actualResult.title).to.equal(expectedResult.title);
-
-                                    outOfOrders
-                                        .deleteOutOfOrder(servId, roomId, token, oooId)
-                                        .end(function (er, re) {
-                                            var response = re.status;
-                                            expect(response).to.equal(200);
-                                            done();
-                                        });
+                                    expect(actualResult._id).to.equal(expectResult._id);
+                                    expect(actualResult.roomId).to.equal(expectResult.roomId);
+                                    expect(actualResult.title).to.equal(expectResult.title);
+                                done();
                                 });
                         });
                 });
@@ -81,35 +77,33 @@ describe('CRUD Test Cases- Out of order', function() {
      */
         it('DELETE a "out of order" by id from a specific room from a specific service', function(done) {
             /*Test Case*/
-            rooms
-                .getRooms()
-                .end(function (error, resp) {
-                    roomId = resp.body[0]._id;
-                    servId = resp.body[0].serviceId;
-                    var contentBody = content.getContentCreate(roomId);
-                    outOfOrders
-                        .createOutOfOrder(servId, roomId, contentBody, token)
-                        .end(function (err, res) {
-                            var expectedResult = res.body;
-                            oooId = res.body._id;
-                            outOfOrders
-                                .deleteOutOfOrder(servId, roomId, token, oooId)
-                                .end(function (er, re) {
-                                    var actualResult = re.body;
-                                    var response = re.status;
-                                    expect(response).to.equal(200);
-                                    expect(actualResult.roomId).to.equal(expectedResult.roomId);
-                                    expect(actualResult.title).to.equal(expectedResult.title);
+            outOfOrders
+            .deleteOutOfOrder(servID, roomID, token, oooID)
+            .end(function (er, re) {
+                  var expectResult = re.body;
+                  var response = re.status;
+                  expect(response).to.equal(200);
+                  expect(expectResult.roomId).to.equal(actualResDel.roomId);
+                  expect(expectResult.title).to.equal(actualResDel.title);
 
-                                   done();
-                                });
+                  outOfOrders
+                        .getOutOfOrderById(servID, roomID, oooID)
+                        .end(function (error, resp) {
+                            var actualResult = resp.body;
+                            expect(resp.status).to.equal(404);
+
+                            done();
                         });
-                });
+                  });
         });
     /*DESCRIBE-CRUD test cases for: UPDATE and GETs with precondition
     * */
     describe('CRUD test cases for: UPDATE and GETs with precondition' , function () {
         /*Pre condition-Create a out of order on a specific room */
+        /*Variables for this describe */
+        var roomId;
+        var servId;
+        var oooId;
         before('Before for update and GETs by id',function(done) {
             rooms
                 .getRooms()
@@ -138,6 +132,9 @@ describe('CRUD Test Cases- Out of order', function() {
          */
         it('GET all out of order', function (done) {
             var arrayOut = [];
+            var arrayOutsBD;
+            var idList;
+            var roomidBD;
             outOfOrders
                 .getOutOfOrders()
                 .end(function (error, resp) {
@@ -147,10 +144,26 @@ describe('CRUD Test Cases- Out of order', function() {
                     arrayOut.forEach(function(outOO){
                         arrayOutIDs.push(outOO._id);
                     });
+                    /*Using MongoDB */
+                    mongoserv
+                        .getcollection('outoforders',function(){
+                            arrayOutsBD = arguments[0];
+                            for(var i = 0; i < arrayOutsBD.length; i++)
+                            {
+                                idList = arrayOut[i]._id;
+                                idList = idList.toString();
+                                roomidBD = arrayOutsBD[i].roomId;
+                                roomidBD = roomidBD.toString();
+                                expect(arrayOut[i]._id).to.be.equal(idList);
+                                expect(arrayOut[i].title).to.be.equal(arrayOutsBD[i].title);
+                                expect(arrayOut[i].roomId).to.be.equal(roomidBD);
+                            }
+                            expect(resp.status).to.be.equal(200);
+                            expect(arrayOut.length).to.be.equal(arrayOutsBD.length);
+                        });
                     done();
                 });
         });
-
         /**Smoke Test Case
          *Title: GET a out of order from a specific room from a specific service
          */
@@ -207,7 +220,6 @@ describe('CRUD Test Cases- Out of order', function() {
                         expect(error).to.be.OK;
                         expect(actualResult._id).to.equal(expectedResult._id);
                         expect(actualResult.roomId).to.equal(expectedResult.roomId);
-                        expect(actualResult.title).to.equal(expectedResult.title);
                         expect(actualResult.from).to.equal(expectedResult.from);
                         expect(actualResult.to).to.equal(expectedResult.to);
                         done();
