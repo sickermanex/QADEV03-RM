@@ -6,7 +6,7 @@ var resources = require('..\\..\\lib\\resourcesLib');
 var requests = require('..\\..\\requestJSONs\\resourcesRequests');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+var mongoserv = require('..\\..\\utils\\mongoConnection.js');
 
 describe('Acceptance Test Cases - Resources', function() {
     this.timeout(settings.setDelayTime);

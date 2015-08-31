@@ -6,7 +6,7 @@ var expect = require('chai').expect;
 var servicesLib = require('..\\..\\lib\\servicesLib');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+var mongoserv = require('..\\..\\utils\\mongoConnection.js');
 
 
 /**
