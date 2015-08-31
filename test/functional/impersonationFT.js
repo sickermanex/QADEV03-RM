@@ -13,20 +13,6 @@ var services = require('../../lib/servicesLib');
 var rooms = require('../../lib/conferenceRoomsLib');
 var meetingLib = require('../../lib/meetingsLib');
 var settings = require('../../settings.json');
-// Story: Creating meetings using impersonation options.
-//     As an organizer I want to create a meeting
-// So, I don’t need to use another email client to create a meeting
-//
-// Scenario 1: Impersonation is OFF, and the Conference Room doesn't have meetings
-// Given Impersonation is OFF
-// And the conference room doesn't have meetings created
-// And the room manager account has permissions to create meeting over the conference room
-// When the organizer requests the creation of a meeting specifying
-// -	Organizer account
-// -	Title
-// -	One Attendee
-// Then ensure that a response with code status 200 is returned
-// And ensure the response body values are correct
 
 describe('Create meetings using impersonation options, as a organizer' +
     ' I want to create a meeting, so I don\'t need to use another email client' +
@@ -36,11 +22,19 @@ describe('Create meetings using impersonation options, as a organizer' +
 
     var token = '';
     var serviceId = '';
-    var roomId = '';
-    var impReq = '';
+    var room = '';
+    var impReq;
 
     var contentTypeInfo = impersonationRequest.ContentType;
     var authenticationState = impersonationRequest.authenticationSettings;
+
+    var roomId;
+    var roomName = '';
+    var roomMail = '';
+    var status = 0;
+
+    var impersonationState;
+    var meeting;
 
     before('Setting the token', function(done){
         tokenLib
@@ -58,20 +52,26 @@ describe('Create meetings using impersonation options, as a organizer' +
                 rooms
                     .getRooms()
                     .end(function(err, res){
-                        roomId = res.body[0]._id;
-
+                        room = res.body[0];
+                        console.log('THE FIRST ROOM', room);
+                        roomId = room._id;
+                        roomName = room.displayName;
+                        roomMail = room.emailAddress;
+                        console.log('THE TOKEN', token);
                         done();
                     });
             });
     });
 
     context('Scenario 1: Impersonation is OFF', function(){
-        beforeEach('Setting impersonation OFF', function(done){
+
+        before('Setting impersonation OFF', function(done){
             impReq = impersonationRequest.impersonationUnChecked;
 
             impersonationLib
                 .setImpersonation(serviceId, contentTypeInfo, token, impReq)
                 .end(function(err, res){
+                    impersonationState = res.body;
 
                     impersonationLib
                         .setAuthentication(authenticationState, token)
@@ -83,19 +83,10 @@ describe('Create meetings using impersonation options, as a organizer' +
         });
 
         context('When the organizer requests the creation of a meeting', function(){
-            var meetingName = 'Meetingtested';
-            var roomMail = 'test@test.org';
-            var status = 0;
-            var meeting;
 
             before('Creating meeting', function(done){
-                console.log('serviceId', serviceId);
-                console.log('roomId', roomId);
-                console.log('meetingName', meetingName);
-                console.log('roomMail', roomMail);
-
                 meetingLib
-                    .createNewMeeting(serviceId, roomId, meetingName, roomMail)
+                    .createNewMeeting(serviceId, roomId, roomName, roomMail)
                     .end(function(err, res){
                         status = res.status;
                         meeting = res.body;
@@ -104,14 +95,26 @@ describe('Create meetings using impersonation options, as a organizer' +
                     });
             });
 
+            after('Deleting meeting', function(done){
+                meetingLib
+                    .deleteMeeting(serviceId, roomId, meeting._id)
+                    .end(function(err, res){
+
+                        done();
+                    });
+            });
+
             it('ensure the response with code status is returned', function(done){
-                //expect(status).to.equal(200);
+                expect(status).to.equal(200);
 
                 done();
             });
 
             it('and the response body values are correct.', function(done){
-                console.log('THE MEETING', meeting);
+                expect(impersonationState._id).to.equal(meeting.serviceId);
+                expect(roomId).to.equal(meeting.roomId);
+                expect(roomName).to.equal(meeting.location);
+                expect(roomMail).to.equal(meeting.roomEmail);
 
                 done();
             });
@@ -119,12 +122,14 @@ describe('Create meetings using impersonation options, as a organizer' +
     });
 
     context('Scenario 2: Impersonation is ON', function(){
-        beforeEach('Setting impersonation ON', function(done){
+
+        before('Setting impersonation ON', function(done){
             impReq = impersonationRequest.impersonationChecked;
 
             impersonationLib
                 .setImpersonation(serviceId, contentTypeInfo, token, impReq)
                 .end(function(err, res){
+                    console.log('The Impersonation object', res.body);
 
                     impersonationLib
                         .setAuthentication(authenticationState, token)
@@ -136,38 +141,43 @@ describe('Create meetings using impersonation options, as a organizer' +
         });
 
         context('When the organizer requests the creation of a meeting', function(){
-            var meetingName = 'Meetingtested';
-            var roomMail = 'test@test.org';
-            var status = 0;
-            var meeting;
 
             before('Creating meeting', function(done){
-                console.log('serviceId', serviceId);
-                console.log('roomId', roomId);
-                console.log('meetingName', meetingName);
-                console.log('roomMail', roomMail);
-
                 meetingLib
-                    .createNewMeeting(serviceId, roomId, meetingName, roomMail)
+                    .createNewMeeting(serviceId, roomId, roomName, roomMail)
                     .end(function(err, res){
                         status = res.status;
                         meeting = res.body;
+                        console.log('THE MEETING', meeting);
+
+                        done();
+                    });
+            });
+
+            after('Deleting meeting', function(done){
+                meetingLib
+                    .deleteMeeting(serviceId, roomId, meeting._id)
+                    .end(function(err, res){
 
                         done();
                     });
             });
 
             it('ensure the response with code status is returned', function(done){
-                //expect(status).to.equal(200);
+                expect(status).to.equal(200);
 
                 done();
             });
 
             it('and the response body values are correct.', function(done){
-                console.log('THE MEETING', meeting);
+                expect(impersonationState._id).to.equal(meeting.serviceId);
+                expect(roomId).to.equal(meeting.roomId);
+                expect(roomName).to.equal(meeting.location);
+                expect(roomMail).to.equal(meeting.roomEmail);
 
                 done();
             });
         });
     });
 });
+
