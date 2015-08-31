@@ -21,7 +21,7 @@ var settings = require('..\\..\\settings.json');
  * Scenario 3: Create a resource with a name that another resource already has
  *      Given there is a resource "Android"?
  *      When a new resource is created
- *      And has the same name as the "Android"? resource
+ *      And has the same name as the "Android" resource
  *      Then ensure that a response with status code 400 is returned
  *          And ensure the response body has a descriptive message about the error
  * Scenario 4: Create a resource without the field "name"?
@@ -70,7 +70,6 @@ describe('Create a Resource', function () {
             });
 
             after('Deleting the resource created', function (done) {
-                console.log('Entering delete');
                 resources
                     .deleteResource(firstResource._id, token)
                     .end(function (err, res) {
@@ -94,28 +93,32 @@ describe('Create a Resource', function () {
                         });
                 });
 
-                it('And has the same name as the "Android"? resource', function () {
+                it('And has the same name as the "Android" resource', function (done) {
                     expect(firstResource.name).to.equal(requests.resourceScenario.body.name);
+                    done();
                 });
 
-                it('Then ensure that a response with status code 400 is returned', function () {
+                it('Then ensure that a response with status code 400 is returned', function (done) {
                     expect(status).to.equal(400);
-                });
-
-                it('And ensure the response body has a descriptive message about the error', function () {
-                    var possibleError = 'Bad Request due to malfored syntaxis, invalid request message' +
-                        'framing or deceptive request routing';
-                    expect(possibleError).to.contains(error);
+                    done();
                 });
             });
-
         });
     });
 
 
-    describe('Scenario 4: Create a resource without the field "name"?', function () {
+    describe('Scenario 4: Create a resource without the field "name"', function () {
 
         context('Given there are no resources', function () {
+
+            before('Checking there are no resources', function (done) {
+                resources
+                    .getResources()
+                    .end(function (err, res) {
+                        expect(res.body).to.be.empty;
+                        done();
+                    });
+            });
 
             context('When a new resource is created', function () {
                 var status;
@@ -130,27 +133,31 @@ describe('Create a Resource', function () {
                         });
                 });
 
-                it('And the value "name"? is not sent in the requests body', function () {
+                it('And the value "name" is not sent in the requests body', function (done) {
                     expect(requests.resourceWithoutName.body.name).to.be.empty;
+                    done();
                 });
 
-                it('Then ensure that a response with status code 400 is returned', function () {
+                it('Then ensure that a response with status code 400 is returned', function (done) {
                     expect(status).to.equal(400);
+                    done();
                 });
-
-                it('And ensure the responses body has a descriptive message about the error', function () {
-                    var possibleError = 'Bad Request due to malfored syntaxis, invalid request message' +
-                        'framing or deceptive request routing';
-                    expect(possibleError).to.contains(error);
-                });
-
             });
-
         });
     });
 
     describe('Scenario 5: Create a resource without an icon', function () {
         context('Given there are no resources', function () {
+
+            before('Checking there are no resources', function (done) {
+                resources
+                    .getResources()
+                    .end(function (err, res) {
+                        expect(res.body).to.be.empty;
+                        done();
+                    });
+            });
+
             context('When a new resource is created', function () {
                 var status;
                 var error;
@@ -175,26 +182,19 @@ describe('Create a Resource', function () {
                 });
 
 
-                it('And the value "fontIcon"? is not sent in the requests body', function () {
+                it('And the value "fontIcon" is not sent in the requests body', function (done) {
                     expect(requests.resourceWithoutIcon.body.fontIcon).to.be.empty;
+                    done();
 
                 });
 
-                it('Then ensure that a response with status code 400 is returned', function () {
+                it('Then ensure that a response with status code 400 is returned', function (done) {
                     expect(status).to.equal(400);
-
+                    done();
                 });
-
-                it('And ensure the responses body has a descriptive message about the error', function () {
-                    var possibleError = 'Bad Request due to malfored syntaxis, invalid request message' +
-                        'framing or deceptive request routing';
-                    expect(possibleError).to.contains(error);
-                });
-
             });
         });
     });
-
 });
 
 
@@ -247,31 +247,26 @@ describe('Assigning Resources', function () {
                 token = arguments[0];
             });
     });
-    
-    describe.only('Scenario 1: Assigning resource to a conference room with no resources', function () {
-        context('Given there is a conference room "Conference Room 1" with no resources assigned', function () {
+
+    describe('Scenario 1: Assigning resource to a conference room with no resources', function () {
+        context('Given there is a conference room "Conference Room 1" ' +
+            'with no resources assigned', function () {
             var allRooms;
             var selectedRoom;
             var resourceCreated;
-            //var roomName = 'Conference Room 1';
 
-            //what if there are resources????
-            before('Getting all the conference rooms', function (done) {
+            before('Getting the room "Conference Room 1"', function (done) {
                 rooms
                     .getRooms()
                     .end(function (err, res) {
                         allRooms = res.body;
 
                         for(var i = 0; i < allRooms.length; i++){
-                            //console.log(allRooms[i].customDisplayName);
-                            //console.log('-----');
-                            //console.log(requests.roomCustomName.customDisplayName);
-
-                            if(allRooms[i].customDisplayName == requests.roomCustomName.customDisplayName)
+                            if(allRooms[i].customDisplayName == requests
+                                    .roomCustomName.customDisplayName)
                                 selectedRoom = allRooms[i];
                         };
 
-                        //console.log(selectedRoom);
                         done();
                     });
             });
@@ -288,7 +283,7 @@ describe('Assigning Resources', function () {
                 resources
                     .createResource(requests.resourceScenario2.body,token)
                     .end(function (err, res) {
-                        status = res.status;
+                        //status = res.status;
                         resourceCreated = res.body;
                         expect(res.status).to.equal(200);
                         
@@ -299,9 +294,9 @@ describe('Assigning Resources', function () {
                 
                 before('Assigning "computer" to "Conference Room 1"', function (done) {
                     var assign = {"associations":[{"resourceId":resourceCreated._id,
-                        "name":"tv",
-                        "customName":"tv",
-                        "fontIcon":"fa fa-desktop",
+                        "name":resourceCreated.name,
+                        "customName":resourceCreated.customName,
+                        "fontIcon":resourceCreated.fontIcon,
                         "quantity":"0"}]};
 
                     rooms
@@ -317,9 +312,9 @@ describe('Assigning Resources', function () {
 
                     before('Assigning the quantity of 2 to "computer"', function (done) {
                         var assign = {"associations":[{"resourceId":resourceCreated._id,
-                            "name":"tv",
-                            "customName":"tv",
-                            "fontIcon":"fa fa-desktop",
+                            "name":resourceCreated.name,
+                            "customName":resourceCreated.customName,
+                            "fontIcon":resourceCreated.fontIcon,
                             "quantity":"2"}]};
 
                         rooms
@@ -337,7 +332,7 @@ describe('Assigning Resources', function () {
 
                     });
 
-                    it('And ensure the "computer"? is associated with the room "Conference Room 1"?', function (done) {
+                    it('And ensure the "computer" is associated with the room "Conference Room 1"', function (done) {
                         rooms
                             .getRoom(selectedRoom._id)
                             .end(function (err, res) {
@@ -348,8 +343,6 @@ describe('Assigning Resources', function () {
 
                                 done();
                             });
-
-
                     });
 
                     it('And ensure the quantity of "computer" is 2', function (done) {
@@ -362,32 +355,152 @@ describe('Assigning Resources', function () {
     });
 
 
-    describe('Scenario 2: Assigning resource to a conference room with resources', function () {
-        context('Given there is a conference room "Conference Room 1"? with resources assigned', function () {
 
-            it('And a resource "computer"? exits', function () {
+    describe('Scenario 2: Assigning resource to a conference room ' +
+        'with resources', function () {
+        context('Given there is a conference room "Conference Room 1" ' +
+            'with resources assigned', function () {
 
+            var allRooms;
+            var selectedRoom;
+            var resourceCreated;
+            var resourceCreatedAlready;
+
+            before('Getting the room "Conference Room 1 and ' +
+                'assigning a resource"', function (done) {
+                rooms
+                    .getRooms()
+                    .end(function (err, res) {
+                        allRooms = res.body;
+                        //console.log('s '+ res.status);
+
+                        for(var i = 0; i < allRooms.length; i++){
+                            if(allRooms[i].customDisplayName == requests
+                                    .roomCustomName.customDisplayName)
+                                selectedRoom = allRooms[i];
+                        };
+
+                        resources
+                            .createResource(requests.resourceCreate.body, token)
+                            .end(function (err1, res1) {
+                                //console.log('s1 '+ res1.status);
+                                resourceCreatedAlready = res1.body;
+
+                                var assign = {"associations":[{"resourceId":resourceCreatedAlready._id,
+                                    "name":resourceCreatedAlready.name,
+                                    "customName":resourceCreatedAlready.customName,
+                                    "fontIcon":resourceCreatedAlready.fontIcon,
+                                    "quantity":"3"}]};
+
+                                rooms
+                                    .associateRoomAnother(selectedRoom._id, assign, token)
+                                    .end(function (err2, res2) {
+
+                                        done();
+                                    });
+                            });
+                    });
             });
-            context('When the "computer"? is assigned to the room', function () {
 
-                it('And the quantity assigned of "computer"? is 2', function () {
+            after('Deleting resources created', function (done) {
+                resources
+                    .deleteResource(resourceCreatedAlready._id, token)
+                    .end(function (err, res) {
+                        resources
+                            .deleteResource(resourceCreated._id, token)
+                            .end(function (err, res) {
+                                done();
+                            });
+                    });
+            });
+
+            it('And a resource "computer" exits', function (done) {
+                resources
+                    .createResource(requests.resourceScenario2.body,token)
+                    .end(function (err, res) {
+                        resourceCreated = res.body;
+                        expect(res.status).to.equal(200);
+
+                        done();
+                    });
+            });
+            context('When the "computer" is assigned to the room', function () {
+
+                before('Assigning "computer" to "Conference Room 1"', function (done) {
+                    var assign = {"associations":[{"resourceId":resourceCreated._id,
+                        "name":resourceCreated.name,
+                        "customName":resourceCreated.customName,
+                        "fontIcon":resourceCreated.fontIcon,
+                        "quantity":"0"}]};
 
 
+                    rooms
+                        .getRoom(selectedRoom._id)
+                        .end(function (err, res) {
+                            selectedRoom = res.body;
+
+                            rooms
+                                .associateRoomAnother(selectedRoom._id, assign, token)
+                                .end(function (err, res) {
+                                    expect(res.status).to.equal(200);
+                                    done();
+                                });
+                        });
                 });
 
-                it('Then ensure that a response with status code 200 is returned', function () {
+                context('And the quantity assigned of "computer" is 2', function (done) {
+                    var status;
+
+                    before('Assigning the quantity of 2 to "computer"', function (done) {
+                        var assign = {"associations":[{"resourceId":resourceCreated._id,
+                            "name":resourceCreated.name,
+                            "customName":resourceCreated.customName,
+                            "fontIcon":resourceCreated.fontIcon,
+                            "quantity":"2"},
+                            {"resourceId":resourceCreatedAlready._id,
+                                "name":resourceCreatedAlready.name,
+                                "customName":resourceCreatedAlready.customName,
+                                "fontIcon":resourceCreatedAlready.fontIcon,
+                                "quantity":"2"}
+                            ]};
+
+                        rooms
+                            .associateRoomAnother(selectedRoom._id, assign, token)
+                            .end(function (err, res) {
+                                status = res.status;
+
+                                done();
+                            });
+                    });
+
+                    it('Then ensure that a response with status code ' +
+                        '200 is returned', function (done) {
+                        expect(status).to.equal(200);
+                        done();
 
 
+                    });
+
+                    it('And ensure the "computer" is associated ' +
+                        'with the room "Conference Room 1"', function (done) {
+                        rooms
+                            .getRoom(selectedRoom._id)
+                            .end(function (err, res) {
+                                selectedRoom = res.body;
+
+                                expect(selectedRoom.resources[0].resourceId).to.equal(resourceCreated._id);
+                                expect(resourceCreated.name).to.equal("computer");
+
+                                done();
+                            });
+                    });
+
+                    it('And ensure the quantity of computer is 2', function (done) {
+                        expect(selectedRoom.resources[0].quantity).to.equal(2);
+                        done();
+
+                    });
                 });
-
-                it('And ensure the "computer"? is associated with the room "Conference Room 1"?', function () {
-
-                });
-
-                it('And ensure the quantity of computer is 2', function () {
-
-                });
-
             });
         });
     });
