@@ -30,5 +30,57 @@
   "resourceId":{
   "_comments": "id to get a resource",
   "_id": "123456"
+  },
+  "resourceScenario": {
+    "_comments": "body to create a resource for scenarios",
+    "body": {
+      "name": "Android",
+      "customName": "Android",
+      "fontIcon": "fa fa-android",
+      "from": "",
+      "description": ""
+    }
+  },
+  "resourceWithoutName": {
+    "_comments": "body to create a resource for scenarios",
+    "body": {
+      "name": "",
+      "customName": "Android",
+      "fontIcon": "fa fa-android",
+      "from": "",
+      "description": ""
+    }
+  },
+  "resourceWithoutIcon": {
+    "_comments": "body to create a resource for scenarios",
+    "body": {
+      "name": "Android",
+      "customName": "Android",
+      "fontIcon": "",
+      "from": "",
+      "description": ""
+    }
+  },
+  "roomCustomName": {
+    "_comments": "roomCustomName",
+    "customDisplayName": "Conference Room 1"
+
+  },
+  "resourceScenario2": {
+    "_comments": "body to create a resource for scenarios",
+    "body": {
+      "name": "computer",
+      "customName": "computer",
+      "fontIcon": "fa fa-desktop",
+      "from": "",
+      "description": ""
+    }
+  },
+  "resourceAssignment": {
+    "_comments": "body to assign a resource to a room",
+    "body": {
+      "resourceId": "[resourceId]",
+      "quantity": "2"
+    }
   }
 }
