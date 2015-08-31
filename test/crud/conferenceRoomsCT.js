@@ -207,7 +207,7 @@ describe('Acceptance Test - Conference Rooms', function(){
      * Test Case
      * Title: POST rooms shortcut API returns the information from associate Resource to a Room
      */
-    it.only('Associate a Resource', function(done) {
+    it('Associate a Resource', function(done) {
         var actualRoom;
         var expectedRoom;
         var resource;
