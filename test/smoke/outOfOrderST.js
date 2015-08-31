@@ -4,7 +4,7 @@
 /* Out of order Smoke Test*/
 var expect = require('chai').expect;
 var outOfOrders = require('..\\..\\lib\\outOfOrderlib');
-var content = require('..\\..\\lib\\outOfOrderRequestLib');
+var content = require('..\\..\\lib\\outOfOrderlib');
 var tokenLib =require('..\\..\\lib\\tokenLib');
 var config = require('..\\..\\settings.json');
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
@@ -27,9 +27,9 @@ describe('Smoke Test Cases- Out of order', function() {
      * servId- the id of the mail service
      * oooId- the id of out-of-order
      * */
-    var roomId;
-    var servId;
-    var oooId;
+    var roomID;
+    var servID;
+    var oooID;
     this.timeout(config.setDelayTime);
     this.slow(config.setErrorMaxTime);
 
@@ -40,23 +40,17 @@ describe('Smoke Test Cases- Out of order', function() {
         rooms
             .getRooms()
             .end(function(error,resp){
-                roomId = resp.body[0]._id;
-                servId =resp.body[0].serviceId;
-                var res = content.getContentCreate(roomId);
+                roomID = resp.body[0]._id;
+                servID =resp.body[0].serviceId;
+                var res = content.getContentCreate(roomID);
                 var res1 = content.getCont();
                 outOfOrders
-                    .createOutOfOrder(servId,roomId,res,token)
+                    .createOutOfOrder(servID,roomID,res,token)
                     .end(function(err, res){
                         var response = res.status;
-                        oooId = res.body._id;
+                        oooID = res.body._id;
                         expect(response).to.equal(200);
-                        outOfOrders
-                            .deleteOutOfOrder(servId, roomId, token, oooId)
-                            .end(function (er, re) {
-                                var response = re.status;
-                                expect(response).to.equal(200);
-                                done();
-                            });
+                        done();
                     });
             });
     });
@@ -66,33 +60,24 @@ describe('Smoke Test Cases- Out of order', function() {
      */
     it('DELETE a "out of order" by id from a service from a room', function(done){
         /*Test Case*/
-        rooms
-            .getRooms()
-            .end(function(error,resp){
-                roomId = resp.body[0]._id;
-                servId =resp.body[0].serviceId;
-                var contentBody = content.getContentCreate(roomId);
-                outOfOrders
-                    .createOutOfOrder(servId,roomId,contentBody,token)
-                    .end(function(err, res){
-                        var response = res.status;
-                        oooId = res.body._id;
-                        expect(response).to.equal(200);
-                        outOfOrders
-                            .deleteOutOfOrder(servId, roomId, token, oooId)
-                            .end(function (er, re) {
-                                var response = re.status;
-                                expect(response).to.equal(200);
-                                done();
-                            });
-                    });
-            });
+        outOfOrders
+            .deleteOutOfOrder(servID, roomID, token, oooID)
+            .end(function (er, re) {
+                 var response = re.status;
+                 expect(response).to.equal(200);
+                 done();
+                 });
+
     });
     /*
     * Smoke test cases for: UPDATE and GETs with pre condition -CREATE and DELETE "out-of-order
     * */
     describe('Smoke test cases for: UPDATE and GETs with pre condition -CREATE and DELETE "out-of-order"' , function () {
         /*Pre condition-Create a out of order on a room*/
+        /*Variables for this describe */
+        var roomId;
+        var servId;
+        var oooId;
         before('Create a "out-of-order"',function(done) {
             rooms
                 .getRooms()
