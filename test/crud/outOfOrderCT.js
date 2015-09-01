@@ -8,7 +8,7 @@ var outOfOrders = require('..\\..\\lib\\outOfOrderlib');
 var content = require('..\\..\\lib\\outOfOrderlib');
 var tokenLib =require('..\\..\\lib\\tokenLib');
 var rooms = require('..\\..\\lib\\conferenceRoomsLib');
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+var mongoserv = require('..\\..\\utils\\mongoConnection.js');
 var token;
 /*
  The before method creates a token that is stored in the "token" global variable, and it's used
@@ -50,9 +50,9 @@ describe('CRUD Test Cases- Out of order', function() {
             .end(function(error,resp){
                 roomID = resp.body[0]._id;
                 servID =resp.body[0].serviceId;
-                var res = content.getContentCreate(roomID);
+                var cont = content.getContentCreate(roomID);
                     outOfOrders
-                      .createOutOfOrder(servID,roomID,res,token)
+                      .createOutOfOrder(servID,roomID,cont,token)
                       .end(function(err, res){
                       var expectResult = res.body;
                       oooID = res.body._id;
@@ -155,8 +155,10 @@ describe('CRUD Test Cases- Out of order', function() {
                                 roomidBD = arrayOutsBD[i].roomId;
                                 roomidBD = roomidBD.toString();
                                 expect(arrayOut[i]._id).to.be.equal(idList);
-                                expect(arrayOut[i].title).to.be.equal(arrayOutsBD[i].title);
+                                expect(arrayOut[i].description).to.be.equal(arrayOutsBD[i].description);
                                 expect(arrayOut[i].roomId).to.be.equal(roomidBD);
+                                expect(arrayOut[i]._v).to.be.equal(arrayOutsBD[i]._v);
+                                expect(arrayOut[i].sendEmail).to.be.equal(arrayOutsBD[i].sendEmail);
                             }
                             expect(resp.status).to.be.equal(200);
                             expect(arrayOut.length).to.be.equal(arrayOutsBD.length);

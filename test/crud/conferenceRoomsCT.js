@@ -11,7 +11,7 @@ var services = require('..\\..\\lib\\servicesLib');
 var resources = require('..\\..\\lib\\resourcesLib');
 var requests = require('..\\..\\requestJSONs\\resourcesRequests');
 var requestroom = require('..\\..\\requestJSONs\\conferenceRoomsRequest');
-var mongoserv = require('..\\..\\lib\\mongoConnection.js');
+var mongoserv = require('..\\..\\utils\\mongoConnection.js');
 
 describe('Acceptance Test - Conference Rooms', function(){
     this.timeout(settings.setDelayTime);
@@ -227,7 +227,7 @@ describe('Acceptance Test - Conference Rooms', function(){
                         rooms
                             .associateRoom(roomId, resource, token)
                             .end(function (err, res) {
-                                console.log('THE RESOURCE', res.body);
+
 
                                 var status = res.status;
                                 actualRoom = res.body;
@@ -240,9 +240,6 @@ describe('Acceptance Test - Conference Rooms', function(){
                                     .deleteResource(resourceId,token)
                                     .end(function(err,res){
 
-                                        console.log('ROOM ID', roomId);
-                                        console.log('RESOURCE ID', resource._id);
-                                        console.log('TOKEN', token);
                                         done();
                                     });
 
