@@ -5,6 +5,7 @@ var rooms = require('..\\..\\lib\\conferenceRoomsLib');
 var services = require('..\\..\\lib\\servicesLib');
 var tokenLib = require('..\\..\\lib\\tokenLib');
 var settings = require('..\\..\\settings.json');
+var config = require('..\\..\\config\\meetingsConfig.json');
 
 var roomsInfo = [];
 var roomId;
@@ -14,6 +15,22 @@ var meetingId;
 var serviceId;
 var authToken;
 var response;
+var jsonData;
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+
+if(dd<10) {
+    dd='0'+dd
+} 
+
+if(mm<10) {
+    mm='0'+mm
+} 
+
+today = yyyy+'-'+mm+'-'+dd;
 
 var enabledRooms = function(roomsInfo){
 	for(var i in roomsInfo)
@@ -87,7 +104,7 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	Test case 2: Get the information of a specific meeting
 				 from a specific room
 	*/
-	it('READ a specific meeting',function(done){
+	it('READ a specific meeting',function(done){		
 		meetings
 			.getSpecificRoomMeeting(serviceId,roomId,meetingId)
 			.end(function(err,res){
@@ -103,10 +120,16 @@ describe('..:: Meetings CRUD Test cases ::..',function(){
 	Test case 3: Create a new meeting in a specific room
 	*/
 	it('CREATE a new meeting in a specific room',function(done){
+		jsonData = config.newMeeting;	
+		jsonData.location = roomName;
+		jsonData.roomEmail = roomMail;
+		jsonData.organizer = settings.exchangeAccount;	
+		jsonData.start = jsonData.start.replace('[date]',today);
+		jsonData.end = jsonData.end.replace('[date]',today);
 		meetings
-			.createNewMeeting(serviceId,roomId,roomName,roomMail)
+			.createNewMeeting(serviceId,roomId,jsonData)
 			.end(function(err,res){
-				response = res.body;				
+				response = res.body;	
 				meetingId = response._id;
 				expect(response.serviceId).to.equal(serviceId);
 				expect(response.roomId).to.equal(roomId);
